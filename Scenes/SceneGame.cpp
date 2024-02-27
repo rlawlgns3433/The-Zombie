@@ -25,11 +25,10 @@ void SceneGame::Init()
 	//UI
 	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
-	AddGo(new DebugString(), Scene::Ui);
-	//���
+	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
 
-	//���� ������
+	//좀비 스포너
 	spawners.push_back(new ZombieSpawner());
 	spawners.push_back(new ItemSpawner());
 	for (auto s : spawners)

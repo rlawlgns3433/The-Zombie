@@ -155,7 +155,7 @@
     <ClCompile Include="GameObjects\UI\HealthBar.cpp" />
     <ClCompile Include="GameObjects\Item2.cpp" />
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
-    <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="GameObjects\Gun.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -177,7 +177,7 @@
     <ClCompile Include="DataTable\StringTable.cpp" />
     <ClCompile Include="DataTable\ZombieTable.cpp" />
     <ClCompile Include="GameObjects\UI\UILevelUp.cpp" />
-    <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="GameObjects\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTable\DataTable.h" />
@@ -198,7 +198,7 @@
     <ClInclude Include="GameObjects\UI\HealthBar.h" />
     <ClInclude Include="GameObjects\Item2.h" />
     <ClInclude Include="GameObjects\ItemSpawner.h" />
-    <ClInclude Include="Gun.h" />
+    <ClInclude Include="GameObjects\Gun.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
@@ -216,7 +216,7 @@
     <ClInclude Include="DataTable\StringTable.h" />
     <ClInclude Include="DataTable\ZombieTable.h" />
     <ClInclude Include="GameObjects\UI\UILevelUp.h" />
-    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="GameObjects\Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
