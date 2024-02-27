@@ -21,6 +21,7 @@ void SceneGame::Init()
 
 	//UI
 	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
+	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
 	AddGo(new DebugString(), Scene::Ui);
 
 	//배경
@@ -51,14 +52,12 @@ void SceneGame::Init()
 	//웨이브
 	wave = 0;
 	zombieCount = 1;
-	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD("UIHUD"), Scene::Ui));
 
 	hud->SetScore(score);
 	hud->SetHiScore(hiScore);
 	hud->SetAmmo(0, 0);
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
-
 }
 
 void SceneGame::Release()
@@ -105,9 +104,6 @@ void SceneGame::Enter()
 
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
-
-
-
 }
 
 void SceneGame::Exit()
@@ -261,7 +257,6 @@ void SceneGame::AddScore(int s)
 	hud->SetScore(score);
 	hud->SetHiScore(hiScore = std::max(score, hiScore));
 }
-
 
 
 void SceneGame::ChangeWave(int w)

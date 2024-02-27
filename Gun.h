@@ -34,10 +34,11 @@ public :
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	// Weapon을(를) 통해 상속됨
 	void Attack() override;
 	void Reload();
 
 	void AddTotalAmmo(int add);
+	int GetAmmo() const { return this->ammo; }
+	int GetTotalAmmo() const { return this->totalAmmo; }
 };
 

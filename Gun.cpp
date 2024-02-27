@@ -26,8 +26,8 @@ void Gun::Reset()
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
 	
-	//dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"))->SetAmmo(ammo, totalAmmo);
-
+	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
+	hud->SetAmmo(ammo, totalAmmo);
 	ammo = maxAmmo;
 	totalAmmo = ammo;
 
@@ -83,7 +83,7 @@ void Gun::Attack()
 	if (ammo > 0)
 	{
 		ammo--;
-		//hud->SetAmmo(ammo, totalAmmo);
+		hud->SetAmmo(ammo, totalAmmo);
 
 		Bullet* b = Bullet::Create(player);
 		b->Init();
@@ -108,7 +108,7 @@ void Gun::Reload()
 	{
 		ammo += needAmmo;
 		totalAmmo -= needAmmo;
-		//hud->SetAmmo(ammo, totalAmmo);
+		hud->SetAmmo(ammo, totalAmmo);
 		SOUND_MGR.PlaySfx("sound/reload.wav");
 		//dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
 	}
@@ -120,7 +120,7 @@ void Gun::Reload()
 	{
 		ammo += totalAmmo;
 		totalAmmo = 0;
-		//hud->SetAmmo(ammo, totalAmmo);
+		hud->SetAmmo(ammo, totalAmmo);
 		SOUND_MGR.PlaySfx("sound/reload.wav");
 		//dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
 	}

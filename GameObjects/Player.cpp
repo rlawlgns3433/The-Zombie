@@ -137,9 +137,8 @@ void Player::onItem(Item2* item)
 	switch (item->GetType())
 	{
 	case Item2::Types::AMMO:
-		//totalAmmo += item->GetValue();
 		gun->AddTotalAmmo(item->GetValue());
-		//hud->SetAmmo(ammo, totalAmmo);
+		hud->SetAmmo(gun->GetAmmo(), gun->GetTotalAmmo());
 		break;
 	case Item2::Types::HEALTH:
 		hp = std::min(hp+item->GetValue(),maxHp);
