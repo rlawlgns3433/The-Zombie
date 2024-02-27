@@ -36,6 +36,7 @@ public:
 
 	virtual void Init();
 	virtual void Release();
+	virtual void Reset();
 
 	virtual void Enter();
 	virtual void Exit();

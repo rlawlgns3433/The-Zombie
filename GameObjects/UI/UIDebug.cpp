@@ -46,6 +46,7 @@ void UIDebug::Reset()
 
 void UIDebug::DebugUpdate(float dt)
 {
+
 	fps.setString(std::to_string(1.f / dt));
 	textX = std::max(textX, fps.getGlobalBounds().width);
 	for (auto text : debugTextList)
@@ -53,16 +54,7 @@ void UIDebug::DebugUpdate(float dt)
 		textX = std::max(textX, text->getGlobalBounds().width);
 	}
 	textBG.setSize({ textX,textY - 200 });
-}
 
-void UIDebug::ListUpdate()
-{
-	while (!textRemoveList.empty())
-	{
-		debugTextList.remove(textRemoveList.front());
-		textRemoveList.pop_front();
-		textY -= 20;
-	}
 }
 
 void UIDebug::DebugDraw(sf::RenderWindow& window)
@@ -88,5 +80,19 @@ sf::Text* UIDebug::AddText(sf::Text* text)
 
 void UIDebug::RemoveText(sf::Text* text)
 {
-	textRemoveList.push_back(text);
+
+	auto it = debugTextList.begin();
+		while (it != debugTextList.end())
+		{
+			if (*it == text)
+			{
+				it = debugTextList.erase(it);
+				textY -= 20;
+			}
+			else
+			{
+				it++;
+			}
+		}
+
 }

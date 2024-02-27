@@ -5,7 +5,6 @@ class UIDebug final : public GameObject
 {
 private:
 	std::list<sf::Text*> debugTextList;
-	std::list<sf::Text*> textRemoveList;
 	sf::Text fps;
 	float textX = 0;
 	float textY = 200;
@@ -26,7 +25,6 @@ public:
 	// **주의** 프로그램이 종료될때 UIDebug가 가지고 있는 Text만 delete함.
 	void Reset() override;
 	void DebugUpdate(float dt) override;
-	void ListUpdate();
 	void DebugDraw(sf::RenderWindow& window) override;
 
 	// **주의** 프로그램이 종료되기 전까지 delete하지 않음.

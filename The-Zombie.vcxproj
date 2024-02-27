@@ -152,7 +152,6 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Base\GameObject.cpp" />
     <ClCompile Include="GameObjects\ZombieSpawner.cpp" />
-    <ClCompile Include="GameObjects\UI\HealthBar.cpp" />
     <ClCompile Include="GameObjects\Item2.cpp" />
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
     <ClCompile Include="GameObjects\Gun.cpp" />
@@ -195,7 +194,6 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\Base\GameObject.h" />
-    <ClInclude Include="GameObjects\UI\HealthBar.h" />
     <ClInclude Include="GameObjects\Item2.h" />
     <ClInclude Include="GameObjects\ItemSpawner.h" />
     <ClInclude Include="GameObjects\Gun.h" />

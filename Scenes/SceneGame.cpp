@@ -19,9 +19,6 @@ void SceneGame::Init()
 {
 	Release();
 
-	//Debug
-	debugZombieCount = UI_DEBUG.AddText(new sf::Text);
-
 	//UI
 	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
@@ -59,6 +56,7 @@ void SceneGame::Init()
 	hud->SetAmmo(0, 0);
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
+
 }
 
 void SceneGame::Release()
@@ -82,12 +80,26 @@ void SceneGame::Release()
 	player = nullptr;
 	score = 0;
 	wave = 0;
+
+	UI_DEBUG.RemoveText(debugZombieCount);
+	if (debugZombieCount != nullptr)
+	{
+		delete debugZombieCount;
+		debugZombieCount = nullptr;
+	}
+}
+
+void SceneGame::Reset()
+{
+	Scene::Reset();
+	
 }
 
 void SceneGame::Enter()
 {
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 	Scene::Enter();
+	Reset();
 
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
 	sf::Vector2f centerPos = windowSize * 0.5f;
@@ -95,23 +107,23 @@ void SceneGame::Enter()
 	worldView.setCenter({ 0.f,0.f });
 	uiView.setSize(windowSize);
 
-	//tileMap = dynamic_cast<TileMap*>(FindGo("Background"));
 	tileMap->SetPosition(centerPos);
 	boundary = tileMap->GetBoundary();
 	tileMap->SetOrigin(Origins::MC);
-	//tileMap->SetRotation(45);
-	//tileMap->SetScale({ 2.f,2.f });
 	tileMap->UpdateTransform();
-
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
+
+	//Debug
+	debugZombieCount = UI_DEBUG.AddText(new sf::Text);
 }
 
 void SceneGame::Exit()
 {
 	Scene::Exit();
 	FRAMEWORK.GetWindow().setMouseCursorVisible(true);
-	doReset = true;
+	Init();
+
 }
 
 void SceneGame::Update(float dt)
@@ -204,13 +216,6 @@ void SceneGame::LateUpdate(float dt)
 			else if (tag == 1)
 				bullets.remove(dynamic_cast<Bullet*>(temp));
 			delete temp;
-		}
-		if (doReset)
-		{
-			doReset = false;
-			Release();
-			Init();
-			Enter();
 		}
 		break;
 	case SceneGame::Status::PAUSE:
@@ -321,8 +326,7 @@ void SceneGame::InitWave()
 	case 0:
 		break;
 	case 1:
-		tileMap->Set({ (int)20,(int)100 }, { 50.f,50.f });
-		//tileMap->UpdateTransform();
+		tileMap->Set({ (int)40,(int)40 }, { 50.f,50.f });
 		zombieCount = 1000000;
 		break;
 	default:
