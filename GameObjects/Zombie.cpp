@@ -41,6 +41,12 @@ void Zombie::Init()
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
 
+	bound.setRadius(GetLocalBounds().width / 3);
+	bound.setOutlineColor(sf::Color::Magenta);
+	bound.setOutlineThickness(1);
+	Utils::SetOrigin(bound, Origins::MC);
+	bound.setFillColor(sf::Color(255, 255, 255, 0));
+
 }
 
 void Zombie::Release()
@@ -109,14 +115,18 @@ void Zombie::Draw(sf::RenderWindow& window)
 
 
 	//TODO : 코드 따로 정리 & ON OFF 기능에 연동
-	sf::CircleShape d;
-	d.setRadius(GetLocalBounds().width/3);
-	d.setOutlineColor(sf::Color::Magenta);
-	d.setOutlineThickness(3);
-	Utils::SetOrigin(d, Origins::MC);
-	d.setPosition(position);
-	d.setFillColor(sf::Color(255, 255, 255, 0));
-	window.draw(d);
+
+}
+
+void Zombie::DebugUpdate(float dt)
+{
+	bound.setPosition(position);
+
+}
+
+void Zombie::DebugDraw(sf::RenderWindow& window)
+{
+	window.draw(bound);
 }
 
 //충돌

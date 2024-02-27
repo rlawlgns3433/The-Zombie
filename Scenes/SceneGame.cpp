@@ -7,8 +7,8 @@
 #include "ItemSpawner.h"
 #include "Bullet.h"
 #include "Crosshair.h"
-#include "DebugString.h"
 #include "UIHUD.h"
+#include "UIDebug.h"
 
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
@@ -19,12 +19,13 @@ void SceneGame::Init()
 {
 	Release();
 
+	//Debug
+	debugZombieCount = UI_DEBUG.AddText(new sf::Text);
+
 	//UI
 	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
-
-	AddGo(new DebugString(), Scene::Ui);
 
 	//¹è°æ
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
@@ -247,6 +248,11 @@ void SceneGame::FixedUpdate(float dt)
 	//worldView.setCenter(Utils::Lerp(worldView.getCenter(), player->GetPosition(), dt));
 	if (Utils::Distance(player->GetPosition(), worldView.getCenter()) <= 1.f && InputMgr::GetAxis(Axis::Horizontal) == 0.f && InputMgr::GetAxis(Axis::Vertical) == 0.f)
 		worldView.setCenter(player->GetPosition());
+}
+
+void SceneGame::DebugUpdate(float dt)
+{
+	debugZombieCount->setString("zombies: "+std::to_string(zombieObjects.size()));
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
