@@ -51,10 +51,7 @@ void SceneGame::Init()
 	//¿þÀÌºê
 	wave = 0;
 	zombieCount = 1;
-
-	hud = new UIHUD("UIHUD");
-	AddGo(hud, Layers::Ui);
-
+	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD("UIHUD"), Scene::Ui));
 
 	hud->SetScore(score);
 	hud->SetHiScore(hiScore);
@@ -287,7 +284,7 @@ void SceneGame::ReleaseWave()
 	auto it = gameObjects.begin();
 	while (it != gameObjects.end())
 	{
-		if ((*it)->name == "Player" || (*it)->name == "Background")
+		if ((*it)->name == "Player" || (*it)->name == "Background" || (*it)->name == "Gun")
 		{
 			it++;
 		}

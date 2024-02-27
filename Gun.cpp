@@ -125,3 +125,9 @@ void Gun::Reload()
 		//dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
 	}
 }
+
+void Gun::AddTotalAmmo(int add)
+{
+	//hud->SetAmmo(ammo, totalAmmo);
+	totalAmmo += add;
+}

@@ -37,9 +37,9 @@ void Player::Reset()
 	active = true;
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Background"));
-	//hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
+	hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
 
-	//hud->SetHp(hp, maxHp);
+	hud->SetHp(hp, maxHp);
 }
 
 void Player::Update(float dt)
@@ -138,6 +138,7 @@ void Player::onItem(Item2* item)
 	{
 	case Item2::Types::AMMO:
 		//totalAmmo += item->GetValue();
+		gun->AddTotalAmmo(item->GetValue());
 		//hud->SetAmmo(ammo, totalAmmo);
 		break;
 	case Item2::Types::HEALTH:
