@@ -22,13 +22,16 @@ public:
 	void Update(float dt) override;
 	void LateUpdate(float dt) override;
 
+	void LevelUp();
+
 	void Draw(sf::RenderWindow& window) override;
 
 	void NewSpriteGo(const std::string& name, 
 		const std::string& textureId);
 	void NewTextGo(const std::string& name,
-		const sf::Font& font, const std::string& str,
+		const sf::Font& font, const std::wstring& str,
 		int size, const sf::Color& color);
+
 
 	void UiInit();
 	void UiDraw(sf::RenderWindow& window);

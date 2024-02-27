@@ -9,7 +9,6 @@ enum class SceneIds
 	SceneTitle,
 	SceneGame,
 	
-	
 	Count
 };
 

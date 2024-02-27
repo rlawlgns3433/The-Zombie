@@ -44,6 +44,7 @@ public:
 	}
 
 	virtual void SetActive(bool active) { this->active = active; }
+	virtual bool GetActive() {return active;}
 
 	virtual void SetOrigin(Origins preset);
 	virtual inline void SetOrigin(const sf::Vector2f& newOrigin)

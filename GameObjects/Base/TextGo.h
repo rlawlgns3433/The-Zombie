@@ -10,14 +10,16 @@ public:
 	TextGo(const std::string& name = "");
 
 	void SetString(const std::string& str);
+	void SetString(const std::wstring& str);
+
 	void Set(const sf::Font& texture, const std::string& str, int size, const sf::Color& color);
+	void Set(const sf::Font& texture, const std::wstring& str, int size, const sf::Color& color);
 
 	void SetFont(const std::string& textureId);
 	void SetFont(const sf::Font& texture);
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void Translate(const sf::Vector2f& delta) override;
-
 
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
