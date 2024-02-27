@@ -121,7 +121,6 @@ void Zombie::Draw(sf::RenderWindow& window)
 void Zombie::DebugUpdate(float dt)
 {
 	bound.setPosition(position);
-
 }
 
 void Zombie::DebugDraw(sf::RenderWindow& window)

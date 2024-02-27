@@ -252,6 +252,7 @@ void SceneGame::FixedUpdate(float dt)
 
 void SceneGame::DebugUpdate(float dt)
 {
+	Scene::DebugUpdate(dt);
 	debugZombieCount->setString("zombies: "+std::to_string(zombieObjects.size()));
 }
 
