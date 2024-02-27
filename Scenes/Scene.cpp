@@ -113,7 +113,7 @@ void Scene::LateUpdate(float dt)
 		}
 	}
 
-
+	//정렬이 매 프레임 되고 있음.
 	for (auto obj : sortList)
 	{
 		auto it = std::find(gameObjects.begin(), gameObjects.end(), obj);

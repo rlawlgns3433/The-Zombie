@@ -25,35 +25,6 @@ Zombie* Zombie::Create(Types zombieType)
 	zombie->atkDamage = data.atkDamage;
 	zombie->atkTimer = zombie->atkInterval = data.atkInterval;
 
-
-	/*switch (zombieType)
-	{
-	case Zombie::Types::Bloater:
-		zombie->textureId = "graphics/bloater.png";
-		zombie->maxHp = zombie->hp = 141;
-		zombie->maxSpeed = zombie->speed = 30;
-		zombie->atkDamage = 70;
-		zombie->atkInterval = zombie->atkTimer = 1.f;
-		break;
-	case Zombie::Types::Chaser:
-		zombie->textureId = "graphics/chaser.png";
-		zombie->maxHp = zombie->hp = 69;
-		zombie->speed = zombie->maxSpeed = 75;
-		zombie->atkDamage = 10;
-		zombie->atkInterval = zombie->atkTimer = 0.5f;
-		break;
-	case Zombie::Types::Crawler:
-		zombie->textureId = "graphics/crawler.png";
-		zombie->maxHp = zombie->hp = 103;
-		zombie->speed = 0;
-		zombie->maxSpeed = 200;
-		zombie->atkDamage = 99;
-		zombie->atkInterval = zombie->atkTimer = 2.f;
-		break;
-	default:
-		break;
-	}*/
-
 	zombie->Init();
 	zombie->Reset();
 	zombie->player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
@@ -134,6 +105,18 @@ void Zombie::FixedUpdate(float dt)
 void Zombie::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+
+
+
+	//TODO : 코드 따로 정리 & ON OFF 기능에 연동
+	sf::CircleShape d;
+	d.setRadius(GetLocalBounds().width/3);
+	d.setOutlineColor(sf::Color::Magenta);
+	d.setOutlineThickness(3);
+	Utils::SetOrigin(d, Origins::MC);
+	d.setPosition(position);
+	d.setFillColor(sf::Color(255, 255, 255, 0));
+	window.draw(d);
 }
 
 //충돌

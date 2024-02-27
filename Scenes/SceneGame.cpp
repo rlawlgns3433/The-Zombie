@@ -24,7 +24,7 @@ void SceneGame::Init()
 
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
 
-	//AddGo(new DebugString(), Scene::Ui);
+	AddGo(new DebugString(), Scene::Ui);
 
 	//¹è°æ
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
