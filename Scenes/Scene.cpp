@@ -154,6 +154,24 @@ void Scene::FixedUpdate(float dt)
 	}
 }
 
+void Scene::DebugUpdate(float dt)
+{
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugUpdate(dt);
+		}
+	}
+	for (auto obj : uiObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugUpdate(dt);
+		}
+	}
+}
+
 void Scene::Draw(sf::RenderWindow& window)
 {
 	const sf::View& saveView = window.getView();
@@ -172,6 +190,29 @@ void Scene::Draw(sf::RenderWindow& window)
 		if (obj->GetActive())
 		{
 			obj->Draw(window);
+		}
+	}
+	window.setView(saveView);
+}
+
+void Scene::DebugDraw(sf::RenderWindow& window)
+{
+	const sf::View& saveView = window.getView();
+
+	window.setView(worldView);
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugDraw(window);
+		}
+	}
+	window.setView(uiView);
+	for (auto obj : uiObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugDraw(window);
 		}
 	}
 	window.setView(saveView);

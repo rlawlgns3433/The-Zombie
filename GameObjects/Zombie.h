@@ -33,6 +33,7 @@ protected:
 	Player* player;
 	float distanceToPlayer;
 	sf::Vector2f direction;
+	sf::CircleShape bound; //TODO 히트박스 정보 옮기기
 
 	Zombie(const std::string& name="");
 
@@ -51,9 +52,11 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void DebugUpdate(float dt) override;
+	void DebugDraw(sf::RenderWindow& window) override;
+
 	inline float GetDistanceToPlayer() const { return distanceToPlayer; }
-
-
 	inline void SetPlayer(Player* p) { player = p; }
 	bool Damaged(int damage);
 	const sf::Vector2f& GetDirection() const { return direction; };

@@ -61,7 +61,17 @@ void SceneMgr::FixedUpdate(float dt)
 	scenes[(int)currentScene]->FixedUpdate(dt);
 }
 
+void SceneMgr::DebugUpdate(float dt)
+{
+	scenes[(int)currentScene]->DebugUpdate(dt);
+}
+
 void SceneMgr::Draw(sf::RenderWindow& window)
 {
 	scenes[(int)currentScene]->Draw(window);
+}
+
+void SceneMgr::DebugDraw(sf::RenderWindow& window)
+{
+	scenes[(int)currentScene]->DebugDraw(window);
 }

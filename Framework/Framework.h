@@ -6,6 +6,8 @@
 // 2. 시간 관련 기능 / 윈도우 정보
 // 3. ...Mgr 
 
+class UIDebug;
+
 class Framework : public Singleton<Framework>
 {
 	friend Singleton<Framework>;
@@ -31,6 +33,11 @@ protected:
 
 	bool isFocus = true;
 
+
+	//디버그
+	UIDebug* uiDebug;
+	bool isDebug = false;
+
 public:
 	sf::RenderWindow& GetWindow() { return window; }	// !!
 	const sf::Vector2i& GetWindowSize() const { return windowSize; }
@@ -42,6 +49,8 @@ public:
 	
 	float GetTimeScale() const { return timeScale; }
 	void SetTimeScale(float scale) { timeScale = scale; }
+
+	UIDebug* GetDebug() const { return uiDebug; }
 
 	virtual void Init(int width, int height, const std::string& name = "Game");
 	virtual void Do();
