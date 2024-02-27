@@ -2,7 +2,6 @@
 #include "Singleton.h"
 #include "DataTable.h"
 
-
 class DataTableMgr : public Singleton<DataTableMgr>
 {
 	friend Singleton<DataTableMgr>;
@@ -22,8 +21,6 @@ public:
 
 };
 
-
-
 template<typename T>
 inline T* DataTableMgr::Get(DataTable::Types type)
 {
@@ -39,3 +36,4 @@ inline T* DataTableMgr::Get(DataTable::Types type)
 
 #define DT_MGR (DataTableMgr::Instance())
 #define DT_STRING (DT_MGR.Get<StringTable>(DataTable::Types::String))
+#define DT_ZOMBIE (DT_MGR.Get<ZombieTable>(DataTable::Types::Zombie))

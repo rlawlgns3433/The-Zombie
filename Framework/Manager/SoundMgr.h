@@ -15,7 +15,7 @@ private:
 	int backBGMIndex = 1;
 
 	bool isFading = false;
-	float fadeDuration = 5.f;
+	float fadeDuration = 1.f;
 	float fadeTimer = 0.f;
 	float frontMixingSpeed = 0.f;
 	float backMixingSpeed = 0.f;

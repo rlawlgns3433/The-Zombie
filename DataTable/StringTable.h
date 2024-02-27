@@ -2,6 +2,8 @@
 #include "DataTable.h"
 class StringTable : public DataTable
 {
+
+	static std::string unDef;
 protected:
 	std::unordered_map<std::string, std::string> table;
 	Languages currLang = Languages::Korean;

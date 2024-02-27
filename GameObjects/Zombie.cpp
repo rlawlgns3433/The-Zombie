@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include <EffectBlood.h>
+#include "ZombieTable.h"
 
 Zombie::Zombie(const std::string& name)
 	: SpriteGo(name)
@@ -17,7 +18,15 @@ Zombie* Zombie::Create(Types zombieType)
 	zombie->type = zombieType;
 
 
-	switch (zombieType)
+	const DataZombie& data = DT_ZOMBIE->Get(zombieType);
+	zombie->textureId = data.textureId;
+	zombie->hp = zombie->maxHp = data.maxHp;
+	zombie->speed = zombie->maxSpeed = data.maxSpeed;
+	zombie->atkDamage = data.atkDamage;
+	zombie->atkTimer = zombie->atkInterval = data.atkInterval;
+
+
+	/*switch (zombieType)
 	{
 	case Zombie::Types::Bloater:
 		zombie->textureId = "graphics/bloater.png";
@@ -43,11 +52,11 @@ Zombie* Zombie::Create(Types zombieType)
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	zombie->Init();
 	zombie->Reset();
-	zombie->player=dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
+	zombie->player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
 	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->zombieObjects.push_back(zombie);
 
 

@@ -7,7 +7,6 @@
 #include "ItemSpawner.h"
 #include "Bullet.h"
 #include "Crosshair.h"
-#include "Item.h"
 #include "DebugString.h"
 #include "UIHUD.h"
 

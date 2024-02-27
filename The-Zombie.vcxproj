@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\GameObjects\Effect;.\Framework\Manager;.;.\SFML-2.6.1\include;.\Framework;.\GameObjects\Base;.\GameObjects\UI;.\GameObjects;.\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\DataTable;.\GameObjects\Effect;.\Framework\Manager;.;.\SFML-2.6.1\include;.\Framework;.\GameObjects\Base;.\GameObjects\UI;.\GameObjects;.\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -153,7 +153,6 @@
     <ClCompile Include="GameObjects\Base\GameObject.cpp" />
     <ClCompile Include="GameObjects\ZombieSpawner.cpp" />
     <ClCompile Include="GameObjects\UI\HealthBar.cpp" />
-    <ClCompile Include="GameObjects\Item.cpp" />
     <ClCompile Include="GameObjects\Item2.cpp" />
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
     <ClCompile Include="main.cpp">
@@ -174,10 +173,11 @@
     <ClCompile Include="GameObjects\Spawner.cpp" />
     <ClCompile Include="GameObjects\UI\UIHUD.cpp" />
     <ClCompile Include="Framework\Manager\SoundMgr.cpp" />
-    <ClCompile Include="Framework\StringTable.cpp" />
+    <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="DataTable\ZombieTable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Framework\DataTable.h" />
+    <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
     <ClInclude Include="GameObjects\UI\DebugString.h" />
@@ -193,7 +193,6 @@
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\Base\GameObject.h" />
     <ClInclude Include="GameObjects\UI\HealthBar.h" />
-    <ClInclude Include="GameObjects\Item.h" />
     <ClInclude Include="GameObjects\Item2.h" />
     <ClInclude Include="GameObjects\ItemSpawner.h" />
     <ClInclude Include="pch.h" />
@@ -210,7 +209,8 @@
     <ClInclude Include="GameObjects\Spawner.h" />
     <ClInclude Include="GameObjects\UI\UIHUD.h" />
     <ClInclude Include="Framework\Manager\SoundMgr.h" />
-    <ClInclude Include="Framework\StringTable.h" />
+    <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="DataTable\ZombieTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
