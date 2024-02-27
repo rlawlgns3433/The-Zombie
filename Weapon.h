@@ -23,7 +23,6 @@ protected:
 	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
 
-
 	Types type;
 
 	float attackInterval = 1.f;

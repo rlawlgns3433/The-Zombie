@@ -107,7 +107,7 @@ void UIHUD::SetHiScore(int s)
 
 void UIHUD::SetAmmo(int current, int total)
 {
-	textAmmo.SetString(std::to_string(current) + "/" + std::to_string(total));
+	textAmmo.SetString(std::to_string(current) + " / " + std::to_string(total));
 }
 
 void UIHUD::SetHp(int hp, int max)

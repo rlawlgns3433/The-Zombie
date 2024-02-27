@@ -21,9 +21,6 @@ void SceneGame::Init()
 
 	//UI
 	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
-
-	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
-
 	AddGo(new DebugString(), Scene::Ui);
 
 	//¹è°æ
@@ -55,11 +52,16 @@ void SceneGame::Init()
 	wave = 0;
 	zombieCount = 1;
 
+	hud = new UIHUD("UIHUD");
+	AddGo(hud, Layers::Ui);
+
+
 	hud->SetScore(score);
 	hud->SetHiScore(hiScore);
 	hud->SetAmmo(0, 0);
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
+
 }
 
 void SceneGame::Release()
@@ -106,6 +108,8 @@ void SceneGame::Enter()
 
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
+
+
 
 }
 

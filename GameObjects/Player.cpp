@@ -6,6 +6,7 @@
 #include "Item2.h"
 #include "UIHUD.h"
 #include "Crosshair.h"
+#include "Gun.h"
 
 Player::Player(const std::string& name) : SpriteGo(name)
 {
@@ -19,7 +20,10 @@ void Player::Init()
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
 
-	isFiring = false;
+	gun = new Gun("Gun");
+	gun->Init();
+	gun->Reset();
+	dynamic_cast<SceneGame*>(SCENE_MGR.GetScene(SceneIds::SceneGame))->AddGo(gun);
 }
 
 void Player::Release()
@@ -33,19 +37,15 @@ void Player::Reset()
 	active = true;
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Background"));
-	hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
+	//hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
 
-	ammo = maxAmmo;
-	totalAmmo = ammo;
-	hud->SetAmmo(ammo, totalAmmo);
-	hud->SetHp(hp, maxHp);
+	//hud->SetHp(hp, maxHp);
 }
 
 void Player::Update(float dt)
 {
 	SpriteGo::Update(dt);
-	shotTimer += dt;
-	damagedTimer += dt;
+
 	//캐릭터 회전
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
@@ -79,27 +79,7 @@ void Player::Update(float dt)
 
 	SetPosition(tempPos);
 
-	//Shot
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-		if (shotTimer >= shotInterval)
-		{
-			shotTimer = 0.f;
-			Shot();
-		}
-	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Right))
-	{
-		if (shotTimer >= shotInterval)
-		{
-			shotTimer = 0.f;
-			Shot();
-		}
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::R))
-	{
-		ReLoad();
-	}
+
 
 	//죽음
 	if (hp == 0)
@@ -145,60 +125,6 @@ void Player::AddMaxHp(int value)
 	hud->SetHp(hp, maxHp);
 }
 
-
-void Player::Shot()
-{
-	if (ammo > 0)
-	{
-		ammo--;
-		hud->SetAmmo(ammo, totalAmmo);
-
-		Bullet* b = Bullet::Create(this);
-		b->Init();
-		b->Reset();
-		SCENE_MGR.GetCurrentScene()->AddGo(b);
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->bullets.push_back(b);
-
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionShot();
-		SOUND_MGR.PlaySfx("sound/shoot.wav");
-	}
-	else
-	{
-		ReLoad();
-	}
-	//Bullet2* bullet = new Bullet2();
-	//bullet->Init();
-	//bullet->Fire(direction, 150.f);
-	//SCENE_MGR.GetCurrentScene()->AddGo(bullet)->SetPosition(position);
-}
-
-void Player::ReLoad()
-{
-	shotTimer = -0.5f;
-	int needAmmo = maxAmmo - ammo;
-	if (totalAmmo >= needAmmo)
-	{
-		ammo += needAmmo;
-		totalAmmo -= needAmmo;
-		hud->SetAmmo(ammo, totalAmmo);
-		SOUND_MGR.PlaySfx("sound/reload.wav");
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
-	}
-	else if (totalAmmo == 0)
-	{
-		SOUND_MGR.PlaySfx("sound/reload_failed.wav");
-	}
-	else
-	{
-		ammo += totalAmmo;
-		totalAmmo = 0;
-		hud->SetAmmo(ammo, totalAmmo);
-		SOUND_MGR.PlaySfx("sound/reload.wav");
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
-	}
-
-}
-
 void Player::onDie()
 {
 	active = false;
@@ -211,8 +137,8 @@ void Player::onItem(Item2* item)
 	switch (item->GetType())
 	{
 	case Item2::Types::AMMO:
-		totalAmmo += item->GetValue();
-		hud->SetAmmo(ammo, totalAmmo);
+		//totalAmmo += item->GetValue();
+		//hud->SetAmmo(ammo, totalAmmo);
 		break;
 	case Item2::Types::HEALTH:
 		hp = std::min(hp+item->GetValue(),maxHp);

@@ -21,8 +21,6 @@ void Weapon::Release()
 void Weapon::Reset()
 {
 	GameObject::Reset();
-	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-	player = dynamic_cast<Player*>(dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->FindGo("player"));
 }
 
 void Weapon::Update(float dt)

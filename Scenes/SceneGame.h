@@ -41,7 +41,7 @@ public:
 	//sf::Vector2f ClampByTileMap(const sf::Vector2f& point);
 	std::list<Zombie*> zombieObjects;
 	std::list<Bullet*> bullets;
-	Crosshair* crosshair;
+	Crosshair* crosshair = nullptr;
 
 
 	SceneGame(SceneIds id);
@@ -69,6 +69,6 @@ public:
 	void ReleaseWave();
 	void InitWave();
 
-
+	UIHUD* GetHUD() { return this->hud; }
 };
 

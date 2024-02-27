@@ -4,6 +4,7 @@
 class TileMap;
 class Item2;
 class UIHUD;
+class Gun;
 
 class Player : public SpriteGo
 {
@@ -19,21 +20,22 @@ protected:
 	int hp = 100;
 	float speed = 300.f;
 
-	float shotInterval = 0.05f;
+	//float shotInterval = 0.05f;
 	float damagedInterval = 0.4f;
 	float damagedTimer = 0.f;
 
-	float shotTimer = 0.f;
-	bool isFiring = false;
+	//float shotTimer = 0.f;
+	//bool isFiring = false;
 
 
-	int damage = 34;
-	int maxAmmo = 26;
-	int ammo = maxAmmo;
-	int totalAmmo = ammo;
+	//int damage = 34;
+	//int maxAmmo = 26;
+	//int ammo = maxAmmo;
+	//int totalAmmo = ammo;
 
 	TileMap* tileMap;
 	UIHUD* hud;
+	Gun* gun = nullptr;
 	std::string textureId = "graphics/player.png";
 
 public:
@@ -48,8 +50,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void Shot();
-	void ReLoad();
 	void onDie();
 	void onItem(Item2* item);
 	void onDamage(int damage);

@@ -155,6 +155,7 @@
     <ClCompile Include="GameObjects\UI\HealthBar.cpp" />
     <ClCompile Include="GameObjects\Item2.cpp" />
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -197,6 +198,7 @@
     <ClInclude Include="GameObjects\UI\HealthBar.h" />
     <ClInclude Include="GameObjects\Item2.h" />
     <ClInclude Include="GameObjects\ItemSpawner.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
