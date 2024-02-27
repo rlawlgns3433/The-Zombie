@@ -45,6 +45,7 @@ void Player::Reset()
 void Player::Update(float dt)
 {
 	SpriteGo::Update(dt);
+	damagedTimer += dt;
 
 	//캐릭터 회전
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
