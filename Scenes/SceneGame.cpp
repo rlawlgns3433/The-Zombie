@@ -7,8 +7,8 @@
 #include "ItemSpawner.h"
 #include "Bullet.h"
 #include "Crosshair.h"
-#include "DebugString.h"
 #include "UIHUD.h"
+#include "UIDebug.h"
 
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
@@ -19,15 +19,17 @@ void SceneGame::Init()
 {
 	Release();
 
+	//Debug
+	debugZombieCount = UI_DEBUG.AddText(new sf::Text);
+
 	//UI
 	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
 	AddGo(new DebugString(), Scene::Ui);
-
-	//¹è°æ
+	//ï¿½ï¿½ï¿½
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
 
-	//Á»ºñ ½ºÆ÷³Ê
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	spawners.push_back(new ZombieSpawner());
 	spawners.push_back(new ItemSpawner());
 	for (auto s : spawners)
@@ -43,13 +45,13 @@ void SceneGame::Init()
 		AddGo(s);
 	}
 
-	//ÇÃ·¹ÀÌ¾î
+	//ï¿½Ã·ï¿½ï¿½Ì¾ï¿½
 	player = new Player("Player");
 	AddGo(player);
 
 	Scene::Init();
 
-	//¿þÀÌºê
+	//ï¿½ï¿½ï¿½Ìºï¿½
 	wave = 0;
 	zombieCount = 1;
 
@@ -120,7 +122,7 @@ void SceneGame::Update(float dt)
 		/////////////////////////////////////////////////////////////////////////////PLAY
 	case SceneGame::Status::PLAY:
 		Scene::Update(dt);
-		//Ãß°¡
+		//ï¿½ß°ï¿½
 		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		{
 			for (auto s : spawners)
@@ -129,7 +131,7 @@ void SceneGame::Update(float dt)
 					s->Spawn(1);
 			}
 		}
-		//ÀüºÎ Á¦°Å
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (InputMgr::GetKeyDown(sf::Keyboard::Delete))
 		{
 			while (zombieObjects.size() > 0)
@@ -140,7 +142,7 @@ void SceneGame::Update(float dt)
 				delete temp;
 			}
 		}
-		//ÇÏ³ª¾¿ ·£´ýÇÏ°Ô Á¦°Å
+		//ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (InputMgr::GetKey(sf::Keyboard::BackSpace))
 		{
 			size_t siz = zombieObjects.size();
@@ -188,14 +190,14 @@ void SceneGame::LateUpdate(float dt)
 	case SceneGame::Status::PLAY:
 		Scene::LateUpdate(dt);
 
-		//¿ÀºêÁ§Æ® »èÁ¦ (delete)
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ (delete)
 		while (deleteDeque.size() > 0)
 		{
-			//ÇÊ¿äÇÑ Á¤º¸¸¦ ¹Ì¸® °¡Á®¿Â´Ù.
+			//ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½.
 			GameObject* temp = deleteDeque.front();
 			int tag = temp->GetTag();
 
-			//»èÁ¦ ½ÃÀÛ
+			//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			RemoveGo(temp);
 			deleteDeque.pop_front();
 			if (tag == 0)
@@ -244,6 +246,12 @@ void SceneGame::FixedUpdate(float dt)
 	//worldView.setCenter(Utils::Lerp(worldView.getCenter(), player->GetPosition(), dt));
 	if (Utils::Distance(player->GetPosition(), worldView.getCenter()) <= 1.f && InputMgr::GetAxis(Axis::Horizontal) == 0.f && InputMgr::GetAxis(Axis::Vertical) == 0.f)
 		worldView.setCenter(player->GetPosition());
+}
+
+void SceneGame::DebugUpdate(float dt)
+{
+	Scene::DebugUpdate(dt);
+	debugZombieCount->setString("zombies: "+std::to_string(zombieObjects.size()));
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

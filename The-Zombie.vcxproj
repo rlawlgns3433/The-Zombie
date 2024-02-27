@@ -138,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
-    <ClCompile Include="GameObjects\UI\DebugString.cpp" />
+    <ClCompile Include="GameObjects\UI\UIDebug.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectBlood.cpp" />
     <ClCompile Include="GameObjects\UI\Crosshair.cpp" />
     <ClCompile Include="GameObjects\Bullet.cpp" />
@@ -183,7 +183,7 @@
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
-    <ClInclude Include="GameObjects\UI\DebugString.h" />
+    <ClInclude Include="GameObjects\UI\UIDebug.h" />
     <ClInclude Include="GameObjects\Effect\EffectBlood.h" />
     <ClInclude Include="GameObjects\UI\Crosshair.h" />
     <ClInclude Include="GameObjects\Bullet.h" />

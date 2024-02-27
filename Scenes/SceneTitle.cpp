@@ -30,6 +30,19 @@ void SceneTitle::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::SceneGame);
 	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		if (uiLevelUp->GetActive())
+		{
+			uiLevelUp->SetActive(false);
+		}
+		else
+		{
+			uiLevelUp->SetActive(true);
+		}
+	}
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::S))
 	{
 		DT_STRING->Load(Languages::English);

@@ -44,6 +44,7 @@ public:
 	}
 
 	virtual void SetActive(bool active) { this->active = active; }
+	virtual bool GetActive() {return active;}
 
 	virtual void SetOrigin(Origins preset);
 	virtual inline void SetOrigin(const sf::Vector2f& newOrigin)
@@ -65,7 +66,9 @@ public:
 	virtual void Update(float dt);
 	virtual void LateUpdate(float dt);
 	virtual void FixedUpdate(float dt);
+	virtual void DebugUpdate(float dt);
 	virtual void Draw(sf::RenderWindow& window);
+	virtual void DebugDraw(sf::RenderWindow& window);
 
 	bool GetActive() const { return active; }
 

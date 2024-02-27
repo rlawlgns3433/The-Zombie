@@ -12,10 +12,24 @@ void TextGo::SetString(const std::string& str)
 	SetOrigin(originPreset);
 }
 
+void TextGo::SetString(const std::wstring& str)
+{
+	text.setString(str);
+	SetOrigin(originPreset);
+}
+
 void TextGo::Set(const sf::Font& texture,
 	const std::string& str,
 	int size, 
 	const sf::Color& color)
+{
+	SetFont(texture);
+	text.setString(str);
+	text.setCharacterSize(size);
+	text.setFillColor(color);
+}
+
+void TextGo::Set(const sf::Font& texture, const std::wstring& str, int size, const sf::Color& color)
 {
 	SetFont(texture);
 	text.setString(str);

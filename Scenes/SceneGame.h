@@ -37,6 +37,8 @@ protected:
 	void BulletCollision(float dt);
 	sf::Vector2f GetBoundaryCenter();
 
+	sf::Text* debugZombieCount = nullptr;
+
 public:
 	//sf::Vector2f ClampByTileMap(const sf::Vector2f& point);
 	std::list<Zombie*> zombieObjects;
@@ -57,6 +59,7 @@ public:
 	void Update(float dt) override;
 	void LateUpdate(float dt) override;
 	void FixedUpdate(float dt) override;
+	void DebugUpdate(float dt) override;
 
 	void Draw(sf::RenderWindow& window) override;
 

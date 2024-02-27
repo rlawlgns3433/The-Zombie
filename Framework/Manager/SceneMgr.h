@@ -9,7 +9,6 @@ enum class SceneIds
 	SceneTitle,
 	SceneGame,
 	
-	
 	Count
 };
 
@@ -39,7 +38,9 @@ public:
 	void Update(float dt);
 	void LateUpdate(float dt);
 	void FixedUpdate(float dt);
+	void DebugUpdate(float dt);
 	void Draw(sf::RenderWindow& window);
+	void DebugDraw(sf::RenderWindow& window);
 
 	SceneMgr(const SceneMgr&) = delete;
 	SceneMgr(SceneMgr&&) = delete;
