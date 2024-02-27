@@ -18,7 +18,7 @@ protected:
 		PLAY,
 		PAUSE,
 	};
-	Status status = Status::PAUSE;
+	Status status = Status::PLAY;
 
 	Player* player;
 	UIHUD* hud;
@@ -51,6 +51,7 @@ public:
 
 	void Init() override;
 	void Release() override;
+	void Reset() override;
 
 
 	void Enter() override;

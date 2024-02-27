@@ -59,7 +59,7 @@ void Scene::Release()
 	uiObjects.clear();
 }
 
-void Scene::Enter()
+void Scene::Reset()
 {
 	for (auto obj : gameObjects)
 	{
@@ -69,6 +69,11 @@ void Scene::Enter()
 	{
 		obj->Reset();
 	}
+}
+
+void Scene::Enter()
+{
+
 }
 
 void Scene::Exit()
