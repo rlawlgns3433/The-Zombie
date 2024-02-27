@@ -138,6 +138,13 @@ bool Player::AddExp(int value)
 	return false;
 }
 
+void Player::AddMaxHp(int value)
+{
+	maxHp += value;
+	hp += value;
+	hud->SetHp(hp, maxHp);
+}
+
 
 void Player::Shot()
 {

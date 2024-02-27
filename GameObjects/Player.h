@@ -56,7 +56,7 @@ public:
 
 	//레벨업 하면 true 반환
 	bool AddExp(int value);
-	inline void AddMaxHp(int value) { maxHp += value; }
+	inline void AddMaxHp(int value);
 	inline void AddSpeed(float value) { speed += value; }
 
 	inline int GetLevel() const { return level; }
