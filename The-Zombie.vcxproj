@@ -175,6 +175,7 @@
     <ClCompile Include="Framework\Manager\SoundMgr.cpp" />
     <ClCompile Include="DataTable\StringTable.cpp" />
     <ClCompile Include="DataTable\ZombieTable.cpp" />
+    <ClCompile Include="GameObjects\UI\UILevelUp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTable\DataTable.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Framework\Manager\SoundMgr.h" />
     <ClInclude Include="DataTable\StringTable.h" />
     <ClInclude Include="DataTable\ZombieTable.h" />
+    <ClInclude Include="GameObjects\UI\UILevelUp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

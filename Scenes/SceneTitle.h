@@ -1,10 +1,11 @@
 #pragma once
 #include "Scene.h"
-class SceneTitle :
-    public Scene
+#include "UILevelUp.h"
+
+class SceneTitle : public Scene
 {
 protected:
-
+	UILevelUp* uiLevelUp;
 public:
 	SceneTitle(SceneIds id);
 	~SceneTitle() override = default;

@@ -15,6 +15,11 @@ SceneTitle::SceneTitle(SceneIds id)
 void SceneTitle::Init()
 {
 	Scene::Init();
+
+	uiLevelUp = new UILevelUp("UILevelUp");
+	uiLevelUp->Init();
+
+	AddGo(uiLevelUp, Scene::Ui);
 }
 
 void SceneTitle::Update(float dt)
