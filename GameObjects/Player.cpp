@@ -125,6 +125,19 @@ void Player::onDamage(int damage)
 	}
 }
 
+bool Player::AddExp(int value)
+{
+	currentExp += value;
+	if (currentExp >= maxExp)
+	{
+		currentExp -= maxExp;
+		maxExp *= 1.05; //절삭되는거 일단 신경 안쓰겠습니다.
+		level++;
+		return true;
+	}
+	return false;
+}
+
 
 void Player::Shot()
 {
