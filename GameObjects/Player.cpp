@@ -8,6 +8,8 @@
 #include "Crosshair.h"
 #include "Gun.h"
 #include "PlayerTable.h"
+#include "FlameThrower.h"
+#include "Weapon.h"
 
 Player::Player(const std::string& name) : SpriteGo(name)
 {
@@ -31,15 +33,16 @@ void Player::Init()
 	SetOrigin(Origins::MC);
 
 	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
-	gun = new Gun(this,"Gun");
-	gun->Init();
-	gun->Reset();
-	dynamic_cast<SceneGame*>(scene)->AddGo(gun);
+	weapon = new Gun(this); // Typeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½ ï¿½Ê¿ï¿½
+	weapon->Init();
+	weapon->Reset();
 }
 
 void Player::Release()
 {
-	SpriteGo::Init();
+	SpriteGo::Release();
+	weapon->Release();
+	delete weapon;
 }
 
 void Player::Reset()
@@ -56,6 +59,8 @@ void Player::Reset()
 void Player::Update(float dt)
 {
 	SpriteGo::Update(dt);
+	weapon->Update(dt);
+
 	damagedTimer += dt;
 
 	//Ä³ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½	
@@ -123,7 +128,7 @@ bool Player::AddExp(int value)
 	if (currentExp >= maxExp)
 	{
 		currentExp -= maxExp;
-		maxExp *= 1.05; // Àý»èµÇ´Â °Å ÀÏ´Ü ½Å°æ ¾È¾²°Ú½À´Ï´Ù.
+		maxExp *= 1.05; // ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Å°ï¿½ ï¿½È¾ï¿½ï¿½Ú½ï¿½ï¿½Ï´ï¿½.
 		level++;
 		return true;
 	}
@@ -150,8 +155,8 @@ void Player::onItem(Item2* item)
 	switch (item->GetType())
 	{
 	case Item2::Types::AMMO:
-		gun->AddTotalAmmo(item->GetValue());
-		hud->SetAmmo(gun->GetAmmo(), gun->GetTotalAmmo());
+		weapon->AddTotalAmmo(item->GetValue());
+		hud->SetAmmo(weapon->GetAmmo(), weapon->GetTotalAmmo());
 		break;
 	case Item2::Types::HEALTH:
 		hp = std::min(hp+item->GetValue(),maxHp);

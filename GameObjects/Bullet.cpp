@@ -8,8 +8,7 @@ Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
 	:Projectile(name), speed(3000)
 {
 	damage = 34;
-	sortLayer = 4;
-	tag = 1;
+
 	shape.setSize({ 3.f, 3.f });
 	shape.setFillColor(sf::Color::Yellow);
 	Utils::SetOrigin(shape, Origins::MR);
@@ -27,17 +26,17 @@ Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
 
 void Bullet::Init()
 {
-	GameObject::Init();
+	Projectile::Init();
 }
 
 void Bullet::Release()
 {
-	GameObject::Release();
+	Projectile::Release();
 }
 
 void Bullet::Reset()
 {
-	GameObject::Reset();
+	Projectile::Reset();
 }
 
 void Bullet::Update(float dt)
@@ -46,7 +45,7 @@ void Bullet::Update(float dt)
 
 	prePos = position;
 
-	GameObject::Update(dt);
+	Projectile::Update(dt);
 	Translate(direction * speed * dt);
 
 	//충돌 검사
@@ -86,20 +85,12 @@ void Bullet::Update(float dt)
 
 void Bullet::Draw(sf::RenderWindow& window)
 {
-	GameObject::Draw(window);
+	Projectile::Draw(window);
 	window.draw(shape);
 	if (isHit)
 	{
 		active = false;
 		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
-	}
-}
-
-void Bullet::Hit()
-{
-	if (!isHit)
-	{
-		isHit = true;
 	}
 }
 

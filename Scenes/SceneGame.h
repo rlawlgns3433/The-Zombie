@@ -4,10 +4,12 @@
 
 class Player;
 class Bullet;
+class Flame;
 class TileMap;
 class Spawner;
 class UIHUD;
 class Crosshair;
+class Projectile;
 
 class SceneGame : public Scene
 {
@@ -43,7 +45,7 @@ protected:
 public:
 	//sf::Vector2f ClampByTileMap(const sf::Vector2f& point);
 	std::list<Zombie*> zombieObjects;
-	std::list<Bullet*> bullets;
+	std::list<Projectile*> bullets;
 
 	SceneGame(SceneIds id);
 	~SceneGame() override = default;
@@ -67,7 +69,6 @@ public:
 
 	inline Player* GetPlayer() { return player; }
 	inline const std::pair<sf::Vector2f, sf::Vector2f>& GetBoundary() const { return boundary; }
-
 
 	//Wave
 	void ChangeWave(int w);

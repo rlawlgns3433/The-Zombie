@@ -9,6 +9,8 @@
 #include "Crosshair.h"
 #include "UIHUD.h"
 #include "UIDebug.h"
+#include "Flame.h"
+#include "Projectile.h"
 
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
@@ -208,7 +210,7 @@ void SceneGame::LateUpdate(float dt)
 		Scene::LateUpdate(dt);
 
 		//������Ʈ ���� (delete)
-		while (deleteDeque.size() > 0)
+		while (!deleteDeque.empty())
 		{
 			//�ʿ��� ������ �̸� �����´�.
 			GameObject* temp = deleteDeque.front();
@@ -220,8 +222,8 @@ void SceneGame::LateUpdate(float dt)
 			if (tag == 0)
 				zombieObjects.remove(dynamic_cast<Zombie*>(temp));
 			else if (tag == 1)
-				bullets.remove(dynamic_cast<Bullet*>(temp));
-			delete temp;
+				bullets.remove(dynamic_cast<Projectile*>(temp));
+			delete temp;	// CHECK 문제 소지 있음
 		}
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_LATE

@@ -21,11 +21,17 @@ protected:
 	Weapon& operator=(Weapon&&) = delete;
 
 	Player* player = nullptr;
-
 	Types type;
+
+	float shotInterval = 0.05f;
+	float shotTimer = 0.f;
 
 	float attackInterval = 1.f;
 	int damage = 0;
+
+	int maxAmmo = 26;
+	int ammo = maxAmmo;
+	int totalAmmo = ammo;
 
 public:
 	Weapon(const std::string& name = "");
@@ -40,4 +46,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	virtual void Attack() = 0;
+	void AddTotalAmmo(int add) { totalAmmo += add; }
+	int GetAmmo() const { return this->ammo; }
+	int GetTotalAmmo() const { return this->totalAmmo; }
 };

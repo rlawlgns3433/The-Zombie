@@ -19,6 +19,7 @@ void Gun::Init()
 void Gun::Release()
 {
 	Weapon::Release();
+	type = Types::Cloased;
 }
 
 void Gun::Reset()
@@ -37,24 +38,6 @@ void Gun::Reset()
 void Gun::Update(float dt)
 {
 	Weapon::Update(dt);
-	shotTimer += dt;
-
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-		if (shotTimer >= shotInterval)
-		{
-			shotTimer = 0.f;
-			Attack();
-		}
-	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Right))
-	{
-		if (shotTimer >= shotInterval)
-		{
-			shotTimer = 0.f;
-			Attack();
-		}
-	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
@@ -89,10 +72,9 @@ void Gun::Attack()
 		Bullet* b = Bullet::Create(player);
 		b->Init();
 		b->Reset();
-		SCENE_MGR.GetCurrentScene()->AddGo(b);
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->bullets.push_back(b);
+		scene->AddGo(b);
+		dynamic_cast<SceneGame*>(scene)->bullets.push_back(b);
 
-		//dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionShot();
 		SOUND_MGR.PlaySfx("sound/shoot.wav");
 	}
 	else
@@ -103,7 +85,7 @@ void Gun::Attack()
 
 void Gun::Reload()
 {
-	shotTimer = -0.5f;
+	shotTimer = -0.05f;
 	int needAmmo = maxAmmo - ammo;
 	if (totalAmmo >= needAmmo)
 	{
@@ -111,7 +93,6 @@ void Gun::Reload()
 		totalAmmo -= needAmmo;
 		hud->SetAmmo(ammo, totalAmmo);
 		SOUND_MGR.PlaySfx("sound/reload.wav");
-		//dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
 	}
 	else if (totalAmmo == 0)
 	{
@@ -123,12 +104,5 @@ void Gun::Reload()
 		totalAmmo = 0;
 		hud->SetAmmo(ammo, totalAmmo);
 		SOUND_MGR.PlaySfx("sound/reload.wav");
-		//dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
 	}
-}
-
-void Gun::AddTotalAmmo(int add)
-{
-	//hud->SetAmmo(ammo, totalAmmo);
-	totalAmmo += add;
 }

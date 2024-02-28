@@ -26,6 +26,25 @@ void Weapon::Reset()
 void Weapon::Update(float dt)
 {
 	GameObject::Update(dt);
+
+	shotTimer += dt;
+
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		if (shotTimer >= shotInterval)
+		{
+			shotTimer = 0.f;
+			Attack();
+		}
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Right))
+	{
+		if (shotTimer >= shotInterval)
+		{
+			shotTimer = 0.f;
+			Attack();
+		}
+	}
 }
 
 void Weapon::LateUpdate(float dt)

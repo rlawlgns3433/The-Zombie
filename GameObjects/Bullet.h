@@ -11,7 +11,7 @@ protected:
     float isStuckInWall = false;
 
 public:
-    bool isHit = false;
+
     sf::Vector2f prePos;
     sf::RectangleShape shape;
 
@@ -25,11 +25,9 @@ public:
     void Update(float dt) override;
     void Draw(sf::RenderWindow& window) override;
     
-    void Hit();
 
     static Bullet* Create(Player* player);
 
-    // Projectile을(를) 통해 상속됨
     bool CheckCollision(Zombie* zombie) override;
 };
 
