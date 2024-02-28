@@ -94,14 +94,6 @@ void Bullet::Draw(sf::RenderWindow& window)
 	}
 }
 
-void Bullet::Hit()
-{
-	if (!isHit)
-	{
-		isHit = true;
-	}
-}
-
 Bullet* Bullet::Create(Player* player)
 {
 	Bullet* bullet = new Bullet(player->GetPosition());

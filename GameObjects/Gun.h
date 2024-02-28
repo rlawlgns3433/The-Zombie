@@ -13,13 +13,6 @@ protected:
 
 	UIHUD* hud = nullptr;
 
-	int maxAmmo = 26;
-	int ammo = maxAmmo;
-	int totalAmmo = ammo;
-
-	float shotInterval = 0.05f;
-
-	float shotTimer = 0.f;
 	bool isFiring = false;
 
 public :
@@ -36,9 +29,5 @@ public :
 
 	void Attack() override;
 	void Reload();
-
-	void AddTotalAmmo(int add);
-	int GetAmmo() const { return this->ammo; }
-	int GetTotalAmmo() const { return this->totalAmmo; }
 };
 

@@ -14,6 +14,8 @@ protected:
 	int damage;
 
 public:
+	bool isHit = false;
+
 	Projectile(const std::string& name = "");
 	~Projectile() override = default;
 
@@ -26,6 +28,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	int GetDamage() const { return damage; }
+	void Hit();
 
 	virtual bool CheckCollision(Zombie* zombie) = 0;
 };

@@ -17,12 +17,12 @@ protected:
 	int ammo = maxAmmo;
 	int totalAmmo = ammo;
 
-	float shotInterval = 0.1f;
+	float shotInterval = 0.5f;
 	float shotTimer = 0.f;
 	bool isFiring = false;
 
 public:
-	FlameThrower(const std::string& name = "");
+	FlameThrower(Player* player, const std::string& name = "FlameThrower");
 	~FlameThrower() override = default;
 
 	void Init() override;
@@ -36,4 +36,3 @@ public:
 	void Attack() override;
 	void Reload();
 };
-

@@ -35,3 +35,11 @@ void Projectile::FixedUpdate(float dt)
 void Projectile::Draw(sf::RenderWindow& window)
 {
 }
+
+void Projectile::Hit()
+{
+	if (!isHit)
+	{
+		isHit = true;
+	}
+}

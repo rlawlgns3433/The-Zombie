@@ -7,7 +7,8 @@ class Flame : public Projectile
 {
 protected :
 	float attackAngle;
-    float attackRadius = 100;
+    float attackRadius = 300;
+    sf::RectangleShape shape;
     Player* player = nullptr;
 
 public :

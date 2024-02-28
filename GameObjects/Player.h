@@ -5,6 +5,8 @@ class TileMap;
 class Item2;
 class UIHUD;
 class Gun;
+class FlameThrower;
+class Weapon;
 
 class Player : public SpriteGo
 {
@@ -37,7 +39,7 @@ protected:
 
 	TileMap* tileMap;
 	UIHUD* hud;
-	Gun* gun = nullptr;
+	Weapon* weapon = nullptr;
 	std::string textureId = "graphics/player.png";
 
 public:
@@ -67,6 +69,6 @@ public:
 	inline float GetSpeed() const { return speed; }
 	inline sf::Vector2f GetLook() const { return look; }
 
-	Gun* GetGun() { return gun; }
+	Weapon* GetWeapon() { return weapon; }
 };
 
