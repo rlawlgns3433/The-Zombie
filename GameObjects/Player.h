@@ -20,18 +20,8 @@ protected:
 	int hp = 100;
 	float speed = 300.f;
 
-	//float shotInterval = 0.05f;
 	float damagedInterval = 0.4f;
 	float damagedTimer = 0.f;
-
-	//float shotTimer = 0.f;
-	//bool isFiring = false;
-
-
-	//int damage = 34;
-	//int maxAmmo = 26;
-	//int ammo = maxAmmo;
-	//int totalAmmo = ammo;
 
 	TileMap* tileMap;
 	UIHUD* hud;
