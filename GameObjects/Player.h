@@ -15,8 +15,7 @@ public:
 	{
 		MAN,
 		FIREBAT,
-
-
+		READDEATH,
 
 		COUNT
 	};

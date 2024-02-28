@@ -11,7 +11,7 @@ public:
 	{
 		Cloased,	// 근점
 		Ranged,		// 원기리
-	};
+	};                                                                                                                             
 	static const int totalTypes = 2;
 
 protected:
