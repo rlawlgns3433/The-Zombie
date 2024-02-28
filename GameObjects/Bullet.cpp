@@ -3,8 +3,9 @@
 #include "Player.h"
 #include "SceneGame.h"
 
+
 Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
-	:GameObject(name), speed(3000), damage(34)
+	:Projectile(name), speed(3000), damage(34)
 {
 	sortLayer = 4;
 	tag = 1;
@@ -106,4 +107,9 @@ Bullet* Bullet::Create(Player* player)
 	Bullet* bullet = new Bullet(player->GetPosition());
 	bullet->Init();
 	return bullet;
+}
+
+bool Bullet::CheckCollision(Zombie* zombie)
+{
+	return Utils::IsCollideWithLineSegment(zombie->GetPosition(), GetPosition(), prePos, zombie->GetGlobalBounds().width / 3.f);
 }

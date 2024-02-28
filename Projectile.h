@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Zombie.h"
+
 class Projectile : public GameObject
 {
 protected:
@@ -22,6 +24,5 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	virtual void CheckCollision() = 0;
+	virtual bool CheckCollision(Zombie* zombie) = 0;
 };
-
