@@ -8,6 +8,7 @@ enum class TYPE
 	HP = 1,
 	MOVE_SPEED = 2,
 	ATTACK_DAMAGE = 3,
+	EXP = 4,
 };
 
 struct DataLevelUp 
