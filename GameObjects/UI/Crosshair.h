@@ -19,7 +19,7 @@ public:
 	float motionSpeed = 2.f;
 
 	void MotionUpdate(float dt);
-	void MotionReload();
+	void MotionReload(float reloadSpeed);
 	void MotionShot();
 
 	sf::Vector2f GetPosition() const { return position; }

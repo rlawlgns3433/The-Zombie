@@ -3,6 +3,7 @@
 #include "UIHUD.h"
 #include "Bullet.h"
 #include "SceneGame.h"
+#include "Crosshair.h"
 
 Gun::Gun(Player* player, const std::string& name)
 	: Weapon(name)
@@ -85,6 +86,7 @@ void Gun::Attack()
 void Gun::Reload()
 {
 	shotTimer = -0.05f;
+	FRAMEWORK.GetMouse()->MotionReload(reloadSpeed);
 	int needAmmo = maxAmmo - ammo;
 	if (totalAmmo >= needAmmo)
 	{

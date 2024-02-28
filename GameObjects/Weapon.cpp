@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "UIHUD.h"
+#include "Crosshair.h"
 
 Weapon::Weapon(const std::string& name)
 	: GameObject(name)
@@ -39,6 +40,7 @@ void Weapon::Update(float dt)
 		{
 			shotTimer = 0.f;
 			Attack();
+			FRAMEWORK.GetMouse()->MotionShot();
 		}
 	}
 	if (InputMgr::GetMouseButton(sf::Mouse::Right))
@@ -47,6 +49,7 @@ void Weapon::Update(float dt)
 		{
 			shotTimer = 0.f;
 			Attack();
+			FRAMEWORK.GetMouse()->MotionShot();
 		}
 	}
 }
