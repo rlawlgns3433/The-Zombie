@@ -7,7 +7,11 @@ class UIHUD;
 class Gun;
 class FlameThrower;
 class Weapon;
+
 struct DataLevelUp;
+
+class Sword;
+
 
 class Player : public SpriteGo
 {
@@ -17,7 +21,6 @@ public:
 		MAN,
 		FIREBAT,
 		READDEATH,
-
 		COUNT
 	};
 protected:
@@ -25,7 +28,7 @@ protected:
 	sf::Vector2f look = { 1.f, 0.f };
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
 
-	TYPES type = TYPES::FIREBAT;
+	TYPES type = TYPES::MAN;
 
 	int level = 1;
 	int maxExp = 20;
