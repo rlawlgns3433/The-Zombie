@@ -2,6 +2,7 @@
 #include "Weapon.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "UIHUD.h"
 
 Weapon::Weapon(const std::string& name)
 	: GameObject(name)
@@ -21,6 +22,8 @@ void Weapon::Release()
 void Weapon::Reset()
 {
 	GameObject::Reset();
+	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
+	hud->SetAmmo(ammo, totalAmmo);
 }
 
 void Weapon::Update(float dt)
@@ -60,4 +63,23 @@ void Weapon::FixedUpdate(float dt)
 void Weapon::Draw(sf::RenderWindow& window)
 {
 	GameObject::Draw(window);
+}
+
+
+void  Weapon::AddMaxAmmo(int value)
+{
+	maxAmmo = std::max(1, maxAmmo + value);
+	hud->SetAmmo(ammo, totalAmmo);
+}
+void  Weapon::AddShotInterval(float value)
+{
+	shotInterval = std::max(0.01f, shotInterval + value);
+}
+void  Weapon::AddDamage(int value)
+{
+	damage = std::max(1, damage + value);
+}
+void  Weapon::AddReloadSpeed(float value)
+{
+	reloadSpeed = std::max(0.f, reloadSpeed + value);
 }

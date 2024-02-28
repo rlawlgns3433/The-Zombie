@@ -3,6 +3,7 @@
 
 class Player;
 class SceneGame;
+class UIHUD;
 
 class Weapon : public GameObject
 {
@@ -21,12 +22,13 @@ protected:
 	Weapon& operator=(Weapon&&) = delete;
 
 	Player* player = nullptr;
+	UIHUD* hud = nullptr;
 	Types type;
 
 	float shotInterval = 0.05f;
 	float shotTimer = 0.f;
+	float reloadSpeed = 1.f;
 
-	float attackInterval = 1.f;
 	int damage = 0;
 
 	int maxAmmo = 26;
@@ -44,6 +46,11 @@ public:
 	void LateUpdate(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void AddMaxAmmo(int value);
+	void AddShotInterval(float value);
+	void AddDamage(int value);
+	void AddReloadSpeed(float value);
 
 	virtual void Attack() = 0;
 	void AddTotalAmmo(int add) { totalAmmo += add; }

@@ -28,9 +28,17 @@ bool LevelUpTable::Load()
 		table[i].name = CP949ToWString(row[1]);
 		table[i].desc = CP949ToWString(row[2]);
 		table[i].textureId = row[3];
-		table[i].type = (TYPE)std::stoi(row[4]);
-		table[i].value = std::stof(row[5]);
-		table[i].weight = std::stoi(row[6]);
+
+		table[i].weight = std::stoi(row[4]);
+
+		table[i].maxHp = std::stoi(row[5]);
+		table[i].speed = std::stof(row[6]);
+		table[i].xExp = std::stof(row[7]);
+		table[i].damage = std::stoi(row[8]);
+		table[i].shotInterval = std::stof(row[9]);
+		table[i].reloadInterval = std::stof(row[10]);
+		table[i].maxAmmo = std::stoi(row[11]);
+
 	}
 
 	return true;

@@ -1,8 +1,27 @@
 #pragma once
 #include "DataTable.h"
-#include <Zombie.h>
+#include "Zombie.h"
 
-struct DataLevelUp;
+
+struct DataLevelUp
+{
+	int id;
+
+	std::wstring name;
+	std::wstring desc;
+	std::string textureId;
+
+	int weight;
+
+	int maxHp;
+	float speed;
+	float xExp; //경험치 배율
+	int damage;
+	float shotInterval;
+	float reloadInterval;
+	int maxAmmo;
+};
+
 
 class LevelUpTable : public DataTable
 {
@@ -10,15 +29,6 @@ protected:
 	std::unordered_map<int, DataLevelUp> table;
 
 public:
-	enum class TYPE
-{
-	NONE,
-	HP = 1,
-	MOVE_SPEED = 2,
-	ATTACK_DAMAGE = 3,
-	EXP = 4,
-
-};
 
 	LevelUpTable(DataTable::Types t);
 	~LevelUpTable() override;
@@ -31,18 +41,3 @@ public:
 	std::wstring CP949ToWString(const std::string& str);
 	
 };
-
-struct DataLevelUp
-{
-	int id;
-
-	std::wstring name;
-	std::wstring desc;
-	std::string textureId;
-
-	LevelUpTable::TYPE type;
-
-	float value;
-	int weight;
-};
-
