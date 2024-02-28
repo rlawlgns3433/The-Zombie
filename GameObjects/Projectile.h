@@ -11,7 +11,7 @@ protected:
 	Projectile& operator=(Projectile&&) = delete;
 
 	sf::Vector2f direction;
-	int damage;
+	int damage = 1;
 
 public:
 	bool isHit = false;

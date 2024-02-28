@@ -38,8 +38,5 @@ void Projectile::Draw(sf::RenderWindow& window)
 
 void Projectile::Hit()
 {
-	if (!isHit)
-	{
-		isHit = true;
-	}
+	isHit = true;
 }

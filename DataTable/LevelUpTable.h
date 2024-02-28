@@ -22,6 +22,7 @@ struct DataLevelUp
 	float reloadInterval;
 	int maxAmmo;
 	int weaponUp;
+	int projectile;
 };
 
 

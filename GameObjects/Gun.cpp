@@ -31,7 +31,8 @@ void Gun::Reset()
 	totalAmmo = ammo;
 
 	damage = 34;
-	shotInterval = 0.05f;
+	shotInterval = 0.2f;
+	reloadSpeed = 1.f;
 }
 
 void Gun::Update(float dt)
@@ -68,11 +69,8 @@ void Gun::Attack()
 		ammo--;
 		hud->SetAmmo(ammo, totalAmmo);
 
-		Bullet* b = Bullet::Create(player);
-		b->Init();
-		b->Reset();
-		scene->AddGo(b);
-		dynamic_cast<SceneGame*>(scene)->bullets.push_back(b);
+		Bullet::Create(scene);
+
 
 		SOUND_MGR.PlaySfx("sound/shoot.wav");
 	}
@@ -84,7 +82,7 @@ void Gun::Attack()
 
 void Gun::Reload()
 {
-	shotTimer = -0.05f;
+	shotTimer = -reloadSpeed;
 	int needAmmo = maxAmmo - ammo;
 	if (totalAmmo >= needAmmo)
 	{

@@ -75,7 +75,7 @@ void Player::Reset()
 	hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
 
 	hud->SetHp(hp, maxHp);
-	hud->SetExp(currentExp, maxExp);
+	hud->SetExp(currentExp, maxExp, level);
 }
 
 void Player::Update(float dt)
@@ -91,12 +91,11 @@ void Player::Update(float dt)
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 
 	//sf::Vector2f mouseWorldPos = InputMgr::GetMousePos() + SCENE_MGR.GetCurrentScene()->GetViewCenter() - sf::Vector2f(FRAMEWORK.GetWindow().getSize()) * 0.5f;
-	float lookAngle = Utils::Angle(mouseWorldPos - GetPosition());
-	Utils::Rotate(look, lookAngle);
+	look = Utils::GetNormalize(mouseWorldPos - GetPosition());
 
 	if (type != TYPES::READDEATH)
 	{
-		SetRotation(lookAngle);
+		SetRotation(Utils::Angle(look));
 	}
 
 	//ĳ���� �̵�
@@ -124,11 +123,19 @@ void Player::Update(float dt)
 	SetPosition(tempPos);
 
 
-	//����
+	//Die
 	if (hp == 0)
 	{
-		onDie();
-
+		OnDie();
+	}
+	//LevelUp
+	if (currentExp >= maxExp)
+	{
+		currentExp -= maxExp;
+		maxExp *= 1.3; // roundDown
+		level++;
+		LevelUp();
+		hud->SetExp(currentExp, maxExp, level);
 	}
 
 }
@@ -149,7 +156,7 @@ void Player::DebugDraw(sf::RenderWindow& window)
 	window.draw(bound);
 }
 
-void Player::onDamage(int damage)
+void Player::OnDamage(int damage)
 {
 	if (damagedTimer >= damagedInterval)
 	{
@@ -161,20 +168,10 @@ void Player::onDamage(int damage)
 
 }
 
-bool Player::AddExp(int value)
+void Player::AddExp(int value)
 {
 	currentExp += value * xExp;
-	hud->SetExp(currentExp, maxExp);
-	if (currentExp >= maxExp)
-	{
-		currentExp -= maxExp;
-		maxExp *= 1.3; // roundDown
-		level++;
-		LevelUp();
-		hud->SetExp(currentExp, maxExp);
-		return true;
-	}
-	return false;
+	hud->SetExp(currentExp, maxExp, level);
 }
 
 void Player::AddStat(DataLevelUp data)
@@ -184,16 +181,16 @@ void Player::AddStat(DataLevelUp data)
 	AddHp(data.maxHp);
 	hud->SetHp(hp, maxHp);
 
-	speed += data.speed;
+	speed = std::max(0.f,speed+data.speed);
 
 	xExp += data.xExp;
-	hud->SetExp(currentExp, maxExp);
 
 	weapon->AddDamage(data.damage);
 	weapon->AddShotInterval(data.shotInterval);
 	weapon->AddReloadSpeed(data.reloadInterval);
 	weapon->AddMaxAmmo(data.maxAmmo);
 	weapon->AddLevel(data.weaponUp);
+	weapon->AddProjectile(data.projectile);
 }
 
 void Player::AddHp(int value)
@@ -207,7 +204,7 @@ void Player::LevelUp()
 	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::LEVELUP);
 }
 
-void Player::onDie()
+void Player::OnDie()
 {
 	active = false;
 	SOUND_MGR.PlaySfx("sound/splat.wav");

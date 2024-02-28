@@ -39,7 +39,7 @@ public:
 	static void Rotate(sf::Vector2f& vec, float degree); //회전
 	static float Lerp(float min, float max, float t); //선형보간
 	static sf::Vector2f Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float t); //선형보간
-
+	static std::list<sf::Vector2f> DressInRow(const sf::Vector2f& pos, const sf::Vector2f& vec, int count, float interval); //일렬횡대로 늘리기
 
 	//충돌
 	static void ElasticCollision(float& coord, float border, float cor = 1.f);

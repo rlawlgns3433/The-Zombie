@@ -27,11 +27,12 @@ protected:
 
 	int level = 1;
 
-	float shotInterval = 0.05f;
+	float shotInterval = 1.f;
 	float shotTimer = 0.f;
-	float reloadSpeed = 1.f;
+	float reloadSpeed = 1.f; //time to shot
 
-	int damage = 0;
+	int damage = 1;
+	int projectileCount = 3;
 
 	int maxAmmo = 26;
 	int ammo = maxAmmo;
@@ -49,14 +50,20 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	virtual void Attack() = 0;
+
 	void AddMaxAmmo(int value);
+	void AddTotalAmmo(int add);
 	void AddShotInterval(float value);
 	void AddDamage(int value);
 	void AddReloadSpeed(float value);
+	void AddProjectile(int value);
 	inline void AddLevel(int value) { level += value; }
 
-	virtual void Attack() = 0;
-	void AddTotalAmmo(int add);
-	int GetAmmo() const { return this->ammo; }
-	int GetTotalAmmo() const { return this->totalAmmo; }
+	inline void SetDamage(int value) { damage = value; }
+
+	inline int GetAmmo() const { return ammo; }
+	inline int GetTotalAmmo() const { return totalAmmo; }
+	inline int GetDamage() const { return damage; }
+	inline int GetProjectileCount() const { return projectileCount; }
 };

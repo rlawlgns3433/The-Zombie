@@ -183,7 +183,15 @@ void SceneGame::Update(float dt)
 	case SceneGame::Status::DIE:
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape)|| InputMgr::GetKeyUp(sf::Keyboard::Space)|| InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
+			hud->SetGameOver(false);
 			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
+		}
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
 		}
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_UPDATE
@@ -191,6 +199,7 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
+			hud->SetPause(false);
 			SetStatus(Status::PLAY);
 		}
 
@@ -236,16 +245,23 @@ void SceneGame::LateUpdate(float dt)
 
 			//���� ����
 			RemoveGo(temp);
-			deleteDeque.pop_front();
 			if (tag == 0)
 				zombieObjects.remove(dynamic_cast<Zombie*>(temp));
 			else if (tag == 1)
 				bullets.remove(dynamic_cast<Projectile*>(temp));
-			delete temp;	// CHECK 문제 소지 있음
+			deleteDeque.pop_front();
+			delete temp;	// CHECK 문제 소지 있음 >> 문제 재발생
 		}
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_LATE
 	case SceneGame::Status::DIE:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_LATE
 	case SceneGame::Status::PAUSE:
@@ -287,6 +303,13 @@ void SceneGame::FixedUpdate(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
 	case SceneGame::Status::DIE:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->FixedUpdate(dt);
+			}
+		}
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_FIXED
 	case SceneGame::Status::PAUSE:
@@ -306,11 +329,11 @@ void SceneGame::FixedUpdate(float dt)
 			{
 				obj->FixedUpdate(dt);
 			}
-			if (!uiLevel->GetActive())
-			{
-				player->AddStat(uiLevel->PlayerLevelUp());
-				SetStatus(Status::PLAY);
-			}
+		}
+		if (!uiLevel->GetActive())
+		{
+			SetStatus(Status::PLAY);
+			player->AddStat(uiLevel->PlayerLevelUp());
 		}
 		break;
 	default:
@@ -343,7 +366,6 @@ void SceneGame::SetStatus(Status st)
 	{
 	case SceneGame::Status::PLAY:
 		FRAMEWORK.GetMouse()->isPlaying = true;
-		hud->SetPause(false);
 		break;
 	case SceneGame::Status::PAUSE:
 		FRAMEWORK.GetMouse()->isPlaying = false;
@@ -351,11 +373,10 @@ void SceneGame::SetStatus(Status st)
 		break;
 	case SceneGame::Status::DIE:
 		FRAMEWORK.GetMouse()->isPlaying = false;
-		hud->SetPause(false);
+		hud->SetGameOver(true);
 		break;
 	case SceneGame::Status::LEVELUP:
 		FRAMEWORK.GetMouse()->isPlaying = false;
-		hud->SetPause(false);
 		uiLevel->LevelUp();
 		break;
 	default:

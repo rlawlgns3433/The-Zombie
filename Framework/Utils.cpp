@@ -180,6 +180,48 @@ sf::Vector2f Utils::Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float
 	return v;
 }
 
+std::list<sf::Vector2f> Utils::DressInRow(const sf::Vector2f& pos, const sf::Vector2f& direction, int count, float interval)
+{
+	std::list<sf::Vector2f> list;
+	if (count == 0) { return list; }
+
+	sf::Vector2f left = Utils::GetNormalize(direction);
+	sf::Vector2f right = Utils::GetNormalize(direction);
+	left = { -left.y,left.x };
+	right = { right.y,-right.x };
+
+	sf::Vector2f vecL = pos;
+	sf::Vector2f vecR = pos;
+
+	if (count % 2 == 1)
+	{
+		list.push_back(pos);
+		for (int i = 0; i < count / 2; i++)
+		{
+			vecL += left * interval;
+			vecR += right * interval;
+			list.push_front(vecL);
+			list.push_back(vecR);
+		}
+	}
+	else
+	{
+		vecL += left * (0.5f * interval);
+		vecR += right * (0.5f * interval);
+		list.push_front(vecL);
+		list.push_back(vecR);
+		for (int i = 0; i < count / 2 - 1; i++)
+		{
+			vecL += left * interval;
+			vecR += right * interval;
+			list.push_front(vecL);
+			list.push_back(vecR);
+		}
+	}
+	return list;
+
+}
+
 void Utils::ElasticCollision(float& coord, float border, float cor)
 {
 	coord = border - (coord - border) * cor;
@@ -246,7 +288,3 @@ bool Utils::IsCollideWithLineSegment(const sf::Vector2f& p1, const sf::Vector2f&
 	}
 	return false;
 }
-
-
-
-//선형보관

@@ -113,7 +113,7 @@ void Zombie::FixedUpdate(float dt)
 	SpriteGo::FixedUpdate(dt);
 	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius())
 	{
-		player->onDamage(atkDamage);
+		player->OnDamage(atkDamage);
 		atkTimer = 0.f;
 	}
 }

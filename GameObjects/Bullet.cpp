@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "Weapon.h"
 
 
 Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
@@ -24,7 +25,7 @@ Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
 	prePos = position;
 
 	//Debug
-	bound.rotate(Utils::Angle(direction));
+	bound.setRotation(Utils::Angle(direction));
 	bound.setOutlineColor(sf::Color::Magenta);
 	bound.setOutlineThickness(1.f);
 }
@@ -103,7 +104,7 @@ void Bullet::Draw(sf::RenderWindow& window)
 	if (isHit)
 	{
 		active = false;
-		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
+		scene->DeleteGo(this);
 	}
 }
 
@@ -112,11 +113,38 @@ void Bullet::DebugDraw(sf::RenderWindow& window)
 	window.draw(bound);
 }
 
-Bullet* Bullet::Create(Player* player)
+void Bullet::SetDirection(sf::Vector2f direc)
 {
-	Bullet* bullet = new Bullet(player->GetPosition());
-	bullet->Init();
-	return bullet;
+	direction = direc;
+	bound.setRotation(Utils::Angle(direc));
+	shape.setRotation(Utils::Angle(direc));
+}
+
+void Bullet::Create(Scene* sc)
+{
+	SceneGame* sceneGame = dynamic_cast<SceneGame*>(sc);
+	Player* player = sceneGame->GetPlayer();
+	int count = player->GetWeapon()->GetProjectileCount();
+
+	std::list<Bullet*> bulletList;
+	auto bPos = Utils::DressInRow(player->GetPosition(), player->GetLook(), count, 5.f);
+
+	for (auto& ptr : bPos)
+	{
+		bulletList.push_back(new Bullet(ptr));
+	}
+
+	for (auto ptr : bulletList)
+	{
+		ptr->Init();
+		ptr->Reset();
+		ptr->damage = player->GetWeapon()->GetDamage();
+		ptr->SetDirection(player->GetLook());
+		ptr->scene = sc;
+		sceneGame->AddGo(ptr);
+		sceneGame->bullets.push_back(ptr);
+	}
+
 }
 
 bool Bullet::CheckCollision(Zombie* zombie)

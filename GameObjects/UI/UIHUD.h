@@ -40,6 +40,7 @@ protected:
 	sf::Vector2f resolution = referenceResolution;
 
 	//경험치
+	TextGo textLevel;
 	sf::RectangleShape exp;
 
 	//일시정지
@@ -47,6 +48,10 @@ protected:
 	sf::RectangleShape pauseRect;
 	sf::Color pauseColor;
 	bool isPause = false;
+
+	//일시정지
+	TextGo textOver;
+	bool isGameOver = false;
 
 public:
 	UIHUD(const std::string& name = "UIHUD");
@@ -70,8 +75,10 @@ public:
 	void SetHp(int hp,int max);
 	void SetWave(int w);
 	void SetZombieCount(int count);
-	void SetExp(int ex, int max);
+	void SetExp(int ex, int max, int level);
+
 	void SetPause(bool value);
+	void SetGameOver(bool value);
 
 	void SetResolution(const sf::Vector2f resolution);
 };

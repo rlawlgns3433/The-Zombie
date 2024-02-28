@@ -63,12 +63,12 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 	void DebugDraw(sf::RenderWindow& window) override;
 
-	void onDie();
+	void OnDie();
 	void onItem(Item* item);
-	void onDamage(int damage);
+	void OnDamage(int damage);
 
 	//레벨업 하면 true 반환
-	bool AddExp(int value);
+	void AddExp(int value);
 	void AddStat(DataLevelUp data);
 	void AddHp(int value);
 	void LevelUp();
