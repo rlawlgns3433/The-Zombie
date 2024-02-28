@@ -20,7 +20,7 @@ void SceneGame::Init()
 	Release();
 
 	//UI
-	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
+	//crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
 	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
@@ -96,7 +96,6 @@ void SceneGame::Reset()
 
 void SceneGame::Enter()
 {
-	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 	Scene::Enter();
 	Reset();
 	status = Status::PLAY;
@@ -121,7 +120,6 @@ void SceneGame::Enter()
 void SceneGame::Exit()
 {
 	Scene::Exit();
-	FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 	Init();
 
 }
@@ -185,7 +183,6 @@ void SceneGame::Update(float dt)
 		{
 			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 		}
-		crosshair->Update(dt);
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_UPDATE
 	case SceneGame::Status::PAUSE:
@@ -194,7 +191,6 @@ void SceneGame::Update(float dt)
 		{
 			status = Status::PLAY;
 		}
-		crosshair->Update(dt);
 
 		break;
 
@@ -230,11 +226,9 @@ void SceneGame::LateUpdate(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_LATE
 	case SceneGame::Status::DIE:
-		crosshair->LateUpdate(dt);
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_LATE
 	case SceneGame::Status::PAUSE:
-		crosshair->LateUpdate(dt);
 		break;
 	default:
 		break;
@@ -255,11 +249,9 @@ void SceneGame::FixedUpdate(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
 	case SceneGame::Status::DIE:
-		crosshair->FixedUpdate(dt);
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_FIXED
 	case SceneGame::Status::PAUSE:
-		crosshair->FixedUpdate(dt);
 		break;
 	default:
 		break;

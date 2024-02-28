@@ -7,6 +7,7 @@
 // 3. ...Mgr 
 
 class UIDebug;
+class Crosshair;
 
 class Framework : public Singleton<Framework>
 {
@@ -19,6 +20,7 @@ protected:
 	sf::Vector2i windowSize;
 	RenderWindowRBR window;
 	float fixedInterval = 1.f/60.f;
+	Crosshair* mouse;
 
 	sf::Clock clock;
 	float timeScale = 1.f;

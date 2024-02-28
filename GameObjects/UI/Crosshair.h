@@ -12,7 +12,7 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
-
+	bool isPlaying = false;
 
 	sf::Vector2f defaultScale;
 	float defaultRotation;
@@ -21,5 +21,7 @@ public:
 	void MotionUpdate(float dt);
 	void MotionReload();
 	void MotionShot();
+
+	sf::Vector2f GetPosition() const { return position; }
 };
 
