@@ -63,6 +63,6 @@ public:
 	const sf::Vector2f& GetDirection() const { return direction; };
 
 	//radius
-	inline float GetBound() { return bound.getRadius(); }
+	inline const sf::CircleShape& GetBound() { return bound; }
 
 };
