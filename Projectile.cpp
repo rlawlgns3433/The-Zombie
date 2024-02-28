@@ -4,6 +4,8 @@
 Projectile::Projectile(const std::string& name)
 	: GameObject(name)
 {
+	sortLayer = 4;
+	tag = 1;
 }
 
 void Projectile::Init()

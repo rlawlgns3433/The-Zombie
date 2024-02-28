@@ -17,11 +17,9 @@ protected:
 	int ammo = maxAmmo;
 	int totalAmmo = ammo;
 
-	float shotInterval = 0.05f;
+	float shotInterval = 0.1f;
 	float shotTimer = 0.f;
 	bool isFiring = false;
-
-	float attackAngle = 45.f;
 
 public:
 	FlameThrower(const std::string& name = "");

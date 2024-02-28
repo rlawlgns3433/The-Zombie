@@ -21,7 +21,6 @@ protected:
 	Weapon& operator=(Weapon&&) = delete;
 
 	Player* player = nullptr;
-
 	Types type;
 
 	float attackInterval = 1.f;

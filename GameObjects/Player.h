@@ -65,6 +65,7 @@ public:
 	inline int GetHp() const { return hp; }
 	inline int GetMaxHP() const { return maxHp; }
 	inline float GetSpeed() const { return speed; }
+	inline sf::Vector2f GetLook() const { return look; }
 
 	Gun* GetGun() { return gun; }
 };
