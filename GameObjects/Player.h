@@ -8,10 +8,22 @@ class Gun;
 
 class Player : public SpriteGo
 {
+public:
+	enum class TYPES
+	{
+		MAN,
+		FIREBAT,
+
+
+
+		COUNT
+	};
 protected:
 	sf::Vector2f direction;
 	sf::Vector2f look = { 1.f, 0.f };
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
+
+	TYPES type = TYPES::FIREBAT;
 
 	int level = 1;
 	int maxExp = 20;

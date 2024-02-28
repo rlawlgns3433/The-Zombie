@@ -2,7 +2,7 @@
 #include "Zombie.h"
 #include "SceneGame.h"
 #include "Bullet.h"
-#include <EffectBlood.h>
+#include "EffectBlood.h"
 #include "ZombieTable.h"
 #include "Item2.h"
 
@@ -86,7 +86,7 @@ void Zombie::Update(float dt)
 	}
 
 	//플레이어에게 이동
-	if (distanceToPlayer > GetBound())
+	if (distanceToPlayer > GetBound().getRadius())
 	{
 		//SetPosition(GetPosition() + Utils::GetNormalize(player->GetPosition() - GetPosition()) * speed * dt);
 		Translate(direction * speed * dt);
@@ -110,7 +110,7 @@ void Zombie::FixedUpdate(float dt)
 
 	distanceToPlayer = Utils::Distance(player->GetPosition(), position);
 	SpriteGo::FixedUpdate(dt);
-	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound())
+	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius())
 	{
 		player->onDamage(atkDamage);
 		atkTimer = 0.f;
@@ -143,7 +143,7 @@ void Zombie::Collision(float dt)
 			continue;
 		sf::Vector2f dz = Utils::GetNormalize(ptr->GetPosition() - position); //다른 좀비로의 방향
 		float distance = Utils::Distance(ptr->GetPosition(), position); //다른 좀비와의 거리
-		float minDistance = GetBound() + ptr->GetBound(); //최소 거리
+		float minDistance = GetBound().getRadius() + ptr->GetBound().getRadius(); //최소 거리
 		if (distance < minDistance)
 		{
 			SetPosition(position - dz * speed * 2.f * dt);

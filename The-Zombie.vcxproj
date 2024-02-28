@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataTable\PlayerTable.cpp" />
     <ClCompile Include="Flame.cpp" />
     <ClCompile Include="FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="GameObjects\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="Flame.h" />
     <ClInclude Include="FlameThrower.h" />

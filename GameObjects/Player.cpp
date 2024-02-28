@@ -7,15 +7,25 @@
 #include "UIHUD.h"
 #include "Crosshair.h"
 #include "Gun.h"
+#include "PlayerTable.h"
 
 Player::Player(const std::string& name) : SpriteGo(name)
 {
 	textureId = "graphics/player.png";
 	sortLayer = 5;
+
+
 }
 
 void Player::Init()
 {
+	const DATA_PLAYER& data = DT_PLAYER->Get(type);
+
+	textureId = data.textureId;
+	hp = maxHp = data.maxHp;
+	speed = data.speed;
+	
+
 	SpriteGo::Init();
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);

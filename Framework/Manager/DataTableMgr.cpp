@@ -3,6 +3,7 @@
 #include "StringTable.h"
 #include "ZombieTable.h"
 #include "LevelUpTable.h"
+#include "PlayerTable.h"
 
 DataTableMgr::DataTableMgr()
 {
@@ -31,6 +32,11 @@ void DataTableMgr::Init()
 	LevelUpTable* levelUpTable = new LevelUpTable(DataTable::Types::LevelUp);
 	levelUpTable->Load();
 	tables.insert({ DataTable::Types::LevelUp, levelUpTable });
+
+	//PlayerTable
+	PlayerTable* playerTable = new PlayerTable(DataTable::Types::PLAYER);
+	playerTable->Load();
+	tables.insert({ DataTable::Types::PLAYER, playerTable });
 
 }
 
