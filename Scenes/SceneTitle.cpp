@@ -41,7 +41,6 @@ void SceneTitle::Update(float dt)
 		{
 			uiLevelUp->SetActive(false);
 		}
-		
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::S))
