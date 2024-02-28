@@ -7,6 +7,11 @@ Spawner::Spawner(const std::string& name)
 {
 }
 
+Spawner::Spawner(Scene* sc, const std::string& name)
+	:GameObject(sc, name), sceneGame(dynamic_cast<SceneGame*>(sc))
+{
+}
+
 void Spawner::Init()
 {
 	GameObject::Init();

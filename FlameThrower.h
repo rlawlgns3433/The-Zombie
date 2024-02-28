@@ -3,13 +3,13 @@
 
 class UIHUD;
 
-class Gun : public Weapon
+class FlameThrower : public Weapon
 {
 protected:
-	Gun(const Gun&) = delete;
-	Gun(Gun&&) = delete;
-	Gun& operator=(const Gun&) = delete;
-	Gun& operator=(Gun&&) = delete;
+	FlameThrower(const FlameThrower&) = delete;
+	FlameThrower(FlameThrower&&) = delete;
+	FlameThrower& operator=(const FlameThrower&) = delete;
+	FlameThrower& operator=(FlameThrower&&) = delete;
 
 	UIHUD* hud = nullptr;
 
@@ -18,13 +18,14 @@ protected:
 	int totalAmmo = ammo;
 
 	float shotInterval = 0.05f;
-
 	float shotTimer = 0.f;
 	bool isFiring = false;
 
-public :
-	Gun(Player* player, const std::string& name = "");
-	~Gun() override = default;
+	float attackAngle = 45.f;
+
+public:
+	FlameThrower(const std::string& name = "");
+	~FlameThrower() override = default;
 
 	void Init() override;
 	void Release() override;
@@ -36,9 +37,5 @@ public :
 
 	void Attack() override;
 	void Reload();
-
-	void AddTotalAmmo(int add);
-	int GetAmmo() const { return this->ammo; }
-	int GetTotalAmmo() const { return this->totalAmmo; }
 };
 

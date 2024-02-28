@@ -7,6 +7,11 @@ ZombieSpawner::ZombieSpawner(const std::string& name)
 {
 }
 
+ZombieSpawner::ZombieSpawner(Scene* sc, const std::string& name)
+	:Spawner(sc, name)
+{
+}
+
 void ZombieSpawner::Reset()
 {
 
@@ -21,5 +26,5 @@ void ZombieSpawner::Reset()
 GameObject* ZombieSpawner::Create()
 {
 	Zombie::Types zombieType = zombieTypes[Utils::RandomRange(0, zombieTypes.size())];
-	return Zombie::Create(zombieType);
+	return Zombie::Create(zombieType, scene);
 }

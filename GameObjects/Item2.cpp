@@ -1,9 +1,15 @@
 #include "pch.h"
 #include "Item2.h"
 #include "Player.h"
+#include "Scene.h"
 
 Item2::Item2(const std::string& name)
 	:SpriteGo(name), type(Types::NONE), value(0), player(nullptr)
+{
+}
+
+Item2::Item2(Scene* sc, const std::string& name)
+	:SpriteGo(sc,name), type(Types::NONE), value(0), player(nullptr)
 {
 }
 
@@ -21,7 +27,7 @@ void Item2::Reset()
 {
 	SpriteGo::Reset();
 	SetOrigin(Origins::MC);
-	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+	player = dynamic_cast<Player*>(scene->FindGo("Player"));
 }
 
 void Item2::Update(float dt)
@@ -53,9 +59,9 @@ void Item2::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 }
 
-Item2* Item2::Create(Types t, int v)
+Item2* Item2::Create(Types t, int v, Scene* sc)
 {
-	Item2* newItem = new Item2();
+	Item2* newItem = new Item2(sc);
 	newItem->type = t;
 	newItem->value = v;
 
@@ -72,5 +78,6 @@ Item2* Item2::Create(Types t, int v)
 
 	newItem->Init();
 	newItem->Reset();
+	newItem->scene->AddGo(newItem);
 	return newItem;
 }

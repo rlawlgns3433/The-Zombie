@@ -4,9 +4,11 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 
-Gun::Gun(const std::string& name)
+Gun::Gun(Player* player, const std::string& name)
 	: Weapon(name)
 {
+	this->player = player;
+	scene = this->player->GetScene();
 }
 
 void Gun::Init()
@@ -22,10 +24,7 @@ void Gun::Release()
 void Gun::Reset()
 {
 	Weapon::Reset();
-	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
-	
 	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
 	hud->SetAmmo(ammo, totalAmmo);
 	ammo = maxAmmo;

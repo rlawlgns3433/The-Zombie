@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include <EffectBlood.h>
 #include "ZombieTable.h"
+#include "Item2.h"
 
 Zombie::Zombie(const std::string& name)
 	: SpriteGo(name)
@@ -12,9 +13,16 @@ Zombie::Zombie(const std::string& name)
 	sortLayer = 10;
 }
 
-Zombie* Zombie::Create(Types zombieType)
+Zombie::Zombie(Scene* sc, const std::string& name)
+	:SpriteGo(sc, name)
 {
-	Zombie* zombie = new Zombie("Zombie");
+	tag = 0;
+	sortLayer = 10;
+}
+
+Zombie* Zombie::Create(Types zombieType,Scene* sc)
+{
+	Zombie* zombie = new Zombie(sc,"Zombie");
 	zombie->type = zombieType;
 
 
@@ -163,6 +171,14 @@ void Zombie::Collision(float dt)
 	SetRotation(rotation);
 }
 
+void Zombie::OnDie()
+{
+	isDead = true;
+	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
+	SOUND_MGR.PlaySfx("sound/splat.wav");
+	Item2::Create(Item2::Types::AMMO, 5, scene)->SetPosition(position);
+}
+
 bool Zombie::Damaged(int damage)
 {
 	int preHp = hp;
@@ -171,9 +187,7 @@ bool Zombie::Damaged(int damage)
 	if (hp <= 0 && !isDead)
 	{
 		hp = 0;
-		isDead = true;
-		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
-		SOUND_MGR.PlaySfx("sound/splat.wav");
+		OnDie();
 	}
 	return isDead;
 }

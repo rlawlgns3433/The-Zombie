@@ -10,6 +10,7 @@ protected:
 
 public:
 	ZombieSpawner(const std::string& name = "ZombieSpawner");
+	ZombieSpawner(Scene* sc, const std::string& name = "ZombieSpawner");
 	~ZombieSpawner()override =default;
 
 	void Reset() override;

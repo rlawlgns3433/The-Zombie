@@ -3,6 +3,8 @@
 class GameObject
 {
 protected:
+	Scene* scene;
+
 	bool active = true;
 	int tag = -1;
 
@@ -21,6 +23,7 @@ public:
 	int sortOrder = 0;
 
 	GameObject(const std::string& name = "");
+	GameObject(Scene* sc, const std::string& name = "");
 	virtual ~GameObject();
 
 	static bool CompareDrawOrder(const GameObject* lhs, const GameObject* rhs)
@@ -59,6 +62,8 @@ public:
 	virtual void SetFlipY(bool flip) { isFlipY = flip; }
 	virtual void SetRotation(float r) { rotation = r; }
 	virtual void Translate(const sf::Vector2f& delta) { position += delta; }
+	inline void SetScene(Scene* sc) { scene = sc; }
+	inline Scene* GetScene() const { return scene; }
 
 	virtual void Init();
 	virtual void Release();

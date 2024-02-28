@@ -53,5 +53,7 @@ public:
 	inline int GetHp() const { return hp; }
 	inline int GetMaxHP() const { return maxHp; }
 	inline float GetSpeed() const { return speed; }
+
+	Gun* GetGun() { return gun; }
 };
 
