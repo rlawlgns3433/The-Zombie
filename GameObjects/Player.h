@@ -38,6 +38,8 @@ protected:
 	float damagedInterval = 0.4f;
 	float damagedTimer = 0.f;
 
+	bool isLevelUp = false;
+
 	TileMap* tileMap;
 	UIHUD* hud;
 	Weapon* weapon = nullptr;
@@ -62,6 +64,7 @@ public:
 	//레벨업 하면 true 반환
 	bool AddExp(int value);
 	void AddStat(DataLevelUp data);
+	void LevelUp();
 
 	inline int GetLevel() const { return level; }
 	inline int GetHp() const { return hp; }

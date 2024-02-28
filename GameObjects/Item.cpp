@@ -61,13 +61,23 @@ void Item::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 }
 
-Item* Item::Create(Types t, int v, Scene* sc)
+Item* Item::Create(Types t, Scene* sc, int v)
 {
 	Item* newItem = new Item(sc);
 	newItem->type = t;
 
 	const DATA_ITEM& data = DT_ITEM->Get(newItem->type);
+
+	if (v == 0)
+	{
 	newItem->value = Utils::RandomRange(data.minVal, data.maxVal);
+	}
+	else
+	{
+		newItem->value = v;
+	}
+
+
 	newItem->textureId = data.textureId;
 	newItem->Init();
 	newItem->Reset();

@@ -10,7 +10,7 @@ public:
 		NONE = -1,
 		AMMO,
 		HEALTH,
-
+		EXP,
 
 		COUNT,
 	};
@@ -36,7 +36,7 @@ public:
 
 	void Draw(sf::RenderWindow& window) override;
 
-	static Item* Create(Types t, int v, Scene* sc);
+	static Item* Create(Types t,Scene* sc, int v=0);
 	Types GetType() const { return type; }
 	int GetValue()const { return value; }
 

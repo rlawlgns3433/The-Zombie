@@ -173,7 +173,7 @@ void Zombie::OnDie()
 	isDead = true;
 	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
 	SOUND_MGR.PlaySfx("sound/splat.wav");
-	Item::Create(Item::Types::AMMO, 5, scene)->SetPosition(position);
+	Item::Create(Item::Types::EXP, scene)->SetPosition(position);
 }
 
 bool Zombie::Damaged(int damage)

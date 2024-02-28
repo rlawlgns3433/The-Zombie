@@ -10,6 +10,7 @@ class Spawner;
 class UIHUD;
 class Crosshair;
 class Projectile;
+class UILevelUp;
 
 class SceneGame : public Scene
 {
@@ -21,6 +22,7 @@ public:
 		DIE,
 	};
 	Status status = Status::PLAY;
+	UILevelUp* uiLevel;
 protected:
 
 	Player* player;

@@ -12,6 +12,9 @@
 #include "FlameThrower.h"
 #include "Weapon.h"
 
+//지워
+#include "UILevelUp.h"
+
 Player::Player(const std::string& name) : SpriteGo(name)
 {
 	textureId = "graphics/player.png";
@@ -98,11 +101,26 @@ void Player::Update(float dt)
 
 	SetPosition(tempPos);
 
+
 	//����
 	if (hp == 0)
 	{
 		onDie();
 		SOUND_MGR.PlaySfx("sound/splat.wav");
+	}
+
+
+
+
+
+
+
+	//임시
+	if (!dynamic_cast<SceneGame*>(scene)->uiLevel->GetActive()&&isLevelUp)
+	{
+		AddStat(dynamic_cast<SceneGame*>(scene)->uiLevel->PlayerLevelUp());
+		dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::PLAY);
+		isLevelUp = false;
 	}
 }
 
@@ -149,6 +167,15 @@ void Player::AddStat(DataLevelUp data)
 	weapon->AddTotalAmmo(data.maxAmmo);
 }
 
+void Player::LevelUp()
+{
+	isLevelUp = true;
+
+	std::cout << "dddddddddddddddddd";
+	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::PAUSE);
+	dynamic_cast<SceneGame*>(scene)->uiLevel->LevelUp();
+}
+
 void Player::onDie()
 {
 	active = false;
@@ -168,6 +195,12 @@ void Player::onItem(Item* item)
 	case Item::Types::HEALTH:
 		hp = std::min(hp + item->GetValue(), maxHp);
 		hud->SetHp(hp, maxHp);
+		break;
+	case Item::Types::EXP:
+		if (AddExp(item->GetValue()))
+		{
+			LevelUp();
+		}
 		break;
 	}
 }

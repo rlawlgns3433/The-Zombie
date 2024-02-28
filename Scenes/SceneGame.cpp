@@ -11,6 +11,7 @@
 #include "UIDebug.h"
 #include "Flame.h"
 #include "Projectile.h"
+#include "UILevelUp.h"
 
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
@@ -24,6 +25,7 @@ void SceneGame::Init()
 	//UI
 	//crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
+	uiLevel = dynamic_cast<UILevelUp*>(AddGo(new UILevelUp("uiLevel"), Scene::Ui));
 	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
 	//좀비 스포너
@@ -191,7 +193,8 @@ void SceneGame::Update(float dt)
 		{
 			status = Status::PLAY;
 		}
-
+		player->Update(dt);
+		uiLevel->Update(dt);
 		break;
 
 	default:

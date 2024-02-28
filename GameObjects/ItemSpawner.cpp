@@ -41,7 +41,7 @@ GameObject* ItemSpawner::Create()
 	const DATA_ITEM& data = DT_ITEM->Get(itemType);
 
 	int val = Utils::RandomRange(data.minVal, data.maxVal);
-	Item* go = Item::Create(itemType, val, scene);
+	Item* go = Item::Create(itemType, scene, val);
 
 	return go;
 }
