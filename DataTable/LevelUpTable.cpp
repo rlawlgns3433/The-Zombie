@@ -52,7 +52,7 @@ std::wstring LevelUpTable::CP949ToWString(const std::string& str)
 
 const DataLevelUp& LevelUpTable::Get()
 {
-	int randomIndex = Utils::RandomRange(0, table.size() - 1);
+	int randomIndex = Utils::RandomRange(0, table.size());
 
 	return table[randomIndex];
 }                                                                                                                                             

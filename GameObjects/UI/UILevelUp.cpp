@@ -25,14 +25,13 @@ void UILevelUp::Init()
 	sprites["LevelUp"]->SetPosition({ FRAMEWORK.GetWindowSize().x *
 		0.5f , FRAMEWORK.GetWindowSize().y * 0.5f, });
 	sprites["LevelUp"]->SetScale({ 0.8f , 0.8f });
-	sprites["LevelUp"]->sortLayer = 3;
 
 	//************************1번째 선택 UI************************
 	NewTextGo("Selete1Name", font, L"", 35, sf::Color::White);
 	texts["Selete1Name"]->SetPosition({ 730, 260 });
 	NewTextGo("Selete1Desc", font, L"", 25, sf::Color::White);
 	texts["Selete1Desc"]->SetPosition({ 660, 350 });
-	NewSpriteGo("Selete1Img", "");
+	NewSpriteGo("Selete1Img", "graphics/potion1.png");
 	sprites["Selete1Img"]->SetPosition({ 647, 263 });
 	sprites["Selete1Img"]->SetScale({ 0.6f , 0.6f });
 
@@ -41,7 +40,7 @@ void UILevelUp::Init()
 	texts["Selete2Name"]->SetPosition({ 730, 430 });
 	NewTextGo("Selete2Desc", font, L"", 25, sf::Color::White);
 	texts["Selete2Desc"]->SetPosition({ 660, 520 });
-	NewSpriteGo("Selete2Img", "");
+	NewSpriteGo("Selete2Img", "graphics/potion1.png");
 	sprites["Selete2Img"]->SetPosition({ 647, 431 });
 	sprites["Selete2Img"]->SetScale({ 0.6f , 0.6f });
 
@@ -50,7 +49,7 @@ void UILevelUp::Init()
 	texts["Selete3Name"]->SetPosition({ 730, 600 });
 	NewTextGo("Selete3Desc", font, L"", 25, sf::Color::White);
 	texts["Selete3Desc"]->SetPosition({ 660, 690 });
-	NewSpriteGo("Selete3Img", "");
+	NewSpriteGo("Selete3Img", "graphics/potion1.png");
 	sprites["Selete3Img"]->SetPosition({ 647, 598 });
 	sprites["Selete3Img"]->SetScale({ 0.6f , 0.6f });
 
