@@ -57,22 +57,14 @@ void SceneTitle::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	//KeyInput
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter)|| InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::SceneGame);
 	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::S))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 	{
-		DT_STRING->Load(Languages::English);
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::D))
-	{
-		DT_STRING->Load(Languages::Korean);
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::A))
-	{
-		std::cout << DT_STRING->Get("a") << std::endl;
+		FRAMEWORK.GetWindow().close();
 	}
 
 	if (scale.x <= 1.0f)

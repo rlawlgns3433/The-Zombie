@@ -44,9 +44,9 @@ void SceneMgr::ChangeScene(SceneIds id)
 
 void SceneMgr::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	if (InputMgr::GetKeyDown(sf::Keyboard::F5))
 	{
-		ChangeScene(startScene);
+		SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 	}
 	scenes[(int)currentScene]->Update(dt);
 }

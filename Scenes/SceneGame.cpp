@@ -173,7 +173,7 @@ void SceneGame::Update(float dt)
 		}
 		zombieObjects.sort();
 
-		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
 			SetStatus(Status::PAUSE);
 		}
@@ -181,7 +181,7 @@ void SceneGame::Update(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
 	case SceneGame::Status::DIE:
-		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		if (InputMgr::GetKeyUp(sf::Keyboard::Escape)|| InputMgr::GetKeyUp(sf::Keyboard::Space)|| InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
 			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 		}
@@ -189,7 +189,7 @@ void SceneGame::Update(float dt)
 		////////////////////////////////////////////////////////////////////////// PAUSE_UPDATE
 	case SceneGame::Status::PAUSE:
 
-		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
 			SetStatus(Status::PLAY);
 		}
@@ -343,15 +343,19 @@ void SceneGame::SetStatus(Status st)
 	{
 	case SceneGame::Status::PLAY:
 		FRAMEWORK.GetMouse()->isPlaying = true;
+		hud->SetPause(false);
 		break;
 	case SceneGame::Status::PAUSE:
 		FRAMEWORK.GetMouse()->isPlaying = false;
+		hud->SetPause(true);
 		break;
 	case SceneGame::Status::DIE:
 		FRAMEWORK.GetMouse()->isPlaying = false;
+		hud->SetPause(false);
 		break;
 	case SceneGame::Status::LEVELUP:
 		FRAMEWORK.GetMouse()->isPlaying = false;
+		hud->SetPause(false);
 		uiLevel->LevelUp();
 		break;
 	default:

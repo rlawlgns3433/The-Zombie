@@ -20,19 +20,34 @@ void UIHUD::Init()
 
 	//SetContent
 	sf::Font& font = RES_MGR_FONT.Get("fonts/zombiecontrol.ttf");
+	imgAmmoIcon.SetTexture("graphics/ammo_icon.png");
+
 	textScore.Set(font, "", textSize, sf::Color::White);
 	textHiScore.Set(font, "", textSize, sf::Color::White);
-	imgAmmoIcon.SetTexture("graphics/ammo_icon.png");
-	textAmmo.Set(font, "", textSize, sf::Color::White);
-	gaugeHpSize = { 300.f,60.f };
-	gaugeHp.setSize(gaugeHpSize);
-	gaugeHp.setFillColor(sf::Color::Red);
-	gaugeMaxHp.setSize(gaugeHpSize);
-	gaugeMaxHp.setFillColor(sf::Color(40,40,40,255));
+	textAmmo.Set(font, "", textSize, sf::Color::Yellow);
 	textWave.Set(font, "", textSize, sf::Color::White);
-	textZombieCount.Set(font, "", textSize, sf::Color::White);
-	exp.setSize({ gaugeHpSize.x ,10});
+	textZombieCount.Set(font, "", textSize, sf::Color::Red);
+	textPause.Set(font, "- PAUSE -", 300, sf::Color(255, 255, 255, 230));
+
+	gaugeHp.setFillColor(sf::Color::Red);
+	gaugeMaxHp.setFillColor(sf::Color(40, 40, 40, 255));
 	exp.setFillColor(sf::Color::Green);
+	pauseColor = { 0, 0, 0, 0 };
+	pauseRect.setFillColor(pauseColor);
+
+	textScore.SetOutLine(3.f, sf::Color::Black);
+	textHiScore.SetOutLine(3.f, sf::Color::Black);
+	textAmmo.SetOutLine(3.f, sf::Color::Black);
+	textWave.SetOutLine(3.f, sf::Color::Black);
+	textZombieCount.SetOutLine(3.f, sf::Color::White);
+	textPause.SetOutLine(10.f, sf::Color(20, 20, 20, 100));
+
+	gaugeHpSize = { 300.f,60.f };
+	gaugeMaxHp.setSize(gaugeHpSize);
+	gaugeHp.setSize(gaugeHpSize);
+	exp.setSize({ gaugeHpSize.x ,10 });
+	pauseRect.setSize(sf::Vector2f(FRAMEWORK.GetWindowSize()));
+
 
 	//SetOrigin
 	textScore.SetOrigin(Origins::TL);
@@ -44,11 +59,17 @@ void UIHUD::Init()
 	textWave.SetOrigin(Origins::BR);
 	textZombieCount.SetOrigin(Origins::BR);
 	Utils::SetOrigin(exp, Origins::BL);
+	textPause.SetOrigin(Origins::MC);
+	Utils::SetOrigin(pauseRect, Origins::TL);
 
 	//Top
 	float topY = 50.f;
 	textScore.SetPosition({ 50.f, topY });
 	textHiScore.SetPosition({ referenceResolution.x - 50.f, topY });
+	pauseRect.setPosition({ 0, 0 });
+
+	//Middle
+	textPause.SetPosition(sf::Vector2f(FRAMEWORK.GetWindowSize()) * 0.5f);
 
 	//Bottom
 	float BottomY = referenceResolution.y - 50.f;
@@ -79,6 +100,12 @@ void UIHUD::Update(float dt)
 void UIHUD::LateUpdate(float dt)
 {
 	GameObject::LateUpdate(dt);
+	if (isPause && pauseColor.a < 120)
+	{
+		pauseColor.a++;
+		if (pauseColor.a > 120) { pauseColor.a = 120; }
+		pauseRect.setFillColor(pauseColor);
+	}
 }
 
 void UIHUD::Draw(sf::RenderWindow& window)
@@ -93,6 +120,11 @@ void UIHUD::Draw(sf::RenderWindow& window)
 	window.draw(exp);
 	textWave.Draw(window);
 	textZombieCount.Draw(window);
+	if (isPause)
+	{
+		window.draw(pauseRect);
+		textPause.Draw(window);
+	}
 }
 
 void UIHUD::SetScore(int s)
@@ -130,6 +162,15 @@ void UIHUD::SetExp(int ex, int max)
 {
 	float value = max > 0 ? (float)ex / max : 0;
 	exp.setSize({ gaugeHpSize.x * value, exp.getSize().y });
+}
+
+void UIHUD::SetPause(bool value)
+{
+	isPause = value;
+	if (!value)
+	{
+		pauseColor.a = 0;
+	}
 }
 
 void UIHUD::SetResolution(const sf::Vector2f resolution)

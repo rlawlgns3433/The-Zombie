@@ -42,6 +42,11 @@ protected:
 	//경험치
 	sf::RectangleShape exp;
 
+	//일시정지
+	TextGo textPause;
+	sf::RectangleShape pauseRect;
+	sf::Color pauseColor;
+	bool isPause = false;
 
 public:
 	UIHUD(const std::string& name = "UIHUD");
@@ -66,6 +71,7 @@ public:
 	void SetWave(int w);
 	void SetZombieCount(int count);
 	void SetExp(int ex, int max);
+	void SetPause(bool value);
 
 	void SetResolution(const sf::Vector2f resolution);
 };

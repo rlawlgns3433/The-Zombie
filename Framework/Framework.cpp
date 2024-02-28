@@ -16,6 +16,9 @@ void Framework::Init(int width, int height, const std::string& name)
 	window.setSize({ 1280, 720 });
 	window.setPosition(sf::Vector2i((sf::VideoMode::getDesktopMode().width - window.getSize().x) / 2,
 		(sf::VideoMode::getDesktopMode().height - window.getSize().y) / 2 ));
+	
+
+
 
 	mouse = new Crosshair();
 	mouse->Init();
@@ -47,7 +50,7 @@ void Framework::Do()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Tab)
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F3)
 				isDebug = !isDebug;
 			InputMgr::UpdateEvent(event);
 		}
