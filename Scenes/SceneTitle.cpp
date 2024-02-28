@@ -60,6 +60,8 @@ void SceneTitle::Init()
 	uiCharacterSelect->sortLayer = 11;
 
 	AddGo(uiCharacterSelect, Scene::Ui);
+
+	uiCharacterSelect->SetActive(false);
 }
 
 void SceneTitle::Update(float dt)
