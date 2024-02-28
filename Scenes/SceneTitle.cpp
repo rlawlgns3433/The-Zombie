@@ -107,5 +107,12 @@ void SceneTitle::Enter()
 	Scene::Enter();
 	SOUND_MGR.PlayBGM("sound/SellBuyMusic1.wav");
 
-	//std::cout << DT_ZOMBIE->Get(Zombie::Types::Bloater).atkInterval << std::endl;
+	auto p = Utils::DressInRow({ 0, 0 }, { 0,1 }, 3, 0.5f);
+
+	for (auto& i : p)
+	{
+		std::cout << i.x << " " << i.y << std::endl;
+	}
+
+	std::cout << std::endl;
 }

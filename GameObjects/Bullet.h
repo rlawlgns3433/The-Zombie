@@ -27,9 +27,11 @@ public:
     void DebugUpdate(float dt) override;
     void Draw(sf::RenderWindow& window) override;
     void DebugDraw(sf::RenderWindow& window) override;
-    
 
-    static Bullet* Create(Player* player);
+
+    void SetDirection(sf::Vector2f direc);
+
+    static void Create(Scene* sc);
 
     bool CheckCollision(Zombie* zombie) override;
 };

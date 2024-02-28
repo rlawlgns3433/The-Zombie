@@ -88,6 +88,11 @@ void  Weapon::AddReloadSpeed(float value)
 	reloadSpeed = std::max(0.f, reloadSpeed + value);
 }
 
+void Weapon::AddProjectile(int value)
+{
+	projectileCount = std::max(1, projectileCount + value);
+}
+
 void Weapon::AddTotalAmmo(int add)
 {
 	totalAmmo += add;

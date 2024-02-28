@@ -20,6 +20,7 @@ void UIHUD::Init()
 
 	//SetContent
 	sf::Font& font = RES_MGR_FONT.Get("fonts/zombiecontrol.ttf");
+	sf::Font& font2 = RES_MGR_FONT.Get("fonts/BMHANNAPro.ttf");
 	imgAmmoIcon.SetTexture("graphics/ammo_icon.png");
 
 	textScore.Set(font, "", textSize, sf::Color::White);
@@ -27,7 +28,9 @@ void UIHUD::Init()
 	textAmmo.Set(font, "", textSize, sf::Color::Yellow);
 	textWave.Set(font, "", textSize, sf::Color::White);
 	textZombieCount.Set(font, "", textSize, sf::Color::Red);
-	textPause.Set(font, "- PAUSE -", 300, sf::Color(255, 255, 255, 230));
+	textPause.Set(font, "- PAUSE -", 300, sf::Color::White);
+	textOver.Set(font2, L"\n타이틀로 돌아가려면 Enter를 눌러주세요", 30, sf::Color::White);
+	textLevel.Set(font, "1", 30, sf::Color::Green);
 
 	gaugeHp.setFillColor(sf::Color::Red);
 	gaugeMaxHp.setFillColor(sf::Color(40, 40, 40, 255));
@@ -40,7 +43,8 @@ void UIHUD::Init()
 	textAmmo.SetOutLine(3.f, sf::Color::Black);
 	textWave.SetOutLine(3.f, sf::Color::Black);
 	textZombieCount.SetOutLine(3.f, sf::Color::White);
-	textPause.SetOutLine(10.f, sf::Color(20, 20, 20, 100));
+	textPause.SetOutLine(10.f, sf::Color(0, 0, 0, 240));
+	textLevel.SetOutLine(2.f, sf::Color::Black);
 
 	gaugeHpSize = { 300.f,60.f };
 	gaugeMaxHp.setSize(gaugeHpSize);
@@ -61,6 +65,8 @@ void UIHUD::Init()
 	Utils::SetOrigin(exp, Origins::BL);
 	textPause.SetOrigin(Origins::MC);
 	Utils::SetOrigin(pauseRect, Origins::TL);
+	textOver.SetOrigin(Origins::TC);
+	textLevel.SetOrigin(Origins::BR);
 
 	//Top
 	float topY = 50.f;
@@ -70,6 +76,7 @@ void UIHUD::Init()
 
 	//Middle
 	textPause.SetPosition(sf::Vector2f(FRAMEWORK.GetWindowSize()) * 0.5f);
+	textOver.SetPosition({ sf::Vector2f(FRAMEWORK.GetWindowSize()).x * 0.5f,textPause.GetGlobalBounds().top+ textPause.GetGlobalBounds().height});
 
 	//Bottom
 	float BottomY = referenceResolution.y - 50.f;
@@ -80,6 +87,7 @@ void UIHUD::Init()
 	textWave.SetPosition({ referenceResolution.x - 550.f, BottomY });
 	textZombieCount.SetPosition({ referenceResolution.x - 50.f, BottomY });
 	exp.setPosition(gaugeHp.getPosition());
+	textLevel.SetPosition({445.f,BottomY +3.f});
 }
 
 void UIHUD::Release()
@@ -103,7 +111,11 @@ void UIHUD::LateUpdate(float dt)
 	if (isPause && pauseColor.a < 120)
 	{
 		pauseColor.a++;
-		if (pauseColor.a > 120) { pauseColor.a = 120; }
+		pauseRect.setFillColor(pauseColor);
+	}
+	if (isGameOver && pauseColor.a < 220)
+	{
+		pauseColor.a++;
 		pauseRect.setFillColor(pauseColor);
 	}
 }
@@ -118,12 +130,19 @@ void UIHUD::Draw(sf::RenderWindow& window)
 	window.draw(gaugeMaxHp);
 	window.draw(gaugeHp);
 	window.draw(exp);
+	textLevel.Draw(window);
 	textWave.Draw(window);
 	textZombieCount.Draw(window);
 	if (isPause)
 	{
 		window.draw(pauseRect);
 		textPause.Draw(window);
+	}
+	if (isGameOver)
+	{
+		window.draw(pauseRect);
+		textPause.Draw(window);
+		textOver.Draw(window);
 	}
 }
 
@@ -158,18 +177,33 @@ void UIHUD::SetZombieCount(int count)
 	textZombieCount.SetString(formatZombieCount + std::to_string(count));
 }
 
-void UIHUD::SetExp(int ex, int max)
+void UIHUD::SetExp(int ex, int max, int level)
 {
 	float value = max > 0 ? (float)ex / max : 0;
 	exp.setSize({ gaugeHpSize.x * value, exp.getSize().y });
+	textLevel.SetString(std::to_string(level));
 }
 
 void UIHUD::SetPause(bool value)
 {
 	isPause = value;
-	if (!value)
+	if (value)
 	{
 		pauseColor.a = 0;
+		textPause.SetString("- PAUSE -");
+		textPause.SetColor(sf::Color::White);
+		textPause.SetOrigin(Origins::MC);
+	}
+}
+void UIHUD::SetGameOver(bool value)
+{
+	isGameOver = value;
+	if (value)
+	{
+		pauseColor.a = 0;
+		textPause.SetString("YOU DIED");
+		textPause.SetColor(sf::Color::Red);
+		textPause.SetOrigin(Origins::MC);
 	}
 }
 

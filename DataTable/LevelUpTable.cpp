@@ -38,6 +38,7 @@ bool LevelUpTable::Load()
 		table[i].reloadInterval = std::stof(row[11]);
 		table[i].maxAmmo = std::stoi(row[12]);
 		table[i].weaponUp = std::stoi(row[13]);
+		table[i].projectile = std::stoi(row[14]);
 
 	}
 
