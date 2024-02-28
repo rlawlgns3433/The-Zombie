@@ -34,6 +34,8 @@ public:
 	static float RadianToDegree(float radian);
 	static float DegreeToRadian(float degree);
 	static float Angle(const sf::Vector2f& vec);
+	static float Angle(const sf::Vector2f& origin, const sf::Vector2f& pos1, const sf::Vector2f& pos2);
+	static float Angle(const sf::Vector2f& vec1, const sf::Vector2f& vec2);
 	static void Rotate(sf::Vector2f& vec, float degree); //회전
 	static float Lerp(float min, float max, float t); //선형보간
 	static sf::Vector2f Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float t); //선형보간

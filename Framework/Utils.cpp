@@ -149,6 +149,16 @@ float Utils::Angle(const sf::Vector2f& vec)
 	return RadianToDegree(atan2f(vec.y, vec.x));
 }
 
+float Utils::Angle(const sf::Vector2f& origin, const sf::Vector2f& pos1, const sf::Vector2f& pos2)
+{
+	return Angle(pos1 - origin, pos2 - origin);
+}
+
+float Utils::Angle(const sf::Vector2f& vec1, const sf::Vector2f& vec2)
+{
+	return RadianToDegree(acosf((vec1.x * vec2.x + vec1.y * vec2.y) / (Magnitude(vec1) * Magnitude(vec2))));
+}
+
 void Utils::Rotate(sf::Vector2f& vec, float degree)
 {
 	vec = GetNormalize(sf::Transform().rotate(degree) * vec);
@@ -157,7 +167,7 @@ void Utils::Rotate(sf::Vector2f& vec, float degree)
 //t´Â 0.f ~ 1.f
 float Utils::Lerp(float min, float max, float t)
 {
-	
+
 	float v = min + (max - min) * Clamp(t, 0.f, 1.f);
 
 	return v;
