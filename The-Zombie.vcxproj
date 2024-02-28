@@ -159,7 +159,7 @@
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
     <ClCompile Include="GameObjects\Gun.cpp" />
     <ClCompile Include="DataTable\LevelUpTable.cpp" />
-    <ClCompile Include="ItemTable.cpp" />
+    <ClCompile Include="DataTable\ItemTable.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -207,7 +207,7 @@
     <ClInclude Include="GameObjects\ItemSpawner.h" />
     <ClInclude Include="GameObjects\Gun.h" />
     <ClInclude Include="DataTable\LevelUpTable.h" />
-    <ClInclude Include="ItemTable.h" />
+    <ClInclude Include="DataTable\ItemTable.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="GameObjects\Projectile.h" />
