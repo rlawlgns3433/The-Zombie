@@ -3,12 +3,25 @@
 
 class SpriteGo;
 class TextGo;
+class Crosshair;
+
+struct SelectBox
+{
+	std::string name;
+	sf::FloatRect bounds;
+};
 
 class UILevelUp : public GameObject
 {
 protected:
 	std::unordered_map<std::string, SpriteGo*> sprites;
 	std::unordered_map<std::string, TextGo*> texts;
+	std::vector<SelectBox> selectBoxs;
+	Crosshair* mouse = nullptr;
+
+	bool isSelect0 = false;
+	bool isSelect1 = false;
+	bool isSelect2 = false;
 
 public:
 	UILevelUp(const std::string& name);
@@ -31,6 +44,9 @@ public:
 	void NewTextGo(const std::string& name,
 		const sf::Font& font, const std::wstring& str,
 		int size, const sf::Color& color);
+
+	void HandleMouseSelection();
+	void ProcessSelection(std::string& name);
 
 	void ResetBoxUI();
 

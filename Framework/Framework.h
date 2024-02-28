@@ -54,6 +54,8 @@ public:
 
 	UIDebug* GetDebug() const { return uiDebug; }
 
+	Crosshair* GetMouse() { return mouse; }
+
 	virtual void Init(int width, int height, const std::string& name = "Game");
 	virtual void Do();
 	virtual void Release();
