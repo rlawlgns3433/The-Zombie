@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "LevelUpTable.h"
 
 class SpriteGo;
 class TextGo;
@@ -18,6 +19,10 @@ protected:
 	std::unordered_map<std::string, TextGo*> texts;
 	std::vector<SelectBox> selectBoxs;
 	Crosshair* mouse = nullptr;
+
+	std::vector<DataLevelUp> currentDataLevelUp;
+
+	DataLevelUp playerDataLevelUp;
 
 public:
 	UILevelUp(const std::string& name);
@@ -43,6 +48,8 @@ public:
 
 	void HandleMouseSelection();
 	void ProcessSelection(std::string& name);
+
+	DataLevelUp PlayerLevelUp();
 
 	void ResetBoxUI();
 
