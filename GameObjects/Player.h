@@ -7,6 +7,7 @@ class UIHUD;
 class Gun;
 class FlameThrower;
 class Weapon;
+struct DataLevelUp;
 
 class Player : public SpriteGo
 {
@@ -29,6 +30,7 @@ protected:
 	int level = 1;
 	int maxExp = 20;
 	int currentExp = 0;
+	float xExp = 1.f;
 	int maxHp = 100;
 	int hp = 100;
 	float speed = 300.f;
@@ -59,8 +61,7 @@ public:
 
 	//레벨업 하면 true 반환
 	bool AddExp(int value);
-	inline void AddMaxHp(int value);
-	inline void AddSpeed(float value) { speed += value; }
+	void AddStat(DataLevelUp data);
 
 	inline int GetLevel() const { return level; }
 	inline int GetHp() const { return hp; }

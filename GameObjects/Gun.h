@@ -11,7 +11,7 @@ protected:
 	Gun& operator=(const Gun&) = delete;
 	Gun& operator=(Gun&&) = delete;
 
-	UIHUD* hud = nullptr;
+
 
 	bool isFiring = false;
 

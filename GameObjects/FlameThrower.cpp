@@ -33,7 +33,7 @@ void FlameThrower::Reset()
 	totalAmmo = ammo;
 
 	damage = 34;
-	attackInterval = 0.05f;
+	shotInterval = 0.05f;
 }
 
 void FlameThrower::Update(float dt)

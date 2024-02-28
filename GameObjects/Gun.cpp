@@ -26,13 +26,12 @@ void Gun::Reset()
 {
 	Weapon::Reset();
 
-	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
-	hud->SetAmmo(ammo, totalAmmo);
+
 	ammo = maxAmmo;
 	totalAmmo = ammo;
 
 	damage = 34;
-	attackInterval = 0.05f;
+	shotInterval = 0.05f;
 }
 
 void Gun::Update(float dt)

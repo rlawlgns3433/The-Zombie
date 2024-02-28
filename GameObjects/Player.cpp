@@ -8,6 +8,7 @@
 #include "Crosshair.h"
 #include "Gun.h"
 #include "PlayerTable.h"
+#include "LevelUpTable.h"
 #include "FlameThrower.h"
 #include "Weapon.h"
 
@@ -26,7 +27,7 @@ void Player::Init()
 	textureId = data.textureId;
 	hp = maxHp = data.maxHp;
 	speed = data.speed;
-	
+
 
 	SpriteGo::Init();
 	SetTexture(textureId);
@@ -120,26 +121,32 @@ void Player::onDamage(int damage)
 		hud->SetHp(hp, maxHp);
 		SOUND_MGR.PlaySfx("sound/hit.wav");
 	}
+
 }
 
 bool Player::AddExp(int value)
 {
-	currentExp += value;
+	currentExp += value * xExp;
 	if (currentExp >= maxExp)
 	{
 		currentExp -= maxExp;
-		maxExp *= 1.05; // ����Ǵ� �� �ϴ� �Ű� �Ⱦ��ڽ��ϴ�.
+		maxExp *= 1.05; // roundDown
 		level++;
 		return true;
 	}
 	return false;
 }
 
-void Player::AddMaxHp(int value)
+void Player::AddStat(DataLevelUp data)
 {
-	maxHp += value;
-	hp += value;
+	maxHp += std::max(1, maxHp + data.maxHp);
 	hud->SetHp(hp, maxHp);
+	speed += data.speed;
+	xExp += data.xExp;
+	weapon->AddDamage(data.damage);
+	weapon->AddShotInterval(data.shotInterval);
+	weapon->AddReloadSpeed(data.reloadInterval);
+	weapon->AddTotalAmmo(data.maxAmmo);
 }
 
 void Player::onDie()
@@ -159,8 +166,8 @@ void Player::onItem(Item* item)
 		hud->SetAmmo(weapon->GetAmmo(), weapon->GetTotalAmmo());
 		break;
 	case Item::Types::HEALTH:
-		hp = std::min(hp+item->GetValue(),maxHp);
-		hud->SetHp(hp,maxHp);
+		hp = std::min(hp + item->GetValue(), maxHp);
+		hud->SetHp(hp, maxHp);
 		break;
 	}
 }
