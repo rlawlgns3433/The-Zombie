@@ -21,6 +21,7 @@ public:
 		MAN,
 		FIREBAT,
 		READDEATH,
+		TIMBER,
 		COUNT
 	};
 protected:

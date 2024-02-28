@@ -2,13 +2,17 @@
 
 class SpriteGo;
 class TextGo;
+class DATA_PLAYER_SELECT;
 
 class UICharacterSelect : public GameObject
 {
 protected:
-	std::unordered_map<std::string, SpriteGo*> sprites;
+	std::map<std::string, SpriteGo*> sprites;
 	std::unordered_map<std::string, TextGo*> texts;
 
+	std::vector<DATA_PLAYER_SELECT> characterTable;
+
+	Crosshair* mouse = nullptr;
 public:
 	UICharacterSelect(const std::string& name = "");
 	~UICharacterSelect() override;

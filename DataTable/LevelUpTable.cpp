@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "LevelUpTable.h"
 #include "rapidcsv.h"
-#include <string>
-#include <windows.h>
 
 LevelUpTable::LevelUpTable(DataTable::Types t)
 	: DataTable(t)
@@ -25,9 +23,9 @@ bool LevelUpTable::Load()
 
 		table[i] = DataLevelUp();
 		table[i].id = std::stoi(row[0]);
-		table[i].name = CP949ToWString(row[1]);
-		table[i].desc = CP949ToWString(row[2]);
-		table[i].effect = CP949ToWString(row[3]);
+		table[i].name = Utils::CP949ToWString(row[1]);
+		table[i].desc = Utils::CP949ToWString(row[2]);
+		table[i].effect = Utils::CP949ToWString(row[3]);
 		table[i].textureId = row[4];
 
 		table[i].weight = std::stoi(row[5]);
@@ -49,16 +47,6 @@ bool LevelUpTable::Load()
 void LevelUpTable::Release()
 {
 	table.clear();
-}
-
-std::wstring LevelUpTable::CP949ToWString(const std::string& str)
-{
-	if (str.empty()) return L"";
-	// CP949 코드 페이지를 사용하여 변환
-	int sizeNeeded = MultiByteToWideChar(949, 0, str.c_str(), (int)str.size(), NULL, 0);
-	std::wstring wstrTo(sizeNeeded, 0);
-	MultiByteToWideChar(949, 0, str.c_str(), (int)str.size(), &wstrTo[0], sizeNeeded);
-	return wstrTo;
 }
 
 const DataLevelUp& LevelUpTable::Get()

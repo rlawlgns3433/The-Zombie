@@ -4,6 +4,7 @@
 #include "rapidcsv.h"
 #include "ZombieTable.h"
 #include "TextGo.h"
+#include "UICharacterSelect.h"
 
 SceneTitle::SceneTitle(SceneIds id)
 	:Scene(id)
@@ -51,6 +52,14 @@ void SceneTitle::Init()
 
 	AddGo(texts["Title"] , Scene::Ui);
 	AddGo(texts["Start"] , Scene::Ui);
+
+	// 캐릭터 선택 클래스 
+
+	uiCharacterSelect = new UICharacterSelect("UICharacterSelect");
+
+	uiCharacterSelect->sortLayer = 11;
+
+	AddGo(uiCharacterSelect, Scene::Ui);
 }
 
 void SceneTitle::Update(float dt)

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Utils.h"
+#include <string>
+#include <Windows.h>
 
 float Utils::Clamp(float v, float min, float max)
 {
@@ -245,6 +247,16 @@ bool Utils::IsCollideWithLineSegment(const sf::Vector2f& p1, const sf::Vector2f&
 		}
 	}
 	return false;
+}
+
+std::wstring Utils::CP949ToWString(const std::string& str)
+{
+	if (str.empty()) return L"";
+	// CP949 코드 페이지를 사용하여 변환
+	int sizeNeeded = MultiByteToWideChar(949, 0, str.c_str(), (int)str.size(), NULL, 0);
+	std::wstring wstrTo(sizeNeeded, 0);
+	MultiByteToWideChar(949, 0, str.c_str(), (int)str.size(), &wstrTo[0], sizeNeeded);
+	return wstrTo;
 }
 
 
