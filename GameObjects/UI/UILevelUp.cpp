@@ -123,11 +123,6 @@ void UILevelUp::LevelUp()
 	SetActive(true);
 }
 
-void UILevelUp::ResetBoxUI()
-{
-
-}
-
 void UILevelUp::Draw(sf::RenderWindow& window)
 {
 	GameObject::Draw(window);

@@ -5,7 +5,12 @@
 class SceneTitle : public Scene
 {
 protected:
-	UILevelUp* uiLevelUp;
+	std::unordered_map<std::string, TextGo*> texts;
+
+	bool isMius = true;
+	float speed = 0.1f;
+	sf::Vector2f scale = {1.f , 1.f};
+
 public:
 	SceneTitle(SceneIds id);
 	~SceneTitle() override = default;

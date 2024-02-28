@@ -1,32 +1,17 @@
 #pragma once
-#include "GameObject.h"
-#include "LevelUpTable.h"
 
 class SpriteGo;
 class TextGo;
-class Crosshair;
 
-struct SelectBox
-{
-	std::string name;
-	sf::FloatRect bounds;
-};
-
-class UILevelUp : public GameObject
+class UICharacterSelect : public GameObject
 {
 protected:
 	std::unordered_map<std::string, SpriteGo*> sprites;
 	std::unordered_map<std::string, TextGo*> texts;
-	std::vector<SelectBox> selectBoxs;
-	Crosshair* mouse = nullptr;
-
-	std::vector<DataLevelUp> currentDataLevelUp;
-
-	DataLevelUp playerDataLevelUp;
 
 public:
-	UILevelUp(const std::string& name = "");
-	~UILevelUp() override;
+	UICharacterSelect(const std::string& name = "");
+	~UICharacterSelect() override;
 
 	void Init() override;
 	void Release() override;
@@ -36,20 +21,13 @@ public:
 	void Update(float dt) override;
 	void LateUpdate(float dt) override;
 
-	void LevelUp();
-
 	void Draw(sf::RenderWindow& window) override;
 
-	void NewSpriteGo(const std::string& name, 
+	void NewSpriteGo(const std::string& name,
 		const std::string& textureId);
 	void NewTextGo(const std::string& name,
 		const sf::Font& font, const std::wstring& str,
 		int size, const sf::Color& color);
-
-	void HandleMouseSelection();
-	void ProcessSelection(std::string& name);
-
-	DataLevelUp PlayerLevelUp();
 
 	void UiInit();
 	void UiDraw(sf::RenderWindow& window);

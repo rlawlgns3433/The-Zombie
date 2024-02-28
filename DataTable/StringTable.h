@@ -18,6 +18,5 @@ public:
 	void Release() override;
 
 	const std::string& Get(const std::string& id);
-
 };
 

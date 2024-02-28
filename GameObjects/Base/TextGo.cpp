@@ -118,6 +118,16 @@ void TextGo::SetFlipY(bool filp)
 	SetScale(scale);
 }
 
+void TextGo::SetCharacterSize(int size)
+{
+	text.setCharacterSize(size);
+}
+
+void TextGo::SetColor(sf::Color color)
+{
+	text.setFillColor(color);
+}
+
 sf::FloatRect TextGo::GetGlobalBounds()
 {
 	return text.getGlobalBounds();

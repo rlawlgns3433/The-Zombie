@@ -29,6 +29,9 @@ public:
 	void SetFlipX(bool filp) override;
 	void SetFlipY(bool filp) override;
 
+	void SetCharacterSize(int size);
+	void SetColor(sf::Color color);
+
 	sf::FloatRect GetGlobalBounds();
 
 	void Draw(sf::RenderWindow& window) override;
