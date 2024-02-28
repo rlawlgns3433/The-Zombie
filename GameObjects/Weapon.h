@@ -21,7 +21,6 @@ protected:
 	Weapon& operator=(Weapon&&) = delete;
 
 	Player* player = nullptr;
-	SceneGame* sceneGame = nullptr;
 
 	Types type;
 

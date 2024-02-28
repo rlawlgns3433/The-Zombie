@@ -11,6 +11,7 @@ protected:
 	Projectile& operator=(Projectile&&) = delete;
 
 	sf::Vector2f direction;
+	int damage;
 
 public:
 	Projectile(const std::string& name = "");
@@ -23,6 +24,8 @@ public:
 	void LateUpdate(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	int GetDamage() const { return damage; }
 
 	virtual bool CheckCollision(Zombie* zombie) = 0;
 };

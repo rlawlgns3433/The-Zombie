@@ -5,8 +5,9 @@
 
 
 Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
-	:Projectile(name), speed(3000), damage(34)
+	:Projectile(name), speed(3000)
 {
+	damage = 34;
 	sortLayer = 4;
 	tag = 1;
 	shape.setSize({ 3.f, 3.f });

@@ -11,7 +11,6 @@ protected:
     float isStuckInWall = false;
 
 public:
-    int damage;
     bool isHit = false;
     sf::Vector2f prePos;
     sf::RectangleShape shape;

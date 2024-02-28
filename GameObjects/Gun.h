@@ -23,7 +23,7 @@ protected:
 	bool isFiring = false;
 
 public :
-	Gun(const std::string& name = "");
+	Gun(Player* player, const std::string& name = "");
 	~Gun() override = default;
 
 	void Init() override;

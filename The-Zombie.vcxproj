@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Flame.cpp" />
     <ClCompile Include="FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
     <ClCompile Include="GameObjects\UI\UIDebug.cpp" />
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="Flame.h" />
     <ClInclude Include="FlameThrower.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
     <ClInclude Include="Framework\rapidcsv.h" />

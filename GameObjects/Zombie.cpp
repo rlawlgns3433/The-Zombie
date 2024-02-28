@@ -188,7 +188,6 @@ bool Zombie::Damaged(int damage)
 	{
 		hp = 0;
 		OnDie();
-
 	}
 	return isDead;
 }

@@ -398,7 +398,7 @@ void SceneGame::BulletCollision(float dt)
 			if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
 			{
 				bullet->Hit();
-				if (zombie->Damaged(bullet->damage))
+				if (zombie->Damaged(bullet->GetDamage()))
 				{
 					AddScore(10);
 					hud->SetZombieCount(--zombieCount);
