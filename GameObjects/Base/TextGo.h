@@ -31,6 +31,7 @@ public:
 
 	void SetCharacterSize(int size);
 	void SetColor(sf::Color color);
+	void SetOutLine(float thick, sf::Color color);
 
 	sf::FloatRect GetGlobalBounds();
 

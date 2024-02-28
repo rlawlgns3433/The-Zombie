@@ -128,6 +128,12 @@ void TextGo::SetColor(sf::Color color)
 	text.setFillColor(color);
 }
 
+void TextGo::SetOutLine(float thick, sf::Color color)
+{
+	text.setOutlineThickness(thick);
+	text.setOutlineColor(color);
+}
+
 sf::FloatRect TextGo::GetGlobalBounds()
 {
 	return text.getGlobalBounds();

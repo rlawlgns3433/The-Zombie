@@ -38,6 +38,8 @@ void SceneTitle::Init()
 	texts["Title"]->SetColor(sf::Color::Red);
 	texts["Start"]->SetColor(sf::Color::White);
 
+	texts["Title"]->SetOutLine(10.f, sf::Color::Black);
+
 	texts["Title"]->SetOrigin(Origins::MC);
 	texts["Start"]->SetOrigin(Origins::MC);
 
