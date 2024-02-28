@@ -12,6 +12,16 @@ ItemSpawner::ItemSpawner(const std::string& name)
 	//생성시에 값을 받을 수 있도록 or 랜덤
 }
 
+ItemSpawner::ItemSpawner(Scene* sc, const std::string& name)
+	:Spawner(sc, name)
+{
+	//TODO 외부에서 멤버변수 수정할 수 있게
+	interval = 5.f;
+	spawnCount = 2;
+	radius = 500.f;
+	timer = 0.f;
+}
+
 void ItemSpawner::Reset()
 {
 	itemTypes.clear();
@@ -40,5 +50,8 @@ GameObject* ItemSpawner::Create()
 	default:
 		break;
 	}
-	return Item2::Create(itemType, val);
+
+	Item2* go = Item2::Create(itemType, val, scene);
+
+	return go;
 }

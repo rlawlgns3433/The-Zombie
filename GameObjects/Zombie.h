@@ -13,7 +13,7 @@ public:
 
 		Count
 	};
-	static Zombie* Create(Types zombieType);
+	static Zombie* Create(Types zombieType, Scene* sc);
 	static const int TotalTypes = (const int)Types::Count;
 
 
@@ -36,9 +36,10 @@ protected:
 	sf::CircleShape bound; //TODO 히트박스 정보 옮기기
 
 	Zombie(const std::string& name="");
+	Zombie(Scene* sc, const std::string& name="");
 
 	void Collision(float dt);
-
+	void OnDie();
 
 public:
 	bool isDead = false;
@@ -60,5 +61,6 @@ public:
 	inline void SetPlayer(Player* p) { player = p; }
 	bool Damaged(int damage);
 	const sf::Vector2f& GetDirection() const { return direction; };
+
 
 };

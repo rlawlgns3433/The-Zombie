@@ -8,6 +8,7 @@ protected:
 
 public:
 	TextGo(const std::string& name = "");
+	TextGo(Scene* sc, const std::string& name = "");
 
 	void SetString(const std::string& str);
 	void SetString(const std::wstring& str);

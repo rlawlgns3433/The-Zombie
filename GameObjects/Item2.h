@@ -22,6 +22,7 @@ protected:
 
 public:
 	Item2(const std::string& name = "");
+	Item2(Scene* sc, const std::string& name = "");
 	~Item2() override = default;
 
 	void Init() override;
@@ -35,8 +36,8 @@ public:
 
 	void Draw(sf::RenderWindow& window) override;
 
-
-	static Item2* Create(Types t, int v);
+	static Item2* Create(Types t, int v, Scene* sc);
 	Types GetType() const { return type; }
 	int GetValue()const { return value; }
+
 };

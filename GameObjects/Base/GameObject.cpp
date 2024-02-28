@@ -2,7 +2,12 @@
 #include "GameObject.h"
 
 GameObject::GameObject(const std::string& name)
-	: name(name)
+	: name(name), scene(nullptr)
+{
+}
+
+GameObject::GameObject(Scene* sc, const std::string& name)
+	:name(name), scene(sc)
 {
 }
 
