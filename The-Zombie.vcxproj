@@ -137,6 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Flame.cpp" />
+    <ClCompile Include="FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
     <ClCompile Include="GameObjects\UI\UIDebug.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectBlood.cpp" />
@@ -162,6 +164,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GameObjects\Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Framework\Manager\SceneMgr.cpp" />
@@ -180,6 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="Flame.h" />
+    <ClInclude Include="FlameThrower.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
     <ClInclude Include="GameObjects\UI\UIDebug.h" />
@@ -199,6 +204,7 @@
     <ClInclude Include="GameObjects\Gun.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\Manager\SceneMgr.h" />

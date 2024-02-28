@@ -395,10 +395,10 @@ void SceneGame::BulletCollision(float dt)
 			continue;
 		for (auto bullet : bullets)
 		{
-			if (!zombie->isDead && !bullet->isHit && Utils::IsCollideWithLineSegment(zombie->GetPosition(), bullet->GetPosition(), bullet->prePos, zombie->GetGlobalBounds().width / 3.f))
+			if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
 			{
 				bullet->Hit();
-				if (zombie->Damaged(bullet->damage))
+				if (zombie->Damaged(bullet->GetDamage()))
 				{
 					AddScore(10);
 					hud->SetZombieCount(--zombieCount);

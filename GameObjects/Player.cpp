@@ -21,11 +21,10 @@ void Player::Init()
 	SetOrigin(Origins::MC);
 
 	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
-	gun = new Gun("Gun");
+	gun = new Gun(this,"Gun");
 	gun->Init();
 	gun->Reset();
 	dynamic_cast<SceneGame*>(scene)->AddGo(gun);
-
 }
 
 void Player::Release()
@@ -49,7 +48,7 @@ void Player::Update(float dt)
 	SpriteGo::Update(dt);
 	damagedTimer += dt;
 
-	//Ä³¸¯ÅÍ È¸Àü
+	//Ä³ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½	
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 
@@ -58,7 +57,7 @@ void Player::Update(float dt)
 	Utils::Rotate(look, lookAngle);
 	SetRotation(lookAngle);
 
-	//Ä³¸¯ÅÍ ÀÌµ¿
+	//Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 	if (Utils::Magnitude(direction) > 1.f)
@@ -67,10 +66,10 @@ void Player::Update(float dt)
 	}
 	sf::Vector2f tempPos(GetPosition() + direction * speed * dt);
 
-	//Ãæµ¹ °Ë»ç
+	//ï¿½æµ¹ ï¿½Ë»ï¿½
 	boundary = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetBoundary();
 	// 
-	//Ãæµ¹ °Ë»ç: º®
+	//ï¿½æµ¹ ï¿½Ë»ï¿½: ï¿½ï¿½
 	if (tempPos.x < boundary.first.x)
 		Utils::ElasticCollision(tempPos.x, boundary.first.x, 0.f);
 	if (tempPos.x > boundary.second.x)
@@ -84,7 +83,7 @@ void Player::Update(float dt)
 
 
 
-	//Á×À½
+	//ï¿½ï¿½ï¿½ï¿½
 	if (hp == 0)
 	{
 		onDie();
@@ -114,7 +113,7 @@ bool Player::AddExp(int value)
 	if (currentExp >= maxExp)
 	{
 		currentExp -= maxExp;
-		maxExp *= 1.05; //Àý»èµÇ´Â°Å ÀÏ´Ü ½Å°æ ¾È¾²°Ú½À´Ï´Ù.
+		maxExp *= 1.05; // Àý»èµÇ´Â °Å ÀÏ´Ü ½Å°æ ¾È¾²°Ú½À´Ï´Ù.
 		level++;
 		return true;
 	}

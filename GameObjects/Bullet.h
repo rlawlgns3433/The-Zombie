@@ -1,19 +1,16 @@
 #pragma once
-#include "SpriteGo.h"
+#include "Projectile.h"
 
 class Player;
 
-class Bullet : public GameObject
+class Bullet : public Projectile
 {
 protected:
-    sf::Vector2f direction;
     float speed;
     float displacement = 0.f; //움직인 거리
     float isStuckInWall = false;
 
-
 public:
-    int damage;
     bool isHit = false;
     sf::Vector2f prePos;
     sf::RectangleShape shape;
@@ -31,5 +28,8 @@ public:
     void Hit();
 
     static Bullet* Create(Player* player);
+
+    // Projectile을(를) 통해 상속됨
+    bool CheckCollision(Zombie* zombie) override;
 };
 
