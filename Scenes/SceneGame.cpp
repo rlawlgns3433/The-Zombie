@@ -24,7 +24,6 @@ void SceneGame::Init()
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
 	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
-
 	//좀비 스포너
 	spawners.push_back(new ZombieSpawner(this));
 	spawners.push_back(new ItemSpawner(this));

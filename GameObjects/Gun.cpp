@@ -80,6 +80,8 @@ void Gun::Draw(sf::RenderWindow& window)
 
 void Gun::Attack()
 {
+	if (!player->GetActive()) return;
+
 	if (ammo > 0)
 	{
 		ammo--;
