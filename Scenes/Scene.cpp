@@ -57,6 +57,8 @@ void Scene::Release()
 		delete obj;
 	}
 	uiObjects.clear();
+	deleteDeque.clear();
+	sortList.clear();
 }
 
 void Scene::Reset()
