@@ -21,11 +21,10 @@ void Player::Init()
 	SetOrigin(Origins::MC);
 
 	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
-	gun = new Gun("Gun");
+	gun = new Gun(this,"Gun");
 	gun->Init();
 	gun->Reset();
 	dynamic_cast<SceneGame*>(scene)->AddGo(gun);
-
 }
 
 void Player::Release()
