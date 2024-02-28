@@ -12,6 +12,8 @@ Weapon::Weapon(const std::string& name)
 void Weapon::Init()
 {
 	GameObject::Init();
+	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
+	hud->SetAmmo(ammo, totalAmmo);
 }
 
 void Weapon::Release()
@@ -22,7 +24,6 @@ void Weapon::Release()
 void Weapon::Reset()
 {
 	GameObject::Reset();
-	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
 	hud->SetAmmo(ammo, totalAmmo);
 }
 

@@ -54,10 +54,8 @@ void SceneGame::Init()
 
 	hud->SetScore(score);
 	hud->SetHiScore(hiScore);
-	hud->SetAmmo(0, 0);
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
-
 }
 
 void SceneGame::Release()

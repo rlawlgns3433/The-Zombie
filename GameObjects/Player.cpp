@@ -49,6 +49,7 @@ void Player::Release()
 void Player::Reset()
 {
 	SpriteGo::Reset();
+	weapon->Reset();
 	active = true;
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Background"));
@@ -97,8 +98,6 @@ void Player::Update(float dt)
 
 	SetPosition(tempPos);
 
-
-
 	//����
 	if (hp == 0)
 	{
@@ -110,6 +109,7 @@ void Player::Update(float dt)
 void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+	weapon->Draw(window);
 }
 
 void Player::onDamage(int damage)
