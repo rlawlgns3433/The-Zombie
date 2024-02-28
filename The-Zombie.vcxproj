@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
     <ClCompile Include="EffectDamage.cpp" />
     <ClCompile Include="GameObjects\Flame.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="GameObjects\UI\UICharacterSelect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CharacterSelectTable.h" />
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="EffectDamage.h" />

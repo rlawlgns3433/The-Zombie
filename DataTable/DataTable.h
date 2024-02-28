@@ -9,9 +9,10 @@ public:
 		Zombie,
 		LevelUp,
 		PLAYER,
-		ITEM
+		ITEM,
+		PLAYER_SELECT,
 	};
-	static const int TotalTypes = 1;
+	static const int TotalTypes = 6;
 
 private:
 	Types type;

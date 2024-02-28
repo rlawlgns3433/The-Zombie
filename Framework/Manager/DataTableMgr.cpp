@@ -5,6 +5,7 @@
 #include "LevelUpTable.h"
 #include "PlayerTable.h"
 #include "ItemTable.h"
+#include "CharacterSelectTable.h"
 
 DataTableMgr::DataTableMgr()
 {
@@ -43,6 +44,12 @@ void DataTableMgr::Init()
 	ItemTable* itemTable = new ItemTable(DataTable::Types::ITEM);
 	itemTable->Load();
 	tables.insert({ DataTable::Types::ITEM, itemTable });
+
+	//CharacterSelectTable
+	CharacterSelectTable* characterSelectTable = new CharacterSelectTable(DataTable::Types::PLAYER_SELECT);
+	characterSelectTable->Load();
+	tables.insert({ DataTable::Types::PLAYER_SELECT, characterSelectTable });
+
 }
 
 void DataTableMgr::Release()

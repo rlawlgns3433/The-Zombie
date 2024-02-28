@@ -39,7 +39,5 @@ public:
 	void Release() override;
 
 	const DataLevelUp& Get();
-
-	std::wstring CP949ToWString(const std::string& str);
 	
 };

@@ -1,11 +1,15 @@
 #pragma once
 #include "Scene.h"
-#include "UILevelUp.h"
+#include "TextGo.h"
+
+class UICharacterSelect;
 
 class SceneTitle : public Scene
 {
 protected:
 	std::unordered_map<std::string, TextGo*> texts;
+
+	UICharacterSelect* uiCharacterSelect = nullptr;
 
 	bool isMius = true;
 	float speed = 0.1f;
