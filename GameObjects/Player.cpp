@@ -10,13 +10,12 @@
 #include "PlayerTable.h"
 #include "FlameThrower.h"
 #include "Weapon.h"
+#include "Sword.h"
 
 Player::Player(const std::string& name) : SpriteGo(name)
 {
 	textureId = "graphics/player.png";
 	sortLayer = 5;
-
-
 }
 
 void Player::Init()
@@ -26,16 +25,31 @@ void Player::Init()
 	textureId = data.textureId;
 	hp = maxHp = data.maxHp;
 	speed = data.speed;
-	
 
 	SpriteGo::Init();
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
 
 	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
-	weapon = new Gun(this); // Type�� ���� �б� �ʿ�
-	weapon->Init();
-	weapon->Reset();
+
+	switch (type)
+	{
+		case TYPES::MAN:
+			weapon = new Gun(this); // Type�� ���� �б� �ʿ�
+			weapon->Init();
+			weapon->Reset();
+			break;
+		case TYPES::FIREBAT:
+			weapon = new Gun(this); // Type�� ���� �б� �ʿ�
+			weapon->Init();
+			weapon->Reset();
+			break;
+		case TYPES::READDEATH:
+			weapon = new Sword(this); // Type�� ���� �б� �ʿ�
+			weapon->Init();
+			weapon->Reset();
+			break;
+	}
 }
 
 void Player::Release()
@@ -59,6 +73,7 @@ void Player::Reset()
 void Player::Update(float dt)
 {
 	SpriteGo::Update(dt);
+
 	weapon->Update(dt);
 
 	damagedTimer += dt;
@@ -70,7 +85,11 @@ void Player::Update(float dt)
 	//sf::Vector2f mouseWorldPos = InputMgr::GetMousePos() + SCENE_MGR.GetCurrentScene()->GetViewCenter() - sf::Vector2f(FRAMEWORK.GetWindow().getSize()) * 0.5f;
 	float lookAngle = Utils::Angle(mouseWorldPos - GetPosition());
 	Utils::Rotate(look, lookAngle);
-	SetRotation(lookAngle);
+
+	if (type != TYPES::READDEATH)
+	{
+		SetRotation(lookAngle);
+	}
 
 	//ĳ���� �̵�
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
@@ -95,8 +114,6 @@ void Player::Update(float dt)
 		Utils::ElasticCollision(tempPos.y, boundary.second.y, 0.f);
 
 	SetPosition(tempPos);
-
-
 
 	//����
 	if (hp == 0)

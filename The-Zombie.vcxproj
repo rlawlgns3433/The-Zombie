@@ -183,6 +183,7 @@
     <ClCompile Include="DataTable\ZombieTable.cpp" />
     <ClCompile Include="GameObjects\UI\UILevelUp.cpp" />
     <ClCompile Include="GameObjects\Weapon.cpp" />
+    <ClCompile Include="GameObjects\Sword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTable\PlayerTable.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="DataTable\ZombieTable.h" />
     <ClInclude Include="GameObjects\UI\UILevelUp.h" />
     <ClInclude Include="GameObjects\Weapon.h" />
+    <ClInclude Include="GameObjects\Sword.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
