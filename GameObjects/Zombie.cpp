@@ -4,7 +4,7 @@
 #include "Bullet.h"
 #include "EffectBlood.h"
 #include "ZombieTable.h"
-#include "Item2.h"
+#include "Item.h"
 
 Zombie::Zombie(const std::string& name)
 	: SpriteGo(name)
@@ -173,7 +173,7 @@ void Zombie::OnDie()
 	isDead = true;
 	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
 	SOUND_MGR.PlaySfx("sound/splat.wav");
-	Item2::Create(Item2::Types::AMMO, 5, scene)->SetPosition(position);
+	Item::Create(Item::Types::AMMO, 5, scene)->SetPosition(position);
 }
 
 bool Zombie::Damaged(int damage)

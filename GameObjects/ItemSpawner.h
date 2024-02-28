@@ -1,12 +1,12 @@
 #pragma once
 #include "Spawner.h"
-#include "Item2.h"
+#include "Item.h"
 
 
 class ItemSpawner : public Spawner
 {
 protected:
-	std::vector<Item2::Types> itemTypes;
+	std::vector<Item::Types> itemTypes;
 
 public:
 	ItemSpawner(const std::string& name = "ItemSpawner");

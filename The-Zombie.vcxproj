@@ -138,8 +138,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataTable\PlayerTable.cpp" />
-    <ClCompile Include="Flame.cpp" />
-    <ClCompile Include="FlameThrower.cpp" />
+    <ClCompile Include="GameObjects\Flame.cpp" />
+    <ClCompile Include="GameObjects\FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
     <ClCompile Include="GameObjects\UI\UIDebug.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectBlood.cpp" />
@@ -155,10 +155,11 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Base\GameObject.cpp" />
     <ClCompile Include="GameObjects\ZombieSpawner.cpp" />
-    <ClCompile Include="GameObjects\Item2.cpp" />
+    <ClCompile Include="GameObjects\Item.cpp" />
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
     <ClCompile Include="GameObjects\Gun.cpp" />
     <ClCompile Include="DataTable\LevelUpTable.cpp" />
+    <ClCompile Include="ItemTable.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -166,7 +167,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GameObjects\Player.cpp" />
-    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="GameObjects\Projectile.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Framework\Manager\SceneMgr.cpp" />
@@ -186,8 +187,8 @@
   <ItemGroup>
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
-    <ClInclude Include="Flame.h" />
-    <ClInclude Include="FlameThrower.h" />
+    <ClInclude Include="GameObjects\Flame.h" />
+    <ClInclude Include="GameObjects\FlameThrower.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
     <ClInclude Include="GameObjects\UI\UIDebug.h" />
@@ -202,13 +203,14 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\Base\GameObject.h" />
-    <ClInclude Include="GameObjects\Item2.h" />
+    <ClInclude Include="GameObjects\Item.h" />
     <ClInclude Include="GameObjects\ItemSpawner.h" />
     <ClInclude Include="GameObjects\Gun.h" />
     <ClInclude Include="DataTable\LevelUpTable.h" />
+    <ClInclude Include="ItemTable.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
-    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="GameObjects\Projectile.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\Manager\SceneMgr.h" />

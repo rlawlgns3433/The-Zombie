@@ -2,7 +2,7 @@
 #include "SpriteGo.h"
 class Player;
 
-class Item2: public SpriteGo
+class Item: public SpriteGo
 {
 public:
 	enum class Types
@@ -21,9 +21,9 @@ protected:
 	Player* player;
 
 public:
-	Item2(const std::string& name = "");
-	Item2(Scene* sc, const std::string& name = "");
-	~Item2() override = default;
+	Item(const std::string& name = "");
+	Item(Scene* sc, const std::string& name = "");
+	~Item() override = default;
 
 	void Init() override;
 	void Release() override;
@@ -36,7 +36,7 @@ public:
 
 	void Draw(sf::RenderWindow& window) override;
 
-	static Item2* Create(Types t, int v, Scene* sc);
+	static Item* Create(Types t, int v, Scene* sc);
 	Types GetType() const { return type; }
 	int GetValue()const { return value; }
 

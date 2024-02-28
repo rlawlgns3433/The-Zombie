@@ -149,16 +149,16 @@ void Player::onDie()
 	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::DIE);
 }
 
-void Player::onItem(Item2* item)
+void Player::onItem(Item* item)
 {
 	SOUND_MGR.PlaySfx("sound/pickup.wav");
 	switch (item->GetType())
 	{
-	case Item2::Types::AMMO:
+	case Item::Types::AMMO:
 		weapon->AddTotalAmmo(item->GetValue());
 		hud->SetAmmo(weapon->GetAmmo(), weapon->GetTotalAmmo());
 		break;
-	case Item2::Types::HEALTH:
+	case Item::Types::HEALTH:
 		hp = std::min(hp+item->GetValue(),maxHp);
 		hud->SetHp(hp,maxHp);
 		break;

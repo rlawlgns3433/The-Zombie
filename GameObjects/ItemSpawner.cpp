@@ -25,33 +25,33 @@ ItemSpawner::ItemSpawner(Scene* sc, const std::string& name)
 void ItemSpawner::Reset()
 {
 	itemTypes.clear();
-	itemTypes.push_back(Item2::Types::HEALTH);
-	itemTypes.push_back(Item2::Types::AMMO);
-	itemTypes.push_back(Item2::Types::AMMO);
-	itemTypes.push_back(Item2::Types::AMMO);
-	itemTypes.push_back(Item2::Types::AMMO);
+	itemTypes.push_back(Item::Types::HEALTH);
+	itemTypes.push_back(Item::Types::AMMO);
+	itemTypes.push_back(Item::Types::AMMO);
+	itemTypes.push_back(Item::Types::AMMO);
+	itemTypes.push_back(Item::Types::AMMO);
 
 	Spawner::Reset();
 }
 
 GameObject* ItemSpawner::Create()
 {
-	Item2::Types itemType = itemTypes[Utils::RandomRange(0, itemTypes.size())];
+	Item::Types itemType = itemTypes[Utils::RandomRange(0, itemTypes.size())];
 	int val = 0;
 	switch (itemType)
 	{
 
-	case Item2::Types::AMMO:
+	case Item::Types::AMMO:
 		val = Utils::RandomRange(20, 40);
 		break;
-	case Item2::Types::HEALTH:
+	case Item::Types::HEALTH:
 		val = Utils::RandomRange(10, 30);
 		break;
 	default:
 		break;
 	}
 
-	Item2* go = Item2::Create(itemType, val, scene);
+	Item* go = Item::Create(itemType, val, scene);
 
 	return go;
 }

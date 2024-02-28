@@ -2,7 +2,7 @@
 #include "SpriteGo.h"
 
 class TileMap;
-class Item2;
+class Item;
 class UIHUD;
 class Gun;
 class FlameThrower;
@@ -55,7 +55,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void onDie();
-	void onItem(Item2* item);
+	void onItem(Item* item);
 	void onDamage(int damage);
 
 	//레벨업 하면 true 반환

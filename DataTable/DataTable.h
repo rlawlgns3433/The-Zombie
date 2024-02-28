@@ -8,8 +8,8 @@ public:
 		String,
 		Zombie,
 		LevelUp,
-		PLAYER
-
+		PLAYER,
+		ITEM
 	};
 	static const int TotalTypes = 1;
 
