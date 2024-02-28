@@ -36,8 +36,10 @@ Zombie* Zombie::Create(Types zombieType,Scene* sc)
 	zombie->Init();
 	zombie->Reset();
 	zombie->player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
-	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->zombieObjects.push_back(zombie);
 
+	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->zombieObjects.push_back(zombie);
+	zombie->bound.setRadius(zombie->GetLocalBounds().width / 3);
+	Utils::SetOrigin(zombie->bound, Origins::MC);
 
 	return zombie;
 }
@@ -49,10 +51,9 @@ void Zombie::Init()
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
 
-	bound.setRadius(GetLocalBounds().width / 3);
+
 	bound.setOutlineColor(sf::Color::Magenta);
 	bound.setOutlineThickness(1);
-	Utils::SetOrigin(bound, Origins::MC);
 	bound.setFillColor(sf::Color(255, 255, 255, 0));
 
 }
@@ -85,7 +86,7 @@ void Zombie::Update(float dt)
 	}
 
 	//플레이어에게 이동
-	if (distanceToPlayer > sprite.getGlobalBounds().width * 3.8f / 10.f)
+	if (distanceToPlayer > GetBound())
 	{
 		//SetPosition(GetPosition() + Utils::GetNormalize(player->GetPosition() - GetPosition()) * speed * dt);
 		Translate(direction * speed * dt);
@@ -109,7 +110,7 @@ void Zombie::FixedUpdate(float dt)
 
 	distanceToPlayer = Utils::Distance(player->GetPosition(), position);
 	SpriteGo::FixedUpdate(dt);
-	if (atkTimer >= atkInterval && distanceToPlayer <= sprite.getGlobalBounds().width * 3.8f / 10.f)
+	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound())
 	{
 		player->onDamage(atkDamage);
 		atkTimer = 0.f;
@@ -119,10 +120,6 @@ void Zombie::FixedUpdate(float dt)
 void Zombie::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
-
-
-
-	//TODO : 코드 따로 정리 & ON OFF 기능에 연동
 
 }
 
@@ -146,7 +143,7 @@ void Zombie::Collision(float dt)
 			continue;
 		sf::Vector2f dz = Utils::GetNormalize(ptr->GetPosition() - position); //다른 좀비로의 방향
 		float distance = Utils::Distance(ptr->GetPosition(), position); //다른 좀비와의 거리
-		float minDistance = sprite.getGlobalBounds().width / 3.f + ptr->GetGlobalBounds().width / 3.f; //최소 거리
+		float minDistance = GetBound() + ptr->GetBound(); //최소 거리
 		if (distance < minDistance)
 		{
 			SetPosition(position - dz * speed * 2.f * dt);
