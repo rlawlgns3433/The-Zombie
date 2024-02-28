@@ -2,7 +2,6 @@
 #include "Scene.h"
 #include "Zombie.h"
 
-
 class Player;
 class Bullet;
 class TileMap;
@@ -21,7 +20,6 @@ public:
 	};
 	Status status = Status::PLAY;
 protected:
-
 
 	Player* player;
 	UIHUD* hud;
@@ -46,8 +44,6 @@ public:
 	//sf::Vector2f ClampByTileMap(const sf::Vector2f& point);
 	std::list<Zombie*> zombieObjects;
 	std::list<Bullet*> bullets;
-	Crosshair* crosshair = nullptr;
-
 
 	SceneGame(SceneIds id);
 	~SceneGame() override = default;
@@ -55,7 +51,6 @@ public:
 	void Init() override;
 	void Release() override;
 	void Reset() override;
-
 
 	void Enter() override;
 	void Exit() override;

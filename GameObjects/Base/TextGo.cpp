@@ -118,6 +118,11 @@ void TextGo::SetFlipY(bool filp)
 	SetScale(scale);
 }
 
+sf::FloatRect TextGo::GetGlobalBounds()
+{
+	return text.getGlobalBounds();
+}
+
 void TextGo::Draw(sf::RenderWindow& window)
 {
 	window.draw(text);

@@ -29,6 +29,8 @@ public:
 	void SetFlipX(bool filp) override;
 	void SetFlipY(bool filp) override;
 
+	sf::FloatRect GetGlobalBounds();
+
 	void Draw(sf::RenderWindow& window) override;
 };
 

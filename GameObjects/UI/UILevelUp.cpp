@@ -4,6 +4,8 @@
 #include "TextGo.h"
 #include "DataTableMgr.h"
 #include "LevelUpTable.h"
+#include "Framework.h"
+#include "Crosshair.h"
 
 UILevelUp::UILevelUp(const std::string& name)
 {
@@ -17,6 +19,8 @@ UILevelUp::~UILevelUp()
 
 void UILevelUp::Init()
 {
+	mouse = FRAMEWORK.GetMouse();
+
 	sf::Font& font = RES_MGR_FONT.Get("fonts/BMHANNAPro.ttf");
 
 	//************************레벨업 배경 UI***********************
@@ -55,6 +59,21 @@ void UILevelUp::Init()
 
 	UiInit();
 
+	SelectBox box1 = { "graphics/levelup_selete1.png" , 
+		sf::FloatRect({640 , 250, 640 ,160}) };
+
+	SelectBox box2 = { "graphics/levelup_selete2.png" , 
+		sf::FloatRect({640 , 420, 640 ,160}) };
+
+	SelectBox box3 = { "graphics/levelup_selete3.png" , 
+		sf::FloatRect({640 , 590, 640 ,160}) };
+
+	selectBoxs.push_back(box1);
+	selectBoxs.push_back(box2);
+	selectBoxs.push_back(box3);
+
+
+
 	SetActive(false);
 }
 
@@ -74,6 +93,10 @@ void UILevelUp::Update(float dt)
 {
 	GameObject::Update(dt);
 
+	std::cout << mouse->GetPosition().x << " ";
+	std::cout << mouse->GetPosition().y << std::endl;
+
+	HandleMouseSelection();
 }
 
 void UILevelUp::LateUpdate(float dt)
@@ -124,6 +147,29 @@ void UILevelUp::NewTextGo(const std::string& name,
 	texts.insert( { name , new TextGo(name) } );
 
 	texts[name]->Set(font, str, size, color);
+}
+
+void UILevelUp::HandleMouseSelection()
+{
+	for (auto& data : selectBoxs)
+	{
+		if (data.bounds.contains(mouse->GetPosition()))
+		{
+			ProcessSelection(data.name);
+			break;
+		}
+		else
+		{
+			sprites["LevelUp"]->SetTexture("graphics/levelup.png");
+		}
+	}
+}
+
+void UILevelUp::ProcessSelection(std::string& name)
+{
+	sprites["LevelUp"]->SetTexture(name);
+
+	
 }
 
 void UILevelUp::UiInit()
