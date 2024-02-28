@@ -2,6 +2,8 @@
 #include "Item.h"
 #include "Player.h"
 #include "Scene.h"
+#include "ItemTable.h"
+
 
 Item::Item(const std::string& name)
 	:SpriteGo(name), type(Types::NONE), value(0), player(nullptr)
@@ -63,19 +65,10 @@ Item* Item::Create(Types t, int v, Scene* sc)
 {
 	Item* newItem = new Item(sc);
 	newItem->type = t;
-	newItem->value = v;
 
-	switch (newItem->type)
-	{
-	case Types::AMMO:
-		newItem->textureId = "graphics/ammo_pickup.png";
-		break;
-	case Types::HEALTH:
-		newItem->textureId = "graphics/health_pickup.png";
-		break;
-	}
-
-
+	const DATA_ITEM& data = DT_ITEM->Get(newItem->type);
+	newItem->value = Utils::RandomRange(data.minVal, data.maxVal);
+	newItem->textureId = data.textureId;
 	newItem->Init();
 	newItem->Reset();
 	newItem->scene->AddGo(newItem);

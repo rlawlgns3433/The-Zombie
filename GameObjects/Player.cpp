@@ -3,7 +3,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "TileMap.h"
-#include "Item2.h"
+#include "Item.h"
 #include "UIHUD.h"
 #include "Crosshair.h"
 #include "Gun.h"
