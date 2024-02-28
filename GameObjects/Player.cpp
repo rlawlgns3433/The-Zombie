@@ -3,7 +3,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "TileMap.h"
-#include "Item2.h"
+#include "Item.h"
 #include "UIHUD.h"
 #include "Crosshair.h"
 #include "Gun.h"
@@ -135,9 +135,9 @@ bool Player::AddExp(int value)
 	return false;
 }
 
-void Player::AddMaxHp(int value)
+void Player::StatAdd(DataLevelUp data)
 {
-	maxHp += value;
+	maxHp += data.;
 	hp += value;
 	hud->SetHp(hp, maxHp);
 }

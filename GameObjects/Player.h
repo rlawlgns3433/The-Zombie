@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteGo.h"
+#include <LevelUpTable.h>
 
 class TileMap;
 class Item;
@@ -60,8 +61,7 @@ public:
 
 	//레벨업 하면 true 반환
 	bool AddExp(int value);
-	inline void AddMaxHp(int value);
-	inline void AddSpeed(float value) { speed += value; }
+	void StatAdd(DataLevelUp dataLv);
 
 	inline int GetLevel() const { return level; }
 	inline int GetHp() const { return hp; }
