@@ -20,10 +20,12 @@ void Player::Init()
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
 
+	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
 	gun = new Gun("Gun");
 	gun->Init();
 	gun->Reset();
-	dynamic_cast<SceneGame*>(SCENE_MGR.GetScene(SceneIds::SceneGame))->AddGo(gun);
+	dynamic_cast<SceneGame*>(scene)->AddGo(gun);
+
 }
 
 void Player::Release()
@@ -130,6 +132,7 @@ void Player::onDie()
 {
 	active = false;
 	SOUND_MGR.PlayBGM("sound/SellBuyMusic2.wav");
+	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::DIE);
 }
 
 void Player::onItem(Item2* item)

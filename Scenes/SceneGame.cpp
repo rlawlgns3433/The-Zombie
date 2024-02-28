@@ -99,6 +99,7 @@ void SceneGame::Enter()
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 	Scene::Enter();
 	Reset();
+	status = Status::PLAY;
 
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
 	sf::Vector2f centerPos = windowSize * 0.5f;
@@ -129,7 +130,7 @@ void SceneGame::Update(float dt)
 {
 	switch (status)
 	{
-		/////////////////////////////////////////////////////////////////////////////PLAY
+		////////////////////////////////////////////////////////////////////////// PLAY_UPDATE
 	case SceneGame::Status::PLAY:
 		Scene::Update(dt);
 		//�߰�
@@ -178,7 +179,15 @@ void SceneGame::Update(float dt)
 		}
 
 		break;
-		////////////////////////////////////////////////////////////////////////////PAUSE
+		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
+	case SceneGame::Status::DIE:
+		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
+		}
+		crosshair->Update(dt);
+		break;
+		////////////////////////////////////////////////////////////////////////// PAUSE_UPDATE
 	case SceneGame::Status::PAUSE:
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
@@ -188,6 +197,7 @@ void SceneGame::Update(float dt)
 		crosshair->Update(dt);
 
 		break;
+
 	default:
 		break;
 	}
@@ -197,6 +207,7 @@ void SceneGame::LateUpdate(float dt)
 {
 	switch (status)
 	{
+		////////////////////////////////////////////////////////////////////////// PLAY_LATE
 	case SceneGame::Status::PLAY:
 		Scene::LateUpdate(dt);
 
@@ -217,6 +228,11 @@ void SceneGame::LateUpdate(float dt)
 			delete temp;
 		}
 		break;
+		////////////////////////////////////////////////////////////////////////// DIE_LATE
+	case SceneGame::Status::DIE:
+		crosshair->LateUpdate(dt);
+		break;
+		////////////////////////////////////////////////////////////////////////// PAUSE_LATE
 	case SceneGame::Status::PAUSE:
 		crosshair->LateUpdate(dt);
 		break;
@@ -230,12 +246,18 @@ void SceneGame::FixedUpdate(float dt)
 {
 	switch (status)
 	{
+		////////////////////////////////////////////////////////////////////////// PLAY_FIXED
 	case SceneGame::Status::PLAY:
 		Scene::FixedUpdate(dt);
 		BulletCollision(dt);
 		if (zombieCount <= 0)
 			ChangeWave(++wave);
 		break;
+		////////////////////////////////////////////////////////////////////////// DIE_FIXED
+	case SceneGame::Status::DIE:
+		crosshair->FixedUpdate(dt);
+		break;
+		////////////////////////////////////////////////////////////////////////// PAUSE_FIXED
 	case SceneGame::Status::PAUSE:
 		crosshair->FixedUpdate(dt);
 		break;
@@ -260,6 +282,11 @@ void SceneGame::DebugUpdate(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+}
+
+void SceneGame::SetStatus(Status st)
+{
+	status = st;
 }
 
 void SceneGame::AddScore(int s)

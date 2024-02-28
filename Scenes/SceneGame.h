@@ -12,13 +12,16 @@ class Crosshair;
 
 class SceneGame : public Scene
 {
-protected:
+public:
 	enum class Status
 	{
 		PLAY,
 		PAUSE,
+		DIE,
 	};
 	Status status = Status::PLAY;
+protected:
+
 
 	Player* player;
 	UIHUD* hud;
@@ -64,11 +67,14 @@ public:
 
 	void Draw(sf::RenderWindow& window) override;
 
+	void SetStatus(Status st);
+	void AddScore(int s);
+
 	inline Player* GetPlayer() { return player; }
 	inline const std::pair<sf::Vector2f, sf::Vector2f>& GetBoundary() const { return boundary; }
 
-	void AddScore(int s);
 
+	//Wave
 	void ChangeWave(int w);
 	void ReleaseWave();
 	void InitWave();
