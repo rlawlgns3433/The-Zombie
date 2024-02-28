@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataTable\PlayerTable.cpp" />
+    <ClCompile Include="EffectDamage.cpp" />
     <ClCompile Include="GameObjects\Flame.cpp" />
     <ClCompile Include="GameObjects\FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="EffectDamage.h" />
     <ClInclude Include="GameObjects\Flame.h" />
     <ClInclude Include="GameObjects\FlameThrower.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />

@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "EffectBlood.h"
+#include "EffectDamage.h"
 #include "ZombieTable.h"
 #include "Item.h"
 
@@ -190,6 +191,7 @@ bool Zombie::Damaged(int damage)
 {
 	int preHp = hp;
 	hp -= damage;
+	EffectDamage::Create(scene,position,damage);
 	SCENE_MGR.GetCurrentScene()->AddGo(new EffectBlood(this->position))->Init();
 	if (hp <= 0 && !isDead)
 	{
