@@ -40,8 +40,8 @@ protected:
 
 	bool isLevelUp = false;
 
-	TileMap* tileMap;
-	UIHUD* hud;
+	TileMap* tileMap = nullptr;
+	UIHUD* hud = nullptr;
 	Weapon* weapon = nullptr;
 	std::string textureId = "graphics/player.png";
 
@@ -64,6 +64,7 @@ public:
 	//레벨업 하면 true 반환
 	bool AddExp(int value);
 	void AddStat(DataLevelUp data);
+	void AddHp(int value);
 	void LevelUp();
 
 	inline int GetLevel() const { return level; }

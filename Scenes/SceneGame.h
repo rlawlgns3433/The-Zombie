@@ -20,6 +20,7 @@ public:
 		PLAY,
 		PAUSE,
 		DIE,
+		LEVELUP
 	};
 	Status status = Status::PLAY;
 	UILevelUp* uiLevel;

@@ -22,6 +22,11 @@ Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
 
 	shape.setScale({ 0.f , 1.f });
 	prePos = position;
+
+	//Debug
+	bound.rotate(Utils::Angle(direction));
+	bound.setOutlineColor(sf::Color::Magenta);
+	bound.setOutlineThickness(1.f);
 }
 
 void Bullet::Init()
@@ -83,6 +88,14 @@ void Bullet::Update(float dt)
 
 }
 
+void Bullet::DebugUpdate(float dt)
+{
+	bound.setSize({ Utils::Distance(prePos, position),0.f });
+	Utils::SetOrigin(bound, Origins::MR);
+	bound.setPosition(position);
+
+}
+
 void Bullet::Draw(sf::RenderWindow& window)
 {
 	Projectile::Draw(window);
@@ -92,6 +105,11 @@ void Bullet::Draw(sf::RenderWindow& window)
 		active = false;
 		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
 	}
+}
+
+void Bullet::DebugDraw(sf::RenderWindow& window)
+{
+	window.draw(bound);
 }
 
 Bullet* Bullet::Create(Player* player)

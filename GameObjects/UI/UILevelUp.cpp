@@ -34,7 +34,7 @@ void UILevelUp::Init()
 	NewTextGo("Selete1Name", font, L"", 35, sf::Color::White);
 	texts["Selete1Name"]->SetPosition({ 730, 260 });
 	NewTextGo("Selete1Desc", font, L"", 25, sf::Color::White);
-	texts["Selete1Desc"]->SetPosition({ 660, 350 });
+	texts["Selete1Desc"]->SetPosition({ 660, 333 });
 	NewSpriteGo("Selete1Img", "graphics/stat/potion1.png");
 	sprites["Selete1Img"]->SetPosition({ 647, 263 });
 	sprites["Selete1Img"]->SetScale({ 0.6f , 0.6f });
@@ -43,7 +43,7 @@ void UILevelUp::Init()
 	NewTextGo("Selete2Name", font, L"", 35, sf::Color::White);
 	texts["Selete2Name"]->SetPosition({ 730, 430 });
 	NewTextGo("Selete2Desc", font, L"", 25, sf::Color::White);
-	texts["Selete2Desc"]->SetPosition({ 660, 520 });
+	texts["Selete2Desc"]->SetPosition({ 660, 500 });
 	NewSpriteGo("Selete2Img", "graphics/stat/potion1.png");
 	sprites["Selete2Img"]->SetPosition({ 647, 431 });
 	sprites["Selete2Img"]->SetScale({ 0.6f , 0.6f });
@@ -52,7 +52,7 @@ void UILevelUp::Init()
 	NewTextGo("Selete3Name", font, L"", 35, sf::Color::White);
 	texts["Selete3Name"]->SetPosition({ 730, 600 });
 	NewTextGo("Selete3Desc", font, L"", 25, sf::Color::White);
-	texts["Selete3Desc"]->SetPosition({ 660, 690 });
+	texts["Selete3Desc"]->SetPosition({ 660, 670 });
 	NewSpriteGo("Selete3Img", "graphics/stat/potion1.png");
 	sprites["Selete3Img"]->SetPosition({ 647, 598 });
 	sprites["Selete3Img"]->SetScale({ 0.6f , 0.6f });
@@ -115,7 +115,7 @@ void UILevelUp::LevelUp()
 		texts["Selete" + std::to_string(i) + "Name"]->
 			SetString(dlu.name);
 		texts["Selete" + std::to_string(i) + "Desc"]->
-			SetString(dlu.desc);
+			SetString(dlu.desc+L"\n"+dlu.effect);
 		sprites["Selete" + std::to_string(i) + "Img"]->
 			SetTexture(dlu.textureId);
 	}
@@ -159,7 +159,7 @@ void UILevelUp::HandleMouseSelection()
 		{
 			ProcessSelection(selectBoxs[i].name);
 
-			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+			if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
 			{
 				playerDataLevelUp = currentDataLevelUp[i];
 				SetActive(false);

@@ -9,6 +9,7 @@ struct DataLevelUp
 
 	std::wstring name;
 	std::wstring desc;
+	std::wstring effect;
 	std::string textureId;
 
 	int weight;
@@ -20,6 +21,7 @@ struct DataLevelUp
 	float shotInterval;
 	float reloadInterval;
 	int maxAmmo;
+	int weaponUp;
 };
 
 

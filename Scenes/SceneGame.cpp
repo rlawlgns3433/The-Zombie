@@ -93,14 +93,14 @@ void SceneGame::Release()
 void SceneGame::Reset()
 {
 	Scene::Reset();
-	
+
 }
 
 void SceneGame::Enter()
 {
 	Scene::Enter();
 	Reset();
-	status = Status::PLAY;
+	SetStatus(Status::PLAY);
 
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
 	sf::Vector2f centerPos = windowSize * 0.5f;
@@ -175,7 +175,7 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 		{
-			status = Status::PAUSE;
+			SetStatus(Status::PAUSE);
 		}
 
 		break;
@@ -191,10 +191,27 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 		{
-			status = Status::PLAY;
+			SetStatus(Status::PLAY);
 		}
-		player->Update(dt);
-		uiLevel->Update(dt);
+
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// LEVELUP_UPDATE
+	case SceneGame::Status::LEVELUP:
+
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->Update(dt);
+			}
+		}
 		break;
 
 	default:
@@ -232,6 +249,24 @@ void SceneGame::LateUpdate(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_LATE
 	case SceneGame::Status::PAUSE:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// LEVELUP_LATE
+	case SceneGame::Status::LEVELUP:
+
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
 		break;
 	default:
 		break;
@@ -255,6 +290,28 @@ void SceneGame::FixedUpdate(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// PAUSE_FIXED
 	case SceneGame::Status::PAUSE:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->FixedUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// LEVELUP_FIXED
+	case SceneGame::Status::LEVELUP:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->FixedUpdate(dt);
+			}
+			if (!uiLevel->GetActive())
+			{
+				player->AddStat(uiLevel->PlayerLevelUp());
+				SetStatus(Status::PLAY);
+			}
+		}
 		break;
 	default:
 		break;
@@ -271,7 +328,7 @@ void SceneGame::FixedUpdate(float dt)
 void SceneGame::DebugUpdate(float dt)
 {
 	Scene::DebugUpdate(dt);
-	debugZombieCount->setString("zombies: "+std::to_string(zombieObjects.size()));
+	debugZombieCount->setString("zombies: " + std::to_string(zombieObjects.size()));
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -281,6 +338,26 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::SetStatus(Status st)
 {
+
+	switch (st)
+	{
+	case SceneGame::Status::PLAY:
+		FRAMEWORK.GetMouse()->isPlaying = true;
+		break;
+	case SceneGame::Status::PAUSE:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		break;
+	case SceneGame::Status::DIE:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		break;
+	case SceneGame::Status::LEVELUP:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		uiLevel->LevelUp();
+		break;
+	default:
+		break;
+	}
+
 	status = st;
 }
 
@@ -302,7 +379,7 @@ void SceneGame::ChangeWave(int w)
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
 
-	status = Status::PLAY;
+	SetStatus(Status::PLAY);
 }
 
 void SceneGame::ReleaseWave()
@@ -406,7 +483,7 @@ void SceneGame::BulletCollision(float dt)
 
 sf::Vector2f SceneGame::GetBoundaryCenter()
 {
-	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y+(boundary.second.y - boundary.first.y)*0.5);
+	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y + (boundary.second.y - boundary.first.y) * 0.5);
 }
 
 //sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
