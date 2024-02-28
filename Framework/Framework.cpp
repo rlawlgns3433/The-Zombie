@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Framework.h"
 #include "UIDebug.h"
+#include "Crosshair.h"
 
 void Framework::Init(int width, int height, const std::string& name)
 {
@@ -11,6 +12,10 @@ void Framework::Init(int width, int height, const std::string& name)
 
 	window.create(sf::VideoMode(windowSize.x, windowSize.y), name);
 	//window.setFramerateLimit(15);
+	window.setMouseCursorVisible(false);
+
+	mouse = new Crosshair();
+	mouse->Init();
 
 	uiDebug = &UI_DEBUG.Instance();
 	uiDebug->Init();
@@ -48,14 +53,18 @@ void Framework::Do()
 
 
 		SCENE_MGR.Update(GetDT());
+		mouse->Update(GetDT());
 		SCENE_MGR.LateUpdate(GetDT());
+		mouse->LateUpdate(GetDT());
 		if (fixedDeltaTime.asSeconds() >= fixedInterval)
 		{
 			SCENE_MGR.FixedUpdate(fixedDeltaTime.asSeconds());
+			mouse->FixedUpdate(GetDT());
 			if (isDebug)
 			{
 				SCENE_MGR.DebugUpdate(GetDT());
 				uiDebug->DebugUpdate(GetDT());
+				mouse->DebugUpdate(GetDT());
 			}
 			fixedDeltaTime = sf::Time::Zero;
 		}
@@ -64,11 +73,14 @@ void Framework::Do()
 
 		window.clear();
 		SCENE_MGR.Draw(window);
+		mouse->Draw(window);
 		if (isDebug)
 		{
 			SCENE_MGR.DebugDraw(window);
 			uiDebug->DebugDraw(window);
+			mouse->DebugDraw(window);
 		}
+
 		window.display();
 	}
 }

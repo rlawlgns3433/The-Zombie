@@ -57,6 +57,12 @@ void Crosshair::MotionUpdate(float dt)
 		doUpdate = true;
 	}
 
+	if (!isPlaying&&InputMgr::GetMouseButtonDown(sf::Mouse::Button::Left))
+	{
+		MotionShot();
+	}
+
+
 	if (doUpdate)
 	{
 		SetScale(scale);
