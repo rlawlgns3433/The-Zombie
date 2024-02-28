@@ -31,7 +31,7 @@ bool ZombieTable::Load()
 			std::cout << "좀비 테이블 중복 아이디 발견!" << std::endl;
 			return false;
 		}
-
+		
 		table[id] = DataZombie();
 		table[id].id = id;
 		table[id].nameId = row[1];
@@ -43,8 +43,6 @@ bool ZombieTable::Load()
 		table[id].atkInterval = std::stof(row[7]);
 
 	}
-
-
 
 	return true;
 }

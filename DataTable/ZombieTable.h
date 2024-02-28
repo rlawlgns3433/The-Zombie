@@ -23,9 +23,6 @@ class ZombieTable : public DataTable
 protected:
 	std::unordered_map<Zombie::Types, DataZombie> table;
 
-
-
-
 public:
 	ZombieTable(DataTable::Types t);
 	~ZombieTable() override;

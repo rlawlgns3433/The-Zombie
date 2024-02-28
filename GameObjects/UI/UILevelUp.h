@@ -32,6 +32,7 @@ public:
 		const sf::Font& font, const std::wstring& str,
 		int size, const sf::Color& color);
 
+	void ResetBoxUI();
 
 	void UiInit();
 	void UiDraw(sf::RenderWindow& window);

@@ -33,14 +33,15 @@ void SceneTitle::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		if (uiLevelUp->GetActive())
+		if (!uiLevelUp->GetActive())
 		{
-			uiLevelUp->SetActive(false);
+			uiLevelUp->LevelUp();
 		}
 		else
 		{
-			uiLevelUp->SetActive(true);
+			uiLevelUp->SetActive(false);
 		}
+		
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::S))

@@ -2,6 +2,8 @@
 #include "UILevelUp.h"
 #include "SpriteGo.h"
 #include "TextGo.h"
+#include "DataTableMgr.h"
+#include "LevelUpTable.h"
 
 UILevelUp::UILevelUp(const std::string& name)
 {
@@ -26,36 +28,35 @@ void UILevelUp::Init()
 	sprites["LevelUp"]->sortLayer = 3;
 
 	//************************1번째 선택 UI************************
-	NewTextGo("Selete1Name", font, L"장갑", 35, sf::Color::White);
+	NewTextGo("Selete1Name", font, L"", 35, sf::Color::White);
 	texts["Selete1Name"]->SetPosition({ 730, 260 });
-	NewTextGo("Selete1Desc", font, L"이 장갑은 플레이어에게 HP50 영구적으로 증가합니다.", 25, sf::Color::White);
+	NewTextGo("Selete1Desc", font, L"", 25, sf::Color::White);
 	texts["Selete1Desc"]->SetPosition({ 660, 350 });
-	NewSpriteGo("Selete1Img", "graphics/heart.png");
-	sprites["Selete1Img"]->sortLayer = 5;
+	NewSpriteGo("Selete1Img", "");
 	sprites["Selete1Img"]->SetPosition({ 647, 263 });
 	sprites["Selete1Img"]->SetScale({ 0.6f , 0.6f });
 
 	//************************2번째 선택 UI************************
-	NewTextGo("Selete2Name", font, L"망토", 35, sf::Color::White);
+	NewTextGo("Selete2Name", font, L"", 35, sf::Color::White);
 	texts["Selete2Name"]->SetPosition({ 730, 430 });
-	NewTextGo("Selete2Desc", font, L"이 망토는 플레이어에게 공격력이 50 영구적으로 증가합니다.", 25, sf::Color::White);
+	NewTextGo("Selete2Desc", font, L"", 25, sf::Color::White);
 	texts["Selete2Desc"]->SetPosition({ 660, 520 });
-	NewSpriteGo("Selete2Img", "graphics/cape.png");
-	sprites["Selete2Img"]->sortLayer = 5;
+	NewSpriteGo("Selete2Img", "");
 	sprites["Selete2Img"]->SetPosition({ 647, 431 });
 	sprites["Selete2Img"]->SetScale({ 0.6f , 0.6f });
 
 	//************************3번째 선택 UI************************
-	NewTextGo("Selete3Name", font, L"마법의 신발", 35, sf::Color::White);
+	NewTextGo("Selete3Name", font, L"", 35, sf::Color::White);
 	texts["Selete3Name"]->SetPosition({ 730, 600 });
-	NewTextGo("Selete3Desc", font, L"이 신발은 플레이어에게 이동속도 50 영구적으로 증가합니다.", 25, sf::Color::White);
+	NewTextGo("Selete3Desc", font, L"", 25, sf::Color::White);
 	texts["Selete3Desc"]->SetPosition({ 660, 690 });
-	NewSpriteGo("Selete3Img", "graphics/shose.png");
-	sprites["Selete3Img"]->sortLayer = 5;
+	NewSpriteGo("Selete3Img", "");
 	sprites["Selete3Img"]->SetPosition({ 647, 598 });
 	sprites["Selete3Img"]->SetScale({ 0.6f , 0.6f });
 
 	UiInit();
+
+	SetActive(false);
 }
 
 void UILevelUp::Release()
@@ -82,6 +83,23 @@ void UILevelUp::LateUpdate(float dt)
 }
 
 void UILevelUp::LevelUp()
+{
+	for (int i = 1; i < 4; i++)
+	{
+		DataLevelUp dlu = DT_LEVELUP->Get();
+
+		texts["Selete" + std::to_string(i) + "Name"]->
+			SetString(dlu.name);
+		texts["Selete" + std::to_string(i) + "Desc"]->
+			SetString(dlu.desc);
+		sprites["Selete" + std::to_string(i) + "Img"]->
+			SetTexture(dlu.textureId);
+	}
+
+	SetActive(true);
+}
+
+void UILevelUp::ResetBoxUI()
 {
 
 }

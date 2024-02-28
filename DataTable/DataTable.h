@@ -7,6 +7,7 @@ public:
 	{
 		String,
 		Zombie,
+		LevelUp,
 
 	};
 	static const int TotalTypes = 1;
