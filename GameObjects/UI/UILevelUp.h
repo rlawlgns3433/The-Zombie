@@ -19,10 +19,6 @@ protected:
 	std::vector<SelectBox> selectBoxs;
 	Crosshair* mouse = nullptr;
 
-	bool isSelect0 = false;
-	bool isSelect1 = false;
-	bool isSelect2 = false;
-
 public:
 	UILevelUp(const std::string& name);
 	~UILevelUp() override;
