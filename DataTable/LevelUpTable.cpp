@@ -29,7 +29,8 @@ bool LevelUpTable::Load()
 		table[i].desc = CP949ToWString(row[2]);
 		table[i].textureId = row[3];
 		table[i].type = (TYPE)std::stoi(row[4]);
-		table[i].value = std::stoi(row[5]);
+		table[i].value = std::stof(row[5]);
+		table[i].weight = std::stoi(row[6]);
 	}
 
 	return true;

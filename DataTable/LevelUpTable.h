@@ -21,6 +21,7 @@ struct DataLevelUp
 	TYPE type;
 
 	float value;
+	int weight;
 };
 
 class LevelUpTable : public DataTable
