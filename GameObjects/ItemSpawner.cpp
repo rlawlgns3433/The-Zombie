@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ItemSpawner.h"
 #include "SceneGame.h"
+#include "ItemTable.h"
 
 ItemSpawner::ItemSpawner(const std::string& name)
 	:Spawner(name)
@@ -37,20 +38,9 @@ void ItemSpawner::Reset()
 GameObject* ItemSpawner::Create()
 {
 	Item::Types itemType = itemTypes[Utils::RandomRange(0, itemTypes.size())];
-	int val = 0;
-	switch (itemType)
-	{
+	const DATA_ITEM& data = DT_ITEM->Get(itemType);
 
-	case Item::Types::AMMO:
-		val = Utils::RandomRange(20, 40);
-		break;
-	case Item::Types::HEALTH:
-		val = Utils::RandomRange(10, 30);
-		break;
-	default:
-		break;
-	}
-
+	int val = Utils::RandomRange(data.minVal, data.maxVal);
 	Item* go = Item::Create(itemType, val, scene);
 
 	return go;

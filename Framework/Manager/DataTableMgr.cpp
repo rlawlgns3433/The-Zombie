@@ -4,6 +4,7 @@
 #include "ZombieTable.h"
 #include "LevelUpTable.h"
 #include "PlayerTable.h"
+#include "ItemTable.h"
 
 DataTableMgr::DataTableMgr()
 {
@@ -38,6 +39,10 @@ void DataTableMgr::Init()
 	playerTable->Load();
 	tables.insert({ DataTable::Types::PLAYER, playerTable });
 
+	//ItemTable
+	ItemTable* itemTable = new ItemTable(DataTable::Types::ITEM);
+	itemTable->Load();
+	tables.insert({ DataTable::Types::ITEM, itemTable });
 }
 
 void DataTableMgr::Release()
