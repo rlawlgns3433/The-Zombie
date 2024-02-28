@@ -25,8 +25,8 @@ void SceneGame::Init()
 	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
 	//좀비 스포너
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ItemSpawner());
+	spawners.push_back(new ZombieSpawner(this));
+	spawners.push_back(new ItemSpawner(this));
 	for (auto s : spawners)
 	{
 		if (s->name == "ItemSpawner")
@@ -339,15 +339,15 @@ void SceneGame::InitWave()
 	boundary = tileMap->GetBoundary();
 	player->SetPosition(GetBoundaryCenter());
 
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ZombieSpawner());
+	spawners.push_back(new ItemSpawner(this));
+	spawners.push_back(new ItemSpawner(this));
+	spawners.push_back(new ItemSpawner(this));
+	spawners.push_back(new ItemSpawner(this));
+	spawners.push_back(new ItemSpawner(this));
+	spawners.push_back(new ZombieSpawner(this));
+	spawners.push_back(new ZombieSpawner(this));
+	spawners.push_back(new ZombieSpawner(this));
+	spawners.push_back(new ZombieSpawner(this));
 	for (auto s : spawners)
 	{
 		s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });

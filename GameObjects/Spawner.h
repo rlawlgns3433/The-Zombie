@@ -22,6 +22,7 @@ protected:
 
 public:
 	Spawner(const std::string& name = "");
+	Spawner(Scene* sc, const std::string& name = "");
 	~Spawner()override = default;
 
 	void Init();

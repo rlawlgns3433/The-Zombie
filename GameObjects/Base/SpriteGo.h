@@ -8,6 +8,7 @@ protected:
 
 public:
 	SpriteGo(const std::string& name = "");
+	SpriteGo(Scene* sc, const std::string& name = "");
 
 	void SetTexture(const std::string& textureId);
 	void SetTexture();

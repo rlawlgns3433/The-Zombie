@@ -6,6 +6,11 @@ TextGo::TextGo(const std::string& name)
 {
 }
 
+TextGo::TextGo(Scene* sc, const std::string& name)
+	: GameObject(sc, name)
+{
+}
+
 void TextGo::SetString(const std::string& str)
 {
 	text.setString(str);
