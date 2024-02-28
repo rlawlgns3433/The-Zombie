@@ -25,6 +25,8 @@ protected:
 	UIHUD* hud = nullptr;
 	Types type;
 
+	int level = 1;
+
 	float shotInterval = 0.05f;
 	float shotTimer = 0.f;
 	float reloadSpeed = 1.f;
@@ -51,9 +53,10 @@ public:
 	void AddShotInterval(float value);
 	void AddDamage(int value);
 	void AddReloadSpeed(float value);
+	inline void AddLevel(int value) { level += value; }
 
 	virtual void Attack() = 0;
-	void AddTotalAmmo(int add) { totalAmmo += add; }
+	void AddTotalAmmo(int add);
 	int GetAmmo() const { return this->ammo; }
 	int GetTotalAmmo() const { return this->totalAmmo; }
 };

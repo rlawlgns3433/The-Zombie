@@ -84,3 +84,9 @@ void  Weapon::AddReloadSpeed(float value)
 {
 	reloadSpeed = std::max(0.f, reloadSpeed + value);
 }
+
+void Weapon::AddTotalAmmo(int add)
+{
+	totalAmmo += add;
+	hud->SetAmmo(ammo, totalAmmo);
+}

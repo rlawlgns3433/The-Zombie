@@ -117,12 +117,14 @@ void Player::Update(float dt)
 
 	SetPosition(tempPos);
 
+
 	//����
 	if (hp == 0)
 	{
 		onDie();
-		SOUND_MGR.PlaySfx("sound/splat.wav");
+
 	}
+
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -149,8 +151,9 @@ bool Player::AddExp(int value)
 	if (currentExp >= maxExp)
 	{
 		currentExp -= maxExp;
-		maxExp *= 1.05; // roundDown
+		maxExp *= 1.3; // roundDown
 		level++;
+		LevelUp();
 		return true;
 	}
 	return false;
@@ -158,19 +161,37 @@ bool Player::AddExp(int value)
 
 void Player::AddStat(DataLevelUp data)
 {
-	maxHp += std::max(1, maxHp + data.maxHp);
+	//HP
+	maxHp = std::max(1, maxHp + data.maxHp);
+	AddHp(data.maxHp);
 	hud->SetHp(hp, maxHp);
+
 	speed += data.speed;
+
 	xExp += data.xExp;
+
 	weapon->AddDamage(data.damage);
 	weapon->AddShotInterval(data.shotInterval);
 	weapon->AddReloadSpeed(data.reloadInterval);
-	weapon->AddTotalAmmo(data.maxAmmo);
+	weapon->AddMaxAmmo(data.maxAmmo);
+	weapon->AddLevel(data.weaponUp);
+}
+
+void Player::AddHp(int value)
+{
+	hp = std::min(hp + value, maxHp);
+	hud->SetHp(hp, maxHp);
+}
+
+void Player::LevelUp()
+{
+	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::LEVELUP);
 }
 
 void Player::onDie()
 {
 	active = false;
+	SOUND_MGR.PlaySfx("sound/splat.wav");
 	SOUND_MGR.PlayBGM("sound/SellBuyMusic2.wav");
 	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::DIE);
 }
@@ -182,11 +203,12 @@ void Player::onItem(Item* item)
 	{
 	case Item::Types::AMMO:
 		weapon->AddTotalAmmo(item->GetValue());
-		hud->SetAmmo(weapon->GetAmmo(), weapon->GetTotalAmmo());
 		break;
 	case Item::Types::HEALTH:
-		hp = std::min(hp + item->GetValue(), maxHp);
-		hud->SetHp(hp, maxHp);
+		AddHp(item->GetValue());
+		break;
+	case Item::Types::EXP:
+		AddExp(item->GetValue());
 		break;
 	}
 }
