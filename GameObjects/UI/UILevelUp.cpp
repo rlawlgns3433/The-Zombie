@@ -72,8 +72,6 @@ void UILevelUp::Init()
 	selectBoxs.push_back(box2);
 	selectBoxs.push_back(box3);
 
-
-
 	SetActive(false);
 }
 
@@ -93,8 +91,8 @@ void UILevelUp::Update(float dt)
 {
 	GameObject::Update(dt);
 
-	std::cout << mouse->GetPosition().x << " ";
-	std::cout << mouse->GetPosition().y << std::endl;
+	//std::cout << mouse->GetPosition().x << " ";
+	//std::cout << mouse->GetPosition().y << std::endl;
 
 	HandleMouseSelection();
 }
@@ -106,9 +104,13 @@ void UILevelUp::LateUpdate(float dt)
 
 void UILevelUp::LevelUp()
 {
+	currentDataLevelUp.clear();
+
 	for (int i = 1; i < 4; i++)
 	{
 		DataLevelUp dlu = DT_LEVELUP->Get();
+
+		currentDataLevelUp.push_back(dlu);
 
 		texts["Selete" + std::to_string(i) + "Name"]->
 			SetString(dlu.name);
@@ -151,11 +153,17 @@ void UILevelUp::NewTextGo(const std::string& name,
 
 void UILevelUp::HandleMouseSelection()
 {
-	for (auto& data : selectBoxs)
+	for (int i = 0; i < 3; i++)
 	{
-		if (data.bounds.contains(mouse->GetPosition()))
+		if (selectBoxs[i].bounds.contains(mouse->GetPosition()))
 		{
-			ProcessSelection(data.name);
+			ProcessSelection(selectBoxs[i].name);
+
+			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+			{
+				playerDataLevelUp = currentDataLevelUp[i];
+				SetActive(false);
+			}
 			break;
 		}
 		else
@@ -168,8 +176,11 @@ void UILevelUp::HandleMouseSelection()
 void UILevelUp::ProcessSelection(std::string& name)
 {
 	sprites["LevelUp"]->SetTexture(name);
+}
 
-	
+DataLevelUp UILevelUp::PlayerLevelUp()
+{
+	return playerDataLevelUp;
 }
 
 void UILevelUp::UiInit()
