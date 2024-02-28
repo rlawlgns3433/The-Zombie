@@ -30,6 +30,11 @@ void Player::Init()
 	SpriteGo::Init();
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
+	
+	bound.setFillColor(sf::Color::Magenta);
+	bound.setRadius(1.f);
+	Utils::SetOrigin(bound, Origins::MC);
+
 
 	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
 
@@ -70,6 +75,7 @@ void Player::Reset()
 	hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
 
 	hud->SetHp(hp, maxHp);
+	hud->SetExp(currentExp, maxExp);
 }
 
 void Player::Update(float dt)
@@ -127,10 +133,20 @@ void Player::Update(float dt)
 
 }
 
+void Player::DebugUpdate(float dt)
+{
+	bound.setPosition(position);
+}
+
 void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 	weapon->Draw(window);
+}
+
+void Player::DebugDraw(sf::RenderWindow& window)
+{
+	window.draw(bound);
 }
 
 void Player::onDamage(int damage)
@@ -148,12 +164,14 @@ void Player::onDamage(int damage)
 bool Player::AddExp(int value)
 {
 	currentExp += value * xExp;
+	hud->SetExp(currentExp, maxExp);
 	if (currentExp >= maxExp)
 	{
 		currentExp -= maxExp;
 		maxExp *= 1.3; // roundDown
 		level++;
 		LevelUp();
+		hud->SetExp(currentExp, maxExp);
 		return true;
 	}
 	return false;
@@ -169,6 +187,7 @@ void Player::AddStat(DataLevelUp data)
 	speed += data.speed;
 
 	xExp += data.xExp;
+	hud->SetExp(currentExp, maxExp);
 
 	weapon->AddDamage(data.damage);
 	weapon->AddShotInterval(data.shotInterval);

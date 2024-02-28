@@ -26,6 +26,7 @@ public:
 protected:
 	sf::Vector2f direction;
 	sf::Vector2f look = { 1.f, 0.f };
+	sf::CircleShape bound;
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
 
 	TYPES type = TYPES::MAN;
@@ -58,7 +59,9 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void DebugUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+	void DebugDraw(sf::RenderWindow& window) override;
 
 	void onDie();
 	void onItem(Item* item);

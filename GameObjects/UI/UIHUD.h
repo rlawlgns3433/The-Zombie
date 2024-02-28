@@ -39,6 +39,9 @@ protected:
 	sf::Vector2f referenceResolution = {1920, 1080};
 	sf::Vector2f resolution = referenceResolution;
 
+	//°æÇèÄ¡
+	sf::RectangleShape exp;
+
 
 public:
 	UIHUD(const std::string& name = "UIHUD");
@@ -62,6 +65,7 @@ public:
 	void SetHp(int hp,int max);
 	void SetWave(int w);
 	void SetZombieCount(int count);
+	void SetExp(int ex, int max);
 
 	void SetResolution(const sf::Vector2f resolution);
 };
