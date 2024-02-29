@@ -11,7 +11,8 @@ public:
 		Bloater,
 		Crawler,
 
-		Count
+		TIMBER_BOSS,
+		Count,
 	};
 	static Zombie* Create(Types zombieType, Scene* sc);
 	static const int TotalTypes = (const int)Types::Count;
@@ -61,6 +62,7 @@ public:
 	inline void SetPlayer(Player* p) { player = p; }
 	bool Damaged(int damage);
 	const sf::Vector2f& GetDirection() const { return direction; };
+	int GetHp() { return hp; };
 
 	//radius
 	inline const sf::CircleShape& GetBound() { return bound; }
