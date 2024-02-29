@@ -11,8 +11,6 @@ protected:
 	Gun& operator=(const Gun&) = delete;
 	Gun& operator=(Gun&&) = delete;
 
-
-
 	bool isFiring = false;
 
 public :

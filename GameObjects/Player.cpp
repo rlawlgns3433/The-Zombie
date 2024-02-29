@@ -41,17 +41,17 @@ void Player::Init()
 	switch (type)
 	{
 		case TYPES::MAN:
-			weapon = new Gun(this); // Type�� ���� �б� �ʿ�
+			weapon = new Gun(this); // Type 맨
 			weapon->Init();
 			weapon->Reset();
 			break;
 		case TYPES::FIREBAT:
-			weapon = new FlameThrower(this); // Type�� ���� �б� �ʿ�
+			weapon = new FlameThrower(this); // Type 파이어벳
 			weapon->Init();
 			weapon->Reset();
 			break;
 		case TYPES::READDEATH:
-			weapon = new Sword(this); // Type�� ���� �б� �ʿ�
+			weapon = new Sword(this); // Type 검사
 			weapon->Init();
 			weapon->Reset();
 			break;

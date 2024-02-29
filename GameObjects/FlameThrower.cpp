@@ -26,7 +26,6 @@ void FlameThrower::Reset()
 {
 	Weapon::Reset();
 	type = Types::Cloased;
-
 	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
 	hud->SetAmmo(ammo, totalAmmo);
 	ammo = maxAmmo;
@@ -70,9 +69,11 @@ void FlameThrower::Attack()
 		ammo--;
 		hud->SetAmmo(ammo, totalAmmo);
 
-		Flame* flame = new Flame(player);
+		Flame* flame = Flame::Create(scene, player);
 		flame->Init();
 		flame->Reset();
+		flame->SetDamage(player->GetWeapon()->GetDamage());
+
 		scene->AddGo(flame);
 		dynamic_cast<SceneGame*>(scene)->bullets.push_back(flame);
 

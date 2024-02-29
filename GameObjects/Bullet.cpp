@@ -8,7 +8,7 @@
 Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
 	:Projectile(name), speed(3000)
 {
-	damage = 34;
+	//damage = 34;
 
 	shape.setSize({ 3.f, 3.f });
 	shape.setFillColor(sf::Color::Yellow);

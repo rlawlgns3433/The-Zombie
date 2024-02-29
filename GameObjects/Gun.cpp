@@ -27,7 +27,6 @@ void Gun::Reset()
 {
 	Weapon::Reset();
 
-
 	ammo = maxAmmo;
 	totalAmmo = ammo;
 
@@ -71,8 +70,6 @@ void Gun::Attack()
 		hud->SetAmmo(ammo, totalAmmo);
 
 		Bullet::Create(scene);
-
-
 		SOUND_MGR.PlaySfx("sound/shoot.wav");
 	}
 	else

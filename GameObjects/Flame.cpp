@@ -6,7 +6,7 @@
 Flame::Flame(Player* player, const std::string& name)
     : Projectile(name), attackAngle(40)
 {
-	damage = 34;
+	//damage = 34;
     sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld((sf::Vector2i)InputMgr::GetMousePos());
     SetPosition(player->GetPosition());
     Utils::Normalize(direction = mouseWorldPos - position);
@@ -62,11 +62,11 @@ void Flame::EndOfCheckZombie()
     isHit = true;
 }
 
-Flame* Flame::Create(Player* player)
+Flame* Flame::Create(Scene* scene, Player* player)
 {
     Flame* flame = new Flame(player);
     flame->Init();
-    return nullptr;
+    return flame;
 }
 
 bool Flame::CheckCollision(Zombie* zombie)

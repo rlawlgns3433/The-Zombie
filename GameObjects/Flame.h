@@ -26,7 +26,7 @@ public :
     void Draw(sf::RenderWindow& window) override;
     void Hit() override;
     void EndOfCheckZombie();
-    static Flame* Create(Player* player);
+    static Flame* Create(Scene* scene, Player* player);
 
     bool CheckCollision(Zombie* zombie) override;
 };
