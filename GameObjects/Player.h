@@ -30,7 +30,7 @@ protected:
 	sf::CircleShape bound;
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
 
-	TYPES type = TYPES::MAN;
+	TYPES type = TYPES::FIREBAT;
 
 	int level = 1;
 	int maxExp = 20;

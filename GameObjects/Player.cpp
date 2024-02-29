@@ -46,7 +46,7 @@ void Player::Init()
 			weapon->Reset();
 			break;
 		case TYPES::FIREBAT:
-			weapon = new Gun(this); // Type�� ���� �б� �ʿ�
+			weapon = new FlameThrower(this); // Type�� ���� �б� �ʿ�
 			weapon->Init();
 			weapon->Reset();
 			break;

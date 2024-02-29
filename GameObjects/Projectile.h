@@ -28,7 +28,8 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	int GetDamage() const { return damage; }
-	void Hit();
-
+	virtual void Hit();
+	virtual void EndOfCheckZombie() {};
 	virtual bool CheckCollision(Zombie* zombie) = 0;
+
 };
