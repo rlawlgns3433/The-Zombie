@@ -61,7 +61,7 @@ void SceneTitle::Init()
 
 	AddGo(uiCharacterSelect, Scene::Ui);
 
-	//uiCharacterSelect->SetActive(false);
+	uiCharacterSelect->SetActive(false);
 }
 
 void SceneTitle::Update(float dt)
@@ -71,7 +71,7 @@ void SceneTitle::Update(float dt)
 	//KeyInput
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter)|| InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		//SCENE_MGR.ChangeScene(SceneIds::SceneGame);
+		uiCharacterSelect->SetActive(true);
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 	{
