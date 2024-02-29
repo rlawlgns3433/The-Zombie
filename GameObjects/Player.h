@@ -6,6 +6,7 @@ class Item;
 class UIHUD;
 class Gun;
 class FlameThrower;
+class Sword;
 class Weapon;
 
 struct DataLevelUp;

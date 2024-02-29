@@ -13,6 +13,7 @@
 #include "Weapon.h"
 #include "Sword.h"
 
+
 Player::Player(const std::string& name) : SpriteGo(name)
 {
 	textureId = "graphics/player.png";
