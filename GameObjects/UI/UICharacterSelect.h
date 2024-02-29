@@ -13,6 +13,7 @@ protected:
 	std::vector<DATA_PLAYER_SELECT> characterTable;
 	std::vector<SpriteGo*> sortSprites;
 
+
 	// 충돌 처리 컨테이너
 	std::vector<SpriteGo*> selectBoxs;
 	std::vector<SpriteGo*> checkBoxs;
