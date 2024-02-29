@@ -55,7 +55,7 @@ void SceneGame::Init()
 	zombieCount = 1;
 
 	hud->SetScore(score);
-	hud->SetHiScore(hiScore);
+	hud->SetHiScore(GetHighScore());
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
 }
@@ -180,8 +180,10 @@ void SceneGame::Update(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
 	case SceneGame::Status::DIE:
+		
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape)|| InputMgr::GetKeyUp(sf::Keyboard::Space)|| InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
+			SaveHighScore();
 			hud->SetGameOver(false);
 			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 		}
@@ -483,8 +485,43 @@ void SceneGame::InitWave()
 	}
 }
 
+void SceneGame::SaveHighScore()
+{
+	std::ifstream output;
+	output.open("highScore.txt");
+	int fscore = 0;
 
 
+	if (output.is_open())
+	{
+		output >> fscore;
+		hiScore = fscore > hiScore ? fscore : hiScore;
+	}
+	output.close();
+
+	std::ofstream input;
+	input.open("highScore.txt");
+	if (input.is_open())
+	{
+		input << hiScore;
+	}
+	input.close();
+
+}
+
+int SceneGame::GetHighScore()
+{
+	std::ifstream output;
+	output.open("highScore.txt");
+
+	if (output.is_open())
+	{
+		output >> hiScore;
+	}
+	output.close();
+
+	return hiScore;
+}
 
 void SceneGame::BulletCollision(float dt)
 {
