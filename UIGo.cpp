@@ -24,7 +24,6 @@ void UIGo::Release()
 {
 	GameObject::Release();
 
-	UiDelete();
 }
 
 void UIGo::Reset()
@@ -119,12 +118,21 @@ void UIGo::UiDelete()
 {
 	for (auto data : sprites)
 	{
-		delete data.second;
+		if (data.second)
+		{
+			delete data.second;
+			data.second = nullptr;
+		}
+
 	}
 
 	for (auto data : texts)
 	{
-		delete data.second;
+		if (data.second)
+		{
+			delete data.second;
+			data.second = nullptr;
+		}
 	}
 }
 

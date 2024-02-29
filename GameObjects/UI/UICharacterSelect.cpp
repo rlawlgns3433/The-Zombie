@@ -15,7 +15,7 @@ UICharacterSelect::UICharacterSelect(const std::string& name)
 
 UICharacterSelect::~UICharacterSelect()
 {
-	UiDelete();
+	
 }
 
 void UICharacterSelect::Init()

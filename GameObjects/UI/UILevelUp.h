@@ -1,5 +1,6 @@
 #pragma once
-#include "GameObject.h"
+
+#include "UIGo.h"
 #include "LevelUpTable.h"
 
 class SpriteGo;
@@ -12,16 +13,12 @@ struct SelectBox
 	sf::FloatRect bounds;
 };
 
-class UILevelUp : public GameObject
+class UILevelUp : public UIGo
 {
 protected:
-	std::unordered_map<std::string, SpriteGo*> sprites;
-	std::unordered_map<std::string, TextGo*> texts;
+
 	std::vector<SelectBox> selectBoxs;
-	Crosshair* mouse = nullptr;
-
 	std::vector<DataLevelUp> currentDataLevelUp;
-
 	DataLevelUp playerDataLevelUp;
 
 public:
@@ -38,21 +35,9 @@ public:
 
 	void LevelUp();
 
-	void Draw(sf::RenderWindow& window) override;
-
-	void NewSpriteGo(const std::string& name, 
-		const std::string& textureId);
-	void NewTextGo(const std::string& name,
-		const sf::Font& font, const std::wstring& str,
-		int size, const sf::Color& color);
-
 	void HandleMouseSelection();
 	void ProcessSelection(std::string& name);
 
 	DataLevelUp PlayerLevelUp();
-
-	void UiInit();
-	void UiDraw(sf::RenderWindow& window);
-	void UiDelete();
 };
 
