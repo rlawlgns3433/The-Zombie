@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Zombie.h"
+#include <fstream>
 
 class Player;
 class Bullet;
@@ -79,5 +80,7 @@ public:
 	void InitWave();
 
 	UIHUD* GetHUD() { return this->hud; }
+	void SaveHighScore();
+	int GetHighScore();
 };
 
