@@ -204,6 +204,13 @@ void Player::LevelUp()
 	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::LEVELUP);
 }
 
+void Player::SetPlayerType(Player::TYPES type)
+{
+	this->type = type;
+
+	Init();
+}
+
 void Player::OnDie()
 {
 	active = false;
