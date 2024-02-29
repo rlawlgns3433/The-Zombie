@@ -18,8 +18,10 @@
 
 
 SceneGame::SceneGame(SceneIds id)
-	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
+	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr), uiLevel(nullptr)
 {
+	CheatExp();
+	CheatHp();
 }
 
 void SceneGame::Init()
@@ -116,6 +118,7 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
+
 	switch (status)
 	{
 		////////////////////////////////////////////////////////////////////////// PLAY_UPDATE
@@ -356,6 +359,28 @@ void SceneGame::DebugUpdate(float dt)
 {
 	Scene::DebugUpdate(dt);
 	debugZombieCount->setString("zombies: " + std::to_string(zombieObjects.size()));
+
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Slash))
+	{
+		InputMgr::StopComboRecord();
+		InputMgr::ClearCombo();
+		InputMgr::ComboRecord(10.f);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Period))
+	{
+
+		if (InputMgr::IsExllentCombo(cheatExp))
+		{
+			player->AddExp(100);
+		}
+		if (InputMgr::IsExllentCombo(cheatHp))
+		{
+			player->SetInvincibility();
+		}
+		InputMgr::StopComboRecord();
+		InputMgr::ClearCombo();
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -542,4 +567,30 @@ void SceneGame::BulletCollision(float dt)
 sf::Vector2f SceneGame::GetBoundaryCenter()
 {
 	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y + (boundary.second.y - boundary.first.y) * 0.5);
+}
+
+
+
+//치트 콤보 - TODO 데이터테이블화..?
+void SceneGame::CheatExp()
+{
+	cheatExp.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::W,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::M,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::E,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::T,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::E,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::M,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::N,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::E,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::Y,InputMgr::KEY_STATE::DOWN });
+}
+void SceneGame::CheatHp()
+{
+	cheatHp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
+	cheatHp.push_back({ sf::Keyboard::P,InputMgr::KEY_STATE::DOWN });
 }

@@ -26,6 +26,12 @@ public:
 	};
 	Status status = Status::PLAY;
 	UILevelUp* uiLevel;
+private:
+	//ÄÞº¸
+	InputMgr::SFGM_COMBO cheatExp;
+	void CheatExp();
+	InputMgr::SFGM_COMBO cheatHp;
+	void CheatHp();
 protected:
 
 	Player* player;

@@ -19,6 +19,14 @@ struct AxisInfo
 
 class InputMgr
 {
+public:
+	enum class KEY_STATE
+	{
+		PRESS,
+		DOWN,
+		UP
+	};
+	typedef std::deque<std::pair<sf::Keyboard::Key, KEY_STATE>> SFGM_COMBO;
 private:
 	static std::map<Axis, AxisInfo> axisInfoMap;
 
@@ -27,6 +35,12 @@ private:
 	static std::list<sf::Keyboard::Key> ingList;
 
 	static sf::Vector2f mousePos;
+
+	static SFGM_COMBO combo;
+	static float comboTimer;
+	static float comboTimeLimit;
+	static bool doComboRecord;
+
 
 public:
 	static void Init();
@@ -62,5 +76,16 @@ public:
 	{
 		return (sf::Mouse::Button)(key - sf::Keyboard::Key::KeyCount);
 	}
+
+
+	//ÄÞº¸
+	static bool IsPerpectCombo(const SFGM_COMBO& combo);
+	static bool IsExllentCombo(const SFGM_COMBO& combo);
+	static bool IsComboSuccess(const SFGM_COMBO& combo);
+	static void ComboRecord(float timeLimit);
+	static void StopComboRecord();
+	static void ClearCombo();
+
+
 };
 

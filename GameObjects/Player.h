@@ -45,6 +45,7 @@ protected:
 	float damagedTimer = 0.f;
 
 	bool isLevelUp = false;
+	bool invincibility = false;
 
 	TileMap* tileMap = nullptr;
 	UIHUD* hud = nullptr;
@@ -77,11 +78,14 @@ public:
 
 	void SetPlayerType(Player::TYPES type);
 
+	inline const sf::CircleShape& GetBound() const { return bound; }
 	inline int GetLevel() const { return level; }
 	inline int GetHp() const { return hp; }
 	inline int GetMaxHP() const { return maxHp; }
 	inline float GetSpeed() const { return speed; }
 	inline sf::Vector2f GetLook() const { return look; }
+	inline void SetInvincibility(bool value) { invincibility = value; }
+	inline void SetInvincibility() { invincibility = !invincibility; }
 
 	Weapon* GetWeapon() { return weapon; }
 };
