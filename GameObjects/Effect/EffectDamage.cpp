@@ -17,7 +17,7 @@ void EffectDamage::Init()
 {
     TextGo::Init();
     SetFont("fonts/BMHANNAPro.ttf");
-    SetCharacterSize(15);
+    SetCharacterSize(20);
     SetColor(sf::Color(255,255,255,180));
     SetOutLine(1.f, sf::Color(50,50,50,180));
     SetString(L"¹ÌÀÔ·Â");
@@ -47,11 +47,10 @@ EffectDamage* EffectDamage::Create(Scene* sc, sf::Vector2f pos, const std::wstri
     ef->SetOrigin(Origins::MC);
     ef->SetPosition(pos);
     sc->AddGo(ef);
-    return nullptr;
+    return ef;
 }
 
 EffectDamage* EffectDamage::Create(Scene* sc, sf::Vector2f pos, int damage)
 {
-    Create(sc, pos, std::to_wstring(damage));
-    return nullptr;
+    return Create(sc, pos, std::to_wstring(damage));
 }

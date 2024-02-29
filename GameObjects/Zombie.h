@@ -7,8 +7,8 @@ class Zombie : public SpriteGo
 public:
 	enum class Types
 	{
-		Bloater,
 		Chaser,
+		Bloater,
 		Crawler,
 
 		Count

@@ -12,6 +12,9 @@
 #include "Flame.h"
 #include "Projectile.h"
 #include "UILevelUp.h"
+#include "WaveTable.h"
+#include "EffectCenterText.h"
+
 
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
@@ -28,36 +31,24 @@ void SceneGame::Init()
 	uiLevel = dynamic_cast<UILevelUp*>(AddGo(new UILevelUp("uiLevel"), Scene::Ui));
 	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
-	//좀비 스포너
-	spawners.push_back(new ZombieSpawner(this));
-	spawners.push_back(new ItemSpawner(this));
-	for (auto s : spawners)
-	{
-		if (s->name == "ItemSpawner")
-		{
-			s->SetPosition({ FRAMEWORK.GetWindowSize().x * 0.5f, FRAMEWORK.GetWindowSize().y * 0.5f });
-		}
-		else if (s->name == "ZombieSpawner")
-		{
-			s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });
-		}
-		AddGo(s);
-	}
 
-	//�÷��̾�
+	//플레이어
 	player = new Player("Player");
 	AddGo(player);
 
 	Scene::Init();
 
-	//���̺�
-	wave = 0;
-	zombieCount = 1;
+	//웨이브
+	ChangeWave(1);
 
 	hud->SetScore(score);
+<<<<<<< HEAD
 	hud->SetHiScore(GetHighScore());
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
+=======
+	hud->SetHiScore(hiScore);
+>>>>>>> feature/wave
 }
 
 void SceneGame::Release()
@@ -180,8 +171,12 @@ void SceneGame::Update(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
 	case SceneGame::Status::DIE:
+<<<<<<< HEAD
 		
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape)|| InputMgr::GetKeyUp(sf::Keyboard::Space)|| InputMgr::GetKeyUp(sf::Keyboard::Enter))
+=======
+		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
+>>>>>>> feature/wave
 		{
 			SaveHighScore();
 			hud->SetGameOver(false);
@@ -383,6 +378,10 @@ void SceneGame::SetStatus(Status st)
 		FRAMEWORK.GetMouse()->isPlaying = false;
 		uiLevel->LevelUp();
 		break;
+	case SceneGame::Status::WIN:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		SetStatus(Status::PAUSE);
+		break;
 	default:
 		break;
 	}
@@ -407,81 +406,72 @@ void SceneGame::ChangeWave(int w)
 
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
-
-	SetStatus(Status::PLAY);
 }
 
 void SceneGame::ReleaseWave()
 {
 
-	deleteDeque.clear();
-	auto it = gameObjects.begin();
-	while (it != gameObjects.end())
+	for (auto sPtr : spawners)
 	{
-		if ((*it)->name == "Player" || (*it)->name == "Background" || (*it)->name == "Gun")
+		gameObjects.remove(sPtr);
+		auto dIt = deleteDeque.begin();
+		while (dIt != deleteDeque.end())
 		{
-			it++;
+			if (*dIt == sPtr)
+			{
+				dIt = deleteDeque.erase(dIt);
+			}
+			else
+			{
+				dIt++;
+			}
 		}
-		else
-		{
-			delete* it;
-			it = gameObjects.erase(it);
-		}
-	}
-
-	for (auto ptr : zombieObjects)
-	{
-		ptr = nullptr;
-	}
-	zombieObjects.clear();
-	for (auto ptr : spawners)
-	{
-		ptr = nullptr;
+		delete sPtr;
 	}
 	spawners.clear();
-	for (auto ptr : bullets)
-	{
-		ptr = nullptr;
-	}
-	bullets.clear();
 }
 
 void SceneGame::InitWave()
 {
-	switch (wave)
+	const DATA_WAVE& data = DT_WAVE->Get(wave);
+
+	if (wave == DT_WAVE->GetLastWave())
 	{
-	case 0:
-		break;
-	case 1:
-		tileMap->Set({ (int)40,(int)40 }, { 50.f,50.f });
-		zombieCount = 1000000;
-		break;
-	default:
-		break;
+		SetStatus(Status::WIN);
 	}
-
-
-
-	tileMap->SetOrigin(Origins::MC);
-	tileMap->UpdateTransform();
-	boundary = tileMap->GetBoundary();
-	player->SetPosition(GetBoundaryCenter());
-
-	spawners.push_back(new ItemSpawner(this));
-	spawners.push_back(new ItemSpawner(this));
-	spawners.push_back(new ItemSpawner(this));
-	spawners.push_back(new ItemSpawner(this));
-	spawners.push_back(new ItemSpawner(this));
-	spawners.push_back(new ZombieSpawner(this));
-	spawners.push_back(new ZombieSpawner(this));
-	spawners.push_back(new ZombieSpawner(this));
-	spawners.push_back(new ZombieSpawner(this));
-	for (auto s : spawners)
+	else
 	{
-		s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });
-		AddGo(s);
-		s->Init();
-		s->Reset();
+		tileMap->Set({ data.tileX,data.tileY }, { 50.f, 50.f });
+		zombieCount = data.zombieCount;
+		for (int i = 0; i < data.itemAmount; i++)
+		{
+			ItemSpawner* is = new ItemSpawner(this);
+			is->Init();
+			is->Reset();
+			spawners.push_back(is);
+		}
+		for (int i = 0; i < data.zombieAmount; i++)
+		{
+			ZombieSpawner* zs = new ZombieSpawner(this);
+			zs->Init();
+			zs->Reset();
+			for (int z0 = 0; z0 < data.zombie0W; z0++) { zs->AddType(Zombie::Types::Chaser); }
+			for (int z1 = 0; z1 < data.zombie1W; z1++) { zs->AddType(Zombie::Types::Bloater); }
+			for (int z2 = 0; z2 < data.zombie2W; z2++) { zs->AddType(Zombie::Types::Crawler); }
+			spawners.push_back(zs);
+		}
+
+
+		tileMap->SetOrigin(Origins::MC);
+		tileMap->UpdateTransform();
+		boundary = tileMap->GetBoundary();
+
+		for (auto s : spawners)
+		{
+			s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });
+			AddGo(s);
+		}
+		EffectCenterText::Create(this,data.descriptionId);
 	}
 }
 

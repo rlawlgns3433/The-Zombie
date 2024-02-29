@@ -41,6 +41,7 @@ Zombie* Zombie::Create(Types zombieType,Scene* sc)
 	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->zombieObjects.push_back(zombie);
 	zombie->bound.setRadius(zombie->GetLocalBounds().width / 3);
 	Utils::SetOrigin(zombie->bound, Origins::MC);
+	zombie->scene->AddGo(zombie);
 
 	return zombie;
 }

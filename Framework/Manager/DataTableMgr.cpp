@@ -6,6 +6,7 @@
 #include "PlayerTable.h"
 #include "ItemTable.h"
 #include "CharacterSelectTable.h"
+#include <WaveTable.h>
 
 DataTableMgr::DataTableMgr()
 {
@@ -49,6 +50,11 @@ void DataTableMgr::Init()
 	CharacterSelectTable* characterSelectTable = new CharacterSelectTable(DataTable::Types::PLAYER_SELECT);
 	characterSelectTable->Load();
 	tables.insert({ DataTable::Types::PLAYER_SELECT, characterSelectTable });
+
+	//WaveTable
+	WaveTable* waveTable = new WaveTable(DataTable::Types::WAVE);
+	waveTable->Load();
+	tables.insert({ DataTable::Types::WAVE, waveTable });
 
 }
 

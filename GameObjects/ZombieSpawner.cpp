@@ -14,13 +14,12 @@ ZombieSpawner::ZombieSpawner(Scene* sc, const std::string& name)
 
 void ZombieSpawner::Reset()
 {
-
-	zombieTypes.clear();
-	zombieTypes.push_back(Zombie::Types::Bloater);
-	zombieTypes.push_back(Zombie::Types::Crawler);
-	zombieTypes.push_back(Zombie::Types::Chaser);
-
 	Spawner::Reset();
+}
+
+void ZombieSpawner::AddType(Zombie::Types type)
+{
+	zombieTypes.push_back(type);
 }
 
 GameObject* ZombieSpawner::Create()

@@ -139,7 +139,8 @@
   <ItemGroup>
     <ClCompile Include="CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
-    <ClCompile Include="EffectDamage.cpp" />
+    <ClCompile Include="GameObjects\Effect\EffectCenterText.cpp" />
+    <ClCompile Include="GameObjects\Effect\EffectDamage.cpp" />
     <ClCompile Include="GameObjects\Flame.cpp" />
     <ClCompile Include="GameObjects\FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
@@ -187,12 +188,14 @@
     <ClCompile Include="GameObjects\Weapon.cpp" />
     <ClCompile Include="GameObjects\Sword.cpp" />
     <ClCompile Include="GameObjects\UI\UICharacterSelect.cpp" />
+    <ClCompile Include="DataTable\WaveTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterSelectTable.h" />
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
-    <ClInclude Include="EffectDamage.h" />
+    <ClInclude Include="GameObjects\Effect\EffectCenterText.h" />
+    <ClInclude Include="GameObjects\Effect\EffectDamage.h" />
     <ClInclude Include="GameObjects\Flame.h" />
     <ClInclude Include="GameObjects\FlameThrower.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="GameObjects\Weapon.h" />
     <ClInclude Include="GameObjects\Sword.h" />
     <ClInclude Include="GameObjects\UI\UICharacterSelect.h" />
+    <ClInclude Include="DataTable\WaveTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

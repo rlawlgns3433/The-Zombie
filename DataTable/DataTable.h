@@ -11,6 +11,7 @@ public:
 		PLAYER,
 		ITEM,
 		PLAYER_SELECT,
+		WAVE
 	};
 	static const int TotalTypes = 6;
 
