@@ -17,7 +17,7 @@ protected:
 
 public:
 	UIGo(const std::string& name = "");
-	~UIGo() override;
+	virtual ~UIGo();
 
 	void Init() override;
 	void Release() override;

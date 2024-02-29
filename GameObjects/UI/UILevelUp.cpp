@@ -6,20 +6,20 @@
 #include "LevelUpTable.h"
 #include "Framework.h"
 #include "Crosshair.h"
+#include "UIGo.h"
 
-UILevelUp::UILevelUp(const std::string& name)
+UILevelUp::UILevelUp(const std::string& name) : UIGo(name)
 {
 
 }
 
 UILevelUp::~UILevelUp()
 {
-	UiDelete();
+	
 }
 
 void UILevelUp::Init()
 {
-	mouse = FRAMEWORK.GetMouse();
 
 	sf::Font& font = RES_MGR_FONT.Get("fonts/BMHANNAPro.ttf");
 
@@ -57,7 +57,7 @@ void UILevelUp::Init()
 	sprites["Selete3Img"]->SetPosition({ 647, 598 });
 	sprites["Selete3Img"]->SetScale({ 0.6f , 0.6f });
 
-	UiInit();
+
 
 	SelectBox box1 = { "graphics/levelup_selete1.png" , 
 		sf::FloatRect({640 , 250, 640 ,160}) };
@@ -71,6 +71,9 @@ void UILevelUp::Init()
 	selectBoxs.push_back(box1);
 	selectBoxs.push_back(box2);
 	selectBoxs.push_back(box3);
+
+	UiInit();
+	ObjectsSort();
 
 	SetActive(false);
 }
@@ -123,29 +126,6 @@ void UILevelUp::LevelUp()
 	SetActive(true);
 }
 
-void UILevelUp::Draw(sf::RenderWindow& window)
-{
-	GameObject::Draw(window);
-
-	UiDraw(window);
-}
-
-void UILevelUp::NewSpriteGo(const std::string& name, 
-	const std::string& textureId)
-{
-	sprites.insert( { name, new SpriteGo(name) } );
-	sprites[name]->SetTexture(textureId);
-}
-
-void UILevelUp::NewTextGo(const std::string& name, 
-	const sf::Font& font, const std::wstring& str,
-	int size, const sf::Color& color)
-{
-	texts.insert( { name , new TextGo(name) } );
-
-	texts[name]->Set(font, str, size, color);
-}
-
 void UILevelUp::HandleMouseSelection()
 {
 	for (int i = 0; i < 3; i++)
@@ -178,41 +158,3 @@ DataLevelUp UILevelUp::PlayerLevelUp()
 	return playerDataLevelUp;
 }
 
-void UILevelUp::UiInit()
-{
-	for (auto data : sprites)
-	{
-		data.second->Init();
-	}
-
-	for (auto data : texts)
-	{
-		data.second->Init();
-	}
-}
-
-void UILevelUp::UiDraw(sf::RenderWindow& window)
-{
-	for (auto data : sprites)
-	{
-		data.second->Draw(window);
-	}
-
-	for (auto data : texts)
-	{
-		data.second->Draw(window);
-	}
-}
-
-void UILevelUp::UiDelete()
-{
-	for (auto data : sprites)
-	{
-		delete data.second;
-	}
-
-	for (auto data : texts)
-	{
-		delete data.second;
-	}
-}
