@@ -21,7 +21,6 @@ Flame::Flame(Player* player, const std::string& name)
 void Flame::Init()
 {
     Projectile::Init();
-    scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 }
 
 void Flame::Release()
@@ -62,11 +61,30 @@ void Flame::EndOfCheckZombie()
     isHit = true;
 }
 
-Flame* Flame::Create(Scene* scene, Player* player)
+void Flame::Create(Scene* scene, Player* player)
 {
-    Flame* flame = new Flame(player);
-    flame->Init();
-    return flame;
+    SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
+    int count = player->GetWeapon()->GetProjectileCount();
+    auto flameList = Utils::FanSpread(player->GetLook(), count, 60.f/(count/2));
+
+    auto ptr = flameList.begin();
+    for (int i = 0; i < count; i++)
+    {
+        Flame* flame = new Flame(player);
+        flame->Init();
+        flame->Reset();
+        flame->damage = player->GetWeapon()->GetDamage();
+        flame->SetDirection(*(ptr++));
+        flame->scene = scene;
+        sceneGame->AddGo(flame);
+        sceneGame->bullets.push_back(flame);
+    }
+}
+
+void Flame::SetDirection(sf::Vector2f direc)
+{
+    Projectile::SetDirection(direc);
+    sprite.setRotation(Utils::Angle(direc)-90);
 }
 
 bool Flame::CheckCollision(Zombie* zombie)

@@ -36,6 +36,12 @@ void Projectile::Draw(sf::RenderWindow& window)
 {
 }
 
+void Projectile::SetDirection(sf::Vector2f direc)
+{
+	direction = direc;
+
+}
+
 void Projectile::Hit()
 {
 	isHit = true;

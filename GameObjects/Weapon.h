@@ -32,7 +32,7 @@ protected:
 	float reloadSpeed = 1.f; //time to shot
 
 	int damage = 1;
-	int projectileCount = 3;
+	int projectileCount = 2;
 
 	int maxAmmo = 26;
 	int ammo = maxAmmo;

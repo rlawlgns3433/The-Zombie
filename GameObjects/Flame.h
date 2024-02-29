@@ -15,8 +15,8 @@ protected :
     float attackDuration = 0.1f;
     float attackTimer = 0.f;
 
-public :
     Flame(Player* player, const std::string& name = "flame");
+public :
     ~Flame() = default;
 
     void Init()override;
@@ -26,7 +26,9 @@ public :
     void Draw(sf::RenderWindow& window) override;
     void Hit() override;
     void EndOfCheckZombie();
-    static Flame* Create(Scene* scene, Player* player);
+    static void Create(Scene* scene, Player* player);
+
+    void SetDirection(sf::Vector2f direction) override;
 
     bool CheckCollision(Zombie* zombie) override;
 };

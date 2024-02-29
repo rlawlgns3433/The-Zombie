@@ -40,7 +40,8 @@ public:
 	static float Lerp(float min, float max, float t); //선형보간
 	static sf::Vector2f Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float t); //선형보간
 
-	static std::list<sf::Vector2f> DressInRow(const sf::Vector2f& pos, const sf::Vector2f& vec, int count, float interval); //일렬횡대로 늘리기
+	static std::list<sf::Vector2f> DressInRow(const sf::Vector2f& pos, const sf::Vector2f& direction, int count, float interval); //일렬횡대로 늘리기
+	static std::list<sf::Vector2f> FanSpread(sf::Vector2f direction, int count, float angle); //각도 벌리며 늘리기
 
 
 	//충돌

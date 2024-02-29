@@ -69,13 +69,7 @@ void FlameThrower::Attack()
 		ammo--;
 		hud->SetAmmo(ammo, totalAmmo);
 
-		Flame* flame = Flame::Create(scene, player);
-		flame->Init();
-		flame->Reset();
-		flame->SetDamage(player->GetWeapon()->GetDamage());
-
-		scene->AddGo(flame);
-		dynamic_cast<SceneGame*>(scene)->bullets.push_back(flame);
+		Flame::Create(scene, player);
 
 		SOUND_MGR.PlaySfx("sound/shoot.wav");
 	}

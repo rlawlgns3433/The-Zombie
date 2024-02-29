@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Zombie.h"
+#include "Weapon.h"
 
 class Projectile : public GameObject
 {
@@ -27,8 +28,13 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	int GetDamage() const { return damage; }
+
+
+	virtual void SetDirection(sf::Vector2f direc);
 	void SetDamage(int damage) { this->damage = damage; }
+
+	int GetDamage() const { return damage; }
+
 	virtual void Hit();
 	virtual void EndOfCheckZombie() {};
 	virtual bool CheckCollision(Zombie* zombie) = 0;

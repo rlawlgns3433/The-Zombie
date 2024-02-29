@@ -28,8 +28,7 @@ public:
     void Draw(sf::RenderWindow& window) override;
     void DebugDraw(sf::RenderWindow& window) override;
 
-
-    void SetDirection(sf::Vector2f direc);
+    void SetDirection(sf::Vector2f direc) override;
 
     static void Create(Scene* sc);
 

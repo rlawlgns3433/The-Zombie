@@ -224,6 +224,74 @@ std::list<sf::Vector2f> Utils::DressInRow(const sf::Vector2f& pos, const sf::Vec
 
 }
 
+std::list<sf::Vector2f> Utils::FanSpread(sf::Vector2f direction, int count, float angle)
+{
+	std::list<sf::Vector2f> list;
+	if (count == 0) { return list; }
+	if (0.f == fmodf(angle, 90))
+	{
+		sf::Vector2f left = Utils::GetNormalize(direction);
+		sf::Vector2f right = Utils::GetNormalize(direction);
+
+		if (count % 2 == 1)
+		{
+			list.push_back(direction);
+			for (int i = 0; i < count / 2; i++)
+			{
+				left = { -left.y,left.x };
+				right = { right.y,-right.x };;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+		else
+		{
+			left = sf::Transform().rotate(45) * left;
+			right = sf::Transform().rotate(-45) * right;
+			list.push_front(left);
+			list.push_back(right);
+			for (int i = 0; i < count / 2 - 1; i++)
+			{
+				left = { -left.y,left.x };
+				right = { right.y,-right.x };;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+	}
+	else {
+		sf::Vector2f left = Utils::GetNormalize(direction);
+		sf::Vector2f right = Utils::GetNormalize(direction);
+
+		if (count % 2 == 1)
+		{
+			list.push_back(direction);
+			for (int i = 0; i < count / 2; i++)
+			{
+				left = sf::Transform().rotate(angle) * left;
+				right = sf::Transform().rotate(-angle) * right;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+		else
+		{
+			left = sf::Transform().rotate(angle * 0.5) * left;
+			right = sf::Transform().rotate(-angle * 0.5) * right;
+			list.push_front(left);
+			list.push_back(right);
+			for (int i = 0; i < count / 2 - 1; i++)
+			{
+				left = sf::Transform().rotate(angle) * left;
+				right = sf::Transform().rotate(-angle) * right;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+	}
+	return list;
+}
+
 void Utils::ElasticCollision(float& coord, float border, float cor)
 {
 	coord = border - (coord - border) * cor;

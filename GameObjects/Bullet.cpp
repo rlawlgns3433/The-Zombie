@@ -115,7 +115,7 @@ void Bullet::DebugDraw(sf::RenderWindow& window)
 
 void Bullet::SetDirection(sf::Vector2f direc)
 {
-	direction = direc;
+	Projectile::SetDirection(direc);
 	bound.setRotation(Utils::Angle(direc));
 	shape.setRotation(Utils::Angle(direc));
 }
