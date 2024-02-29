@@ -34,7 +34,8 @@ public:
 	void SetOutLine(float thick, sf::Color color);
 
 	sf::FloatRect GetGlobalBounds();
+	std::string GetString() { return text.getString(); }
 
 	void Draw(sf::RenderWindow& window) override;
-};
 
+};

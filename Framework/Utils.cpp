@@ -224,7 +224,7 @@ std::list<sf::Vector2f> Utils::DressInRow(const sf::Vector2f& pos, const sf::Vec
 
 }
 
-std::list<sf::Vector2f> Utils::FanSpread(sf::Vector2f direction, int count, float angle)
+std::list<sf::Vector2f> Utils::FanSpread(const sf::Vector2f& direction, int count, float angle)
 {
 	std::list<sf::Vector2f> list;
 	if (count == 0) { return list; }

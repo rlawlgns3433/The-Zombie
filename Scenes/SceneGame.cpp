@@ -164,6 +164,10 @@ void SceneGame::Update(float dt)
 		{
 			SetStatus(Status::PAUSE);
 		}
+		if (isWin)
+		{
+			WinAnimation(dt);
+		}
 
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
@@ -171,7 +175,7 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
-			SaveHighScore();
+			SaveHighScore(); //TODO 옮겨라
 			hud->SetGameOver(false);
 			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 		}
@@ -393,6 +397,7 @@ void SceneGame::AddScore(int s)
 
 void SceneGame::ChangeWave(int w)
 {
+	isWin = true;
 	this->wave = w;
 
 	ReleaseWave();
@@ -534,36 +539,9 @@ void SceneGame::BulletCollision(float dt)
 		}
 		bullet->EndOfCheckZombie();
 	}
-	
-	//for (auto zombie : zombieObjects)
-	//{
-	//	if (zombie->isDead)
-	//		continue;
-	//	for (auto bullet : bullets)
-	//	{
-	//		if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
-	//		{
-	//			bullet->Hit();
-	//			if (zombie->Damaged(bullet->GetDamage()))
-	//			{
-	//				AddScore(10);
-	//				hud->SetZombieCount(--zombieCount);
-	//			}
-	//			zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
-	//		}
-	//	}
-	//}
 }
 
 sf::Vector2f SceneGame::GetBoundaryCenter()
 {
 	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y + (boundary.second.y - boundary.first.y) * 0.5);
 }
-
-//sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
-//{
-//	sf::FloatRect rect = tileMap->GetGlobalBounds();
-//	rect = Utils::ResizeRect(rect, tileMap->GetCellSize() * -2.f);
-//
-//	return Utils::Clamp();
-//}

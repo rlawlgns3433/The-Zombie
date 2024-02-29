@@ -2,6 +2,7 @@
 #include "SceneMgr.h"
 #include "SceneGame.h"
 #include "SceneTitle.h"
+#include "SceneScore.h"
 
 SceneMgr::~SceneMgr()
 {
@@ -13,6 +14,7 @@ void SceneMgr::Init()
 	Release();
 	scenes.push_back(new SceneTitle(SceneIds::SceneTitle));
 	scenes.push_back(new SceneGame(SceneIds::SceneGame));
+	scenes.push_back(new SceneScore(SceneIds::SceneScore));
 
 	for (auto scene : scenes)
 	{
