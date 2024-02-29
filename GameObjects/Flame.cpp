@@ -89,15 +89,15 @@ void Flame::SetDirection(sf::Vector2f direc)
 
 bool Flame::CheckCollision(Zombie* zombie)
 {
-    float angle = Utils::Angle(direction, zombie->GetPosition() - position);
-    if (angle > attackAngle)
+    float distance = Utils::Distance(position, zombie->GetPosition());
+
+    if (distance > attackRadius)
     {
         return false;
     }
 
-    float distance = Utils::Distance(position, zombie->GetPosition());
-
-    if (distance > attackRadius)
+    float angle = Utils::Angle(direction, zombie->GetPosition() - position);
+    if (angle > attackAngle)
     {
         return false;
     }

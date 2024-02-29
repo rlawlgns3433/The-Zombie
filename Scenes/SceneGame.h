@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Zombie.h"
 #include <fstream>
+#include <sstream>
 
 class Player;
 class Bullet;
@@ -33,7 +34,11 @@ protected:
 	TileMap* tileMap;
 
 	std::vector<Spawner*> spawners;
+	std::vector<std::string> highScore;
 
+	float playTimer;
+	
+	float fastestTime = 0.f;
 	int score = 0;
 	int hiScore = 0;
 	int wave = 0;
