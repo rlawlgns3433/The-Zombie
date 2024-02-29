@@ -190,6 +190,7 @@
     <ClCompile Include="GameObjects\UI\UICharacterSelect.cpp" />
     <ClCompile Include="DataTable\WaveTable.cpp" />
     <ClCompile Include="SwordAttack.cpp" />
+    <ClCompile Include="UIGo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterSelectTable.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="GameObjects\UI\UICharacterSelect.h" />
     <ClInclude Include="DataTable\WaveTable.h" />
     <ClInclude Include="SwordAttack.h" />
+    <ClInclude Include="UIGo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
