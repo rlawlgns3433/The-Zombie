@@ -21,8 +21,7 @@ public:
 		PLAY,
 		PAUSE,
 		DIE,
-		LEVELUP,
-		WIN
+		LEVELUP
 	};
 	Status status = Status::PLAY;
 	UILevelUp* uiLevel;
@@ -38,6 +37,8 @@ protected:
 	int hiScore = 0;
 	int wave = 0;
 	int zombieCount = 1;
+
+	bool isWin = false;
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
 
 	bool doReset = false;
@@ -63,6 +64,7 @@ public:
 	void Exit() override;
 
 	void Update(float dt) override;
+	void WinAnimation(float dt);
 	void LateUpdate(float dt) override;
 	void FixedUpdate(float dt) override;
 	void DebugUpdate(float dt) override;

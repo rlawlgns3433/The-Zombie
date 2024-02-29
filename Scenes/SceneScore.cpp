@@ -9,16 +9,14 @@ SceneScore::SceneScore(SceneIds id)
 void SceneScore::Init()
 {
 	Scene::Init();
+	
+
+
 }
 
 void SceneScore::Release()
 {
 	Scene::Release();
-}
-
-void SceneScore::Reset()
-{
-	Scene::Reset();
 }
 
 void SceneScore::Enter()

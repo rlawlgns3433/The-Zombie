@@ -214,6 +214,11 @@ void SceneGame::Update(float dt)
 	}
 }
 
+void SceneGame::WinAnimation(float dt)
+{
+	SCENE_MGR.ChangeScene(SceneIds::SceneScore);
+}
+
 void SceneGame::LateUpdate(float dt)
 {
 	while (!deleteDeque.empty())
@@ -287,7 +292,7 @@ void SceneGame::FixedUpdate(float dt)
 		Scene::FixedUpdate(dt);
 		zombieObjects.sort();
 		BulletCollision(dt);
-		if (zombieCount <= 0)
+		if (!isWin && zombieCount <= 0)
 			ChangeWave(++wave);
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
@@ -368,10 +373,6 @@ void SceneGame::SetStatus(Status st)
 		FRAMEWORK.GetMouse()->isPlaying = false;
 		uiLevel->LevelUp();
 		break;
-	case SceneGame::Status::WIN:
-		FRAMEWORK.GetMouse()->isPlaying = false;
-		SetStatus(Status::PAUSE);
-		break;
 	default:
 		break;
 	}
@@ -427,7 +428,8 @@ void SceneGame::InitWave()
 
 	if (wave == DT_WAVE->GetLastWave())
 	{
-		SetStatus(Status::WIN);
+		isWin = true;
+		zombieCount = 0;
 	}
 	else
 	{

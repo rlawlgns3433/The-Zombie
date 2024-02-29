@@ -4,7 +4,7 @@ class SceneScore : public Scene
 {
 
 protected:
-	TextGo
+	std::list<TextGo*> scoreList;
 
 public:
 	SceneScore(SceneIds id);
