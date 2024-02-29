@@ -42,13 +42,7 @@ void SceneGame::Init()
 	ChangeWave(1);
 
 	hud->SetScore(score);
-<<<<<<< HEAD
 	hud->SetHiScore(GetHighScore());
-	hud->SetWave(wave);
-	hud->SetZombieCount(zombieCount);
-=======
-	hud->SetHiScore(hiScore);
->>>>>>> feature/wave
 }
 
 void SceneGame::Release()
@@ -171,12 +165,8 @@ void SceneGame::Update(float dt)
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
 	case SceneGame::Status::DIE:
-<<<<<<< HEAD
-		
-		if (InputMgr::GetKeyUp(sf::Keyboard::Escape)|| InputMgr::GetKeyUp(sf::Keyboard::Space)|| InputMgr::GetKeyUp(sf::Keyboard::Enter))
-=======
+
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
->>>>>>> feature/wave
 		{
 			SaveHighScore();
 			hud->SetGameOver(false);
