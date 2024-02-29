@@ -14,6 +14,7 @@
 #include "UILevelUp.h"
 #include "WaveTable.h"
 #include "EffectCenterText.h"
+#include <SceneScore.h>
 
 
 SceneGame::SceneGame(SceneIds id)
@@ -110,7 +111,7 @@ void SceneGame::Exit()
 {
 	Scene::Exit();
 	Init();
-
+	FRAMEWORK.GetMouse()->isPlaying = false;
 }
 
 void SceneGame::Update(float dt)
@@ -175,9 +176,10 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
-			SaveHighScore(); //TODO 옮겨라
+			//SaveHighScore(); //TODO 옮겨라 - CHECK SceneScore에서 저장할 예정
 			hud->SetGameOver(false);
-			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
+			dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
+			SCENE_MGR.ChangeScene(SceneIds::SceneScore);
 		}
 		for (auto obj : uiObjects)
 		{
@@ -223,6 +225,7 @@ void SceneGame::Update(float dt)
 
 void SceneGame::WinAnimation(float dt)
 {
+	dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
 	SCENE_MGR.ChangeScene(SceneIds::SceneScore);
 }
 
@@ -397,7 +400,6 @@ void SceneGame::AddScore(int s)
 
 void SceneGame::ChangeWave(int w)
 {
-	isWin = true;
 	this->wave = w;
 
 	ReleaseWave();

@@ -4,8 +4,14 @@ class SceneScore : public Scene
 {
 
 protected:
-	std::list<TextGo*> scoreList;
-	std::list<TextGo*> sorted;
+	std::list<std::pair<int,float>> sorted;
+	int textSize = 60;
+
+	int currScore = 0;
+	float currTime = 0.f;
+	std::list<std::pair<int, float>>::iterator currIt;
+
+	bool writeMode = false;
 
 public:
 	SceneScore(SceneIds id);
@@ -23,7 +29,8 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-
+	void OnWriteMode(int score, float time);
 	void GetHigh();
+	void OutHigh();
 };
 

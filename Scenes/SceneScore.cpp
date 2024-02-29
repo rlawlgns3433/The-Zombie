@@ -17,24 +17,25 @@ void SceneScore::Init()
 void SceneScore::Release()
 {
 	Scene::Release();
+
+	sorted.clear();
+	int currScore = 0;
+	float currTime = 0.f;
+	bool writeMode = false;
+
 }
 
 void SceneScore::Enter()
 {
-
 	Scene::Enter();
 	GetHigh();
-
-	for (auto ptr : sorted)
-	{
-		AddGo(ptr);
-		std::cout << ptr->GetString() << std::endl;
-	}
+	if (writeMode) { OutHigh(); }
 }
 
 void SceneScore::Exit()
 {
 	Scene::Exit();
+	Release();
 }
 
 void SceneScore::Update(float dt)
@@ -58,75 +59,155 @@ void SceneScore::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 }
 
+void SceneScore::OnWriteMode(int score, float time)
+{
+	writeMode = true;
+	currScore = score;
+	currTime = time;
+
+}
+
 void SceneScore::GetHigh()
 {
-	TextGo* score = nullptr;
+	TextGo* textScore = nullptr;
 
 	std::ifstream input;
 	input.open("highScore.txt");
 
-	if (input.is_open())
+	if (!input.is_open()) { return; }
+
+	std::stringstream buf;
+	std::string line;
+
+	buf << input.rdbuf();
+	input.close();
+
+	int count = 0;
+	int score = 0;
+
+	//기록을 가져온다.
+	while (std::getline(buf, line))
 	{
-		std::stringstream buf;
-		buf << input.rdbuf();
-		input.close();
-		std::string line;
-		std::string str;
-		int count = 0;
-		float y = 0;
-		int textSize = 20;
-		while (std::getline(buf, line))
+		count++;
+		if (count % 2 == 1) { score = std::stoi(line); }
+		else if (count % 2 == 0)
 		{
-			str += line;
-			count++;
-			if (count == 1)
+			float time = stof(line);
+			if (sorted.empty())
 			{
-				int tenCount = 0;
-				int ten = std::stoi(line);
-				while (ten != 0)
-				{
-					ten /= 10;
-					tenCount++;
-				}
-				for (int i = 0; i < 10 - tenCount; i++)
-				{
-					str += " ";
-				}
+				sorted.push_back(std::make_pair(score, time));
+				continue;
 			}
-			else if (count == 2)
+			auto it = sorted.begin();
+			while (it != sorted.end())
 			{
-				score = new TextGo();
-
-				score->Set(RES_MGR_FONT.Get("fonts/DOSIyagiBoldface.ttf"), str, textSize, sf::Color::White);
-
-				score->SetOrigin(Origins::TL);
-				score->SetPosition({ 0.f, y });
-				y += textSize;
-				if (gameObjects.empty())
+				if (score > it->first)
 				{
-					gameObjects.push_front(score);
+					sorted.insert(it, std::make_pair(score, time));
+					break;
+				}
+				else if (score == it->first && time < it->second)
+				{
+					sorted.insert(it, std::make_pair(score, time));
+					break;
 				}
 				else
 				{
-					auto it = gameObjects.begin();
-					while (it != gameObjects.end())
+					it++;
+					if (it == sorted.end())
 					{
-						if (score->GetString() < dynamic_cast<TextGo*>(gameObjects.front())->GetString())
-						{
-							gameObjects.em(it,score);
-							break;
-						}
-						else
-						{
-							it++;
-						}
+						sorted.insert(it, std::make_pair(score, time));
 					}
 				}
-				str.clear();
-				score = nullptr;
-				count = 0;
 			}
 		}
 	}
+
+	//내 점수 기록
+	if (writeMode)
+	{
+		if (sorted.empty())
+		{
+			sorted.push_back(std::make_pair(currScore, currTime));
+			currIt = sorted.begin();
+		}
+		else
+		{
+			auto it = sorted.begin();
+			while (it != sorted.end())
+			{
+				if (currScore > it->first)
+				{
+					currIt = sorted.insert(it, std::make_pair(currScore, currTime));
+					break;
+				}
+				else if (score == it->first && currTime < it->second)
+				{
+
+					currIt = sorted.insert(it, std::make_pair(currScore, currTime));
+					break;
+				}
+				else
+				{
+					it++;
+					if (it == sorted.end())
+					{
+						currIt = sorted.insert(it, std::make_pair(currScore, currTime));
+					}
+				}
+			}
+		}
+	}
+
+
+	//기록들 AddGo
+	std::wstring space;
+	float y = textSize;
+	auto itScore = sorted.begin();
+	while (itScore != sorted.end())
+	{
+		count = 0;
+		space = L"";
+		int ten = itScore->second;
+		while (ten >= 10)
+		{
+			ten /= 10;
+			count++;
+		}
+		for (int i = 0; i < 4 - count; i++)
+		{
+			space += L" ";
+		}
+
+		textScore = new TextGo();
+		textScore->Set(RES_MGR_FONT.Get("fonts/DOSIyagiBoldface.ttf")
+			, std::to_wstring(itScore->first) + L"점 " + space + std::to_wstring(itScore->second) + L"초"
+			, textSize, sf::Color::White);
+		if (writeMode && itScore == currIt) { textScore->SetColor(sf::Color::Yellow); }
+		textScore->SetOrigin(Origins::TR);
+		textScore->SetPosition({ uiView.getSize().x - textSize, y });
+		y += textSize;
+		AddGo(textScore,Scene::Ui);
+		itScore++;
+	};
+
+}
+
+void SceneScore::OutHigh()
+{
+	std::ofstream output;
+	output.open("highScore.txt");
+	if (output.is_open())
+	{
+		int count = 0;
+		for (auto& pair : sorted)
+		{
+			count++;
+			output << pair.first << '\n' << pair.second << '\n';
+			if (count == 10) { break; }
+		}
+	}
+	output.close();
+
 }
 

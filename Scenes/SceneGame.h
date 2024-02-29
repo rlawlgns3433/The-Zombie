@@ -35,9 +35,9 @@ protected:
 	std::vector<Spawner*> spawners;
 	std::vector<std::string> highScore;
 
-	float playTimer;
-	
+	float playTimer = 0.f;
 	float fastestTime = 0.f;
+
 	int score = 0;
 	int hiScore = 0;
 	int wave = 0;
@@ -88,7 +88,7 @@ public:
 	void InitWave();
 
 	UIHUD* GetHUD() { return this->hud; }
-	void SaveHighScore();
+	void SaveHighScore(); //CHECK SceneScore에서 저장할 예정
 	int GetHighScore();
 };
 
