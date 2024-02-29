@@ -12,8 +12,7 @@ protected:
 	Sword& operator=(Sword&&) = delete;
 
 	UIHUD* hud = nullptr;
-
-	//bool isFiring = false;
+	bool isFiring = false;
 
 public:
 	Sword(Player* player, const std::string& name = "");

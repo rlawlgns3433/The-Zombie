@@ -100,6 +100,8 @@ void SceneGame::Enter()
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
 
+	playTimer = 0.f;
+
 	//Debug
 	debugZombieCount = UI_DEBUG.AddText(new sf::Text);
 }
@@ -118,6 +120,7 @@ void SceneGame::Update(float dt)
 		////////////////////////////////////////////////////////////////////////// PLAY_UPDATE
 	case SceneGame::Status::PLAY:
 		Scene::Update(dt);
+		playTimer += dt;
 		//�߰�
 		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		{
@@ -469,26 +472,32 @@ void SceneGame::InitWave()
 
 void SceneGame::SaveHighScore()
 {
-	std::ifstream output;
-	output.open("highScore.txt");
-	int fscore = 0;
+	std::ifstream file("highScore.txt");
 
-
-	if (output.is_open())
-	{
-		output >> fscore;
-		hiScore = fscore > hiScore ? fscore : hiScore;
+	if (!file.is_open()) {
+		std::cerr << "파일을 열 수 없습니다." << std::endl;
+		return;
 	}
-	output.close();
+
+	std::stringstream buffer;
+	buffer << file.rdbuf();
+	file.close();
+
+	std::vector<std::string> lines;
+	std::string line;
 
 	std::ofstream input;
 	input.open("highScore.txt");
 	if (input.is_open())
 	{
-		input << hiScore;
+		while (std::getline(buffer, line))
+		{
+			input << line << '\n';
+		}
+		input << score << '\n' << playTimer << '\n';
 	}
-	input.close();
 
+	input.close();
 }
 
 int SceneGame::GetHighScore()
