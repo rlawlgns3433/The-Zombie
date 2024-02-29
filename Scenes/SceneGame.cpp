@@ -485,14 +485,10 @@ void SceneGame::SaveHighScore()
 	std::string line;
 
 	std::ofstream input;
-	input.open("highScore.txt");
+	input.open("highScore.txt", std::ios::app);
 	if (input.is_open())
 	{
-		while (std::getline(buffer, line))
-		{
-			input << line << '\n';
-		}
-		input << score << '\n' << playTimer << '\n';
+		input << score << '\n' << playTimer;
 	}
 
 	input.close();
