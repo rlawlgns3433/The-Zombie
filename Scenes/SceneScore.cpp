@@ -41,6 +41,10 @@ void SceneScore::Exit()
 void SceneScore::Update(float dt)
 {
 	Scene::Update(dt);
+	if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
+	}
 }
 
 void SceneScore::LateUpdate(float dt)
@@ -141,7 +145,7 @@ void SceneScore::GetHigh()
 					currIt = sorted.insert(it, std::make_pair(currScore, currTime));
 					break;
 				}
-				else if (score == it->first && currTime < it->second)
+				else if (currScore == it->first && currTime < it->second)
 				{
 
 					currIt = sorted.insert(it, std::make_pair(currScore, currTime));

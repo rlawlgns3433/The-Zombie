@@ -7,6 +7,11 @@ std::list<sf::Keyboard::Key> InputMgr::upList;
 std::list<sf::Keyboard::Key> InputMgr::ingList;
 sf::Vector2f InputMgr::mousePos;
 
+InputMgr::SFGM_COMBO InputMgr::combo;
+float InputMgr::comboTimer = 0.f;
+float InputMgr::comboTimeLimit = 1.f;
+bool InputMgr::doComboRecord = false;
+
 void InputMgr::Init()
 {
     // Horizontal
@@ -45,11 +50,15 @@ void InputMgr::UpdateEvent(const sf::Event& ev)
         {
             ingList.push_back(ev.key.code);
             downList.push_back(ev.key.code);
+            if (doComboRecord)
+                combo.push_back({ ev.key.code, KEY_STATE::DOWN });
         }
         break;
     case sf::Event::KeyReleased:
         ingList.remove(ev.key.code);
         upList.push_back(ev.key.code);
+        if (doComboRecord)
+            combo.push_back({ ev.key.code, KEY_STATE::UP });
         break;
     case sf::Event::MouseButtonPressed:
         if (!GetMouseButton(ev.mouseButton.button))
@@ -94,6 +103,10 @@ void InputMgr::Update(float dt)
         {
             axisInfo.value = 0.f;
         }
+    }
+    if (doComboRecord && (comboTimer += dt) > comboTimeLimit)
+    {
+        doComboRecord = false;
     }
 }
 
@@ -183,4 +196,67 @@ bool InputMgr::GetMouseButton(sf::Mouse::Button button)
 bool InputMgr::AnyKeyDown()
 {
     return !downList.empty();
+}
+
+
+bool InputMgr::IsPerpectCombo(const SFGM_COMBO& combo)
+{
+    auto c = combo.begin();
+    auto input = InputMgr::combo.begin();
+    while (c != combo.end() && input != InputMgr::combo.end())
+    {
+        if (*c != *input)
+            break;
+        c++;
+        input++;
+        if (c == combo.end())
+            return true;
+    }
+    return false;
+}
+bool InputMgr::IsExllentCombo(const SFGM_COMBO& combo)
+{
+    auto c = combo.begin();
+    for (auto& input : InputMgr::combo)
+    {
+        if (input.second == KEY_STATE::UP)
+            continue;
+        if (input == *c)
+            c++;
+        else
+            return false;
+        if (c == combo.end())
+            return true;
+    }
+    return false;
+}
+bool InputMgr::IsComboSuccess(const SFGM_COMBO& combo)
+{
+    auto c = combo.begin();
+    for (auto& input : InputMgr::combo)
+    {
+        if (input == *c)
+            c++;
+        if (c == combo.end())
+            return true;
+    }
+    return false;
+}
+void InputMgr::ComboRecord(float timeLimit)
+{
+    if (!doComboRecord)
+    {
+        combo.clear();
+        comboTimeLimit = timeLimit;
+        comboTimer = 0.f;
+        doComboRecord = true;
+    }
+}
+void InputMgr::StopComboRecord()
+{
+    doComboRecord = false;
+}
+void InputMgr::ClearCombo()
+{
+    combo.clear();
 }

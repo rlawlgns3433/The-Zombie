@@ -88,7 +88,7 @@ void Zombie::Update(float dt)
 	}
 
 	//플레이어에게 이동
-	if (distanceToPlayer > GetBound().getRadius())
+	if (distanceToPlayer > GetBound().getRadius() + player->GetBound().getRadius())
 	{
 		//SetPosition(GetPosition() + Utils::GetNormalize(player->GetPosition() - GetPosition()) * speed * dt);
 		Translate(direction * speed * dt);
@@ -112,7 +112,7 @@ void Zombie::FixedUpdate(float dt)
 
 	distanceToPlayer = Utils::Distance(player->GetPosition(), position);
 	SpriteGo::FixedUpdate(dt);
-	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius())
+	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius()+player->GetBound().getRadius())
 	{
 		player->OnDamage(atkDamage);
 		atkTimer = 0.f;

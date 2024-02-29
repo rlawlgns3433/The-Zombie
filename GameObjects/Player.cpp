@@ -31,9 +31,9 @@ void Player::Init()
 	SpriteGo::Init();
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
-	
-	bound.setFillColor(sf::Color::Magenta);
-	bound.setRadius(1.f);
+
+	bound.setFillColor(sf::Color::Cyan);
+	bound.setRadius(GetGlobalBounds().width/3);
 	Utils::SetOrigin(bound, Origins::MC);
 
 
@@ -41,21 +41,21 @@ void Player::Init()
 
 	switch (type)
 	{
-		case TYPES::MAN:
-			weapon = new Gun(this); // Type 맨
-			weapon->Init();
-			weapon->Reset();
-			break;
-		case TYPES::FIREBAT:
-			weapon = new FlameThrower(this); // Type 파이어벳
-			weapon->Init();
-			weapon->Reset();
-			break;
-		case TYPES::READDEATH:
-			weapon = new Sword(this); // Type 검사
-			weapon->Init();
-			weapon->Reset();
-			break;
+	case TYPES::MAN:
+		weapon = new Gun(this); // Type 맨
+		weapon->Init();
+		weapon->Reset();
+		break;
+	case TYPES::FIREBAT:
+		weapon = new FlameThrower(this); // Type 파이어벳
+		weapon->Init();
+		weapon->Reset();
+		break;
+	case TYPES::READDEATH:
+		weapon = new Sword(this); // Type 검사
+		weapon->Init();
+		weapon->Reset();
+		break;
 	}
 }
 
@@ -162,7 +162,7 @@ void Player::OnDamage(int damage)
 	if (damagedTimer >= damagedInterval)
 	{
 		damagedTimer = 0.f;
-		hp = std::max(hp - damage, 0);
+		if (!invincibility) { hp = std::max(hp - damage, 0); }
 		hud->SetHp(hp, maxHp);
 		SOUND_MGR.PlaySfx("sound/hit.wav");
 	}
@@ -182,7 +182,7 @@ void Player::AddStat(DataLevelUp data)
 	AddHp(data.maxHp);
 	hud->SetHp(hp, maxHp);
 
-	speed = std::max(0.f,speed+data.speed);
+	speed = std::max(0.f, speed + data.speed);
 
 	xExp += data.xExp;
 

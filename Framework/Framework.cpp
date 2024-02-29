@@ -66,15 +66,14 @@ void Framework::Do()
 		{
 			SCENE_MGR.FixedUpdate(fixedDeltaTime.asSeconds());
 			mouse->FixedUpdate(GetDT());
-			if (isDebug)
-			{
-				SCENE_MGR.DebugUpdate(GetDT());
-				uiDebug->DebugUpdate(GetDT());
-				mouse->DebugUpdate(GetDT());
-			}
 			fixedDeltaTime = sf::Time::Zero;
 		}
-
+		if (isDebug)
+		{
+			SCENE_MGR.DebugUpdate(GetDT());
+			uiDebug->DebugUpdate(GetDT());
+			mouse->DebugUpdate(GetDT());
+		}
 
 
 		window.clear();
