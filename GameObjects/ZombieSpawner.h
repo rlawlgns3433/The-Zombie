@@ -15,5 +15,8 @@ public:
 
 	void Reset() override;
 
+
+	void AddType(Zombie::Types type);
+
 	GameObject* Create() override;
 };

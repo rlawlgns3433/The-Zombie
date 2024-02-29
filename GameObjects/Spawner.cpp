@@ -25,7 +25,7 @@ void Spawner::Release()
 void Spawner::Reset()
 {
 	GameObject::Reset();
-	boundary = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetBoundary();
+	boundary = dynamic_cast<SceneGame*>(scene)->GetBoundary();
 
 }
 
@@ -57,7 +57,6 @@ void Spawner::Update(float dt)
 
 			GameObject* newGo = Create();
 			newGo->SetPosition(pos);
-			SCENE_MGR.GetCurrentScene()->AddGo(newGo);
 			currentCount++;
 		}
 	}
