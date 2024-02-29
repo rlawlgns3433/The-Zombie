@@ -22,8 +22,7 @@ public:
 		PLAY,
 		PAUSE,
 		DIE,
-		LEVELUP,
-		WIN
+		LEVELUP
 	};
 	Status status = Status::PLAY;
 	UILevelUp* uiLevel;
@@ -36,13 +35,15 @@ protected:
 	std::vector<Spawner*> spawners;
 	std::vector<std::string> highScore;
 
-	float playTimer;
-	
+	float playTimer = 0.f;
 	float fastestTime = 0.f;
+
 	int score = 0;
 	int hiScore = 0;
 	int wave = 0;
 	int zombieCount = 1;
+
+	bool isWin = false;
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
 
 	bool doReset = false;
@@ -68,6 +69,7 @@ public:
 	void Exit() override;
 
 	void Update(float dt) override;
+	void WinAnimation(float dt);
 	void LateUpdate(float dt) override;
 	void FixedUpdate(float dt) override;
 	void DebugUpdate(float dt) override;
@@ -86,7 +88,7 @@ public:
 	void InitWave();
 
 	UIHUD* GetHUD() { return this->hud; }
-	void SaveHighScore();
+	void SaveHighScore(); //CHECK SceneScore에서 저장할 예정
 	int GetHighScore();
 };
 

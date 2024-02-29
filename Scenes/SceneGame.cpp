@@ -14,6 +14,7 @@
 #include "UILevelUp.h"
 #include "WaveTable.h"
 #include "EffectCenterText.h"
+#include <SceneScore.h>
 
 
 SceneGame::SceneGame(SceneIds id)
@@ -110,7 +111,7 @@ void SceneGame::Exit()
 {
 	Scene::Exit();
 	Init();
-
+	FRAMEWORK.GetMouse()->isPlaying = false;
 }
 
 void SceneGame::Update(float dt)
@@ -164,6 +165,10 @@ void SceneGame::Update(float dt)
 		{
 			SetStatus(Status::PAUSE);
 		}
+		if (isWin)
+		{
+			WinAnimation(dt);
+		}
 
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
@@ -171,9 +176,10 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
-			SaveHighScore();
+			//SaveHighScore(); //TODO 옮겨라 - CHECK SceneScore에서 저장할 예정
 			hud->SetGameOver(false);
-			SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
+			dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
+			SCENE_MGR.ChangeScene(SceneIds::SceneScore);
 		}
 		for (auto obj : uiObjects)
 		{
@@ -215,6 +221,12 @@ void SceneGame::Update(float dt)
 	default:
 		break;
 	}
+}
+
+void SceneGame::WinAnimation(float dt)
+{
+	dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
+	SCENE_MGR.ChangeScene(SceneIds::SceneScore);
 }
 
 void SceneGame::LateUpdate(float dt)
@@ -290,7 +302,7 @@ void SceneGame::FixedUpdate(float dt)
 		Scene::FixedUpdate(dt);
 		zombieObjects.sort();
 		BulletCollision(dt);
-		if (zombieCount <= 0)
+		if (!isWin && zombieCount <= 0)
 			ChangeWave(++wave);
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
@@ -371,10 +383,6 @@ void SceneGame::SetStatus(Status st)
 		FRAMEWORK.GetMouse()->isPlaying = false;
 		uiLevel->LevelUp();
 		break;
-	case SceneGame::Status::WIN:
-		FRAMEWORK.GetMouse()->isPlaying = false;
-		SetStatus(Status::PAUSE);
-		break;
 	default:
 		break;
 	}
@@ -430,7 +438,8 @@ void SceneGame::InitWave()
 
 	if (wave == DT_WAVE->GetLastWave())
 	{
-		SetStatus(Status::WIN);
+		isWin = true;
+		zombieCount = 0;
 	}
 	else
 	{
@@ -528,36 +537,9 @@ void SceneGame::BulletCollision(float dt)
 		}
 		bullet->EndOfCheckZombie();
 	}
-	
-	//for (auto zombie : zombieObjects)
-	//{
-	//	if (zombie->isDead)
-	//		continue;
-	//	for (auto bullet : bullets)
-	//	{
-	//		if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
-	//		{
-	//			bullet->Hit();
-	//			if (zombie->Damaged(bullet->GetDamage()))
-	//			{
-	//				AddScore(10);
-	//				hud->SetZombieCount(--zombieCount);
-	//			}
-	//			zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
-	//		}
-	//	}
-	//}
 }
 
 sf::Vector2f SceneGame::GetBoundaryCenter()
 {
 	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y + (boundary.second.y - boundary.first.y) * 0.5);
 }
-
-//sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
-//{
-//	sf::FloatRect rect = tileMap->GetGlobalBounds();
-//	rect = Utils::ResizeRect(rect, tileMap->GetCellSize() * -2.f);
-//
-//	return Utils::Clamp();
-//}
