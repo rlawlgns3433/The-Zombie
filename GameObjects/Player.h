@@ -41,7 +41,7 @@ protected:
 	int hp = 100;
 	float speed = 300.f;
 
-	float damagedInterval = 0.4f;
+	float damagedInterval = 0.2f;
 	float damagedTimer = 0.f;
 
 	bool isLevelUp = false;
