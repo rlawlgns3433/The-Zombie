@@ -12,13 +12,6 @@ protected:
 	FlameThrower& operator=(FlameThrower&&) = delete;
 
 	UIHUD* hud = nullptr;
-
-	int maxAmmo = 26;
-	int ammo = maxAmmo;
-	int totalAmmo = ammo;
-
-	float shotInterval = 0.5f;
-	float shotTimer = 0.f;
 	bool isFiring = false;
 
 public:

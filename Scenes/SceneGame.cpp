@@ -488,11 +488,10 @@ void SceneGame::InitWave()
 
 void SceneGame::BulletCollision(float dt)
 {
-	for (auto zombie : zombieObjects)
+
+	for (auto bullet : bullets)
 	{
-		if (zombie->isDead)
-			continue;
-		for (auto bullet : bullets)
+		for (auto zombie : zombieObjects)
 		{
 			if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
 			{
@@ -505,7 +504,27 @@ void SceneGame::BulletCollision(float dt)
 				zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
 			}
 		}
+		bullet->EndOfCheckZombie();
 	}
+	
+	//for (auto zombie : zombieObjects)
+	//{
+	//	if (zombie->isDead)
+	//		continue;
+	//	for (auto bullet : bullets)
+	//	{
+	//		if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
+	//		{
+	//			bullet->Hit();
+	//			if (zombie->Damaged(bullet->GetDamage()))
+	//			{
+	//				AddScore(10);
+	//				hud->SetZombieCount(--zombieCount);
+	//			}
+	//			zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
+	//		}
+	//	}
+	//}
 }
 
 sf::Vector2f SceneGame::GetBoundaryCenter()
