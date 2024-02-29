@@ -6,6 +6,7 @@
 UIGo::UIGo(const std::string& name) : GameObject(name)
 {
 	Init();
+	mouse = FRAMEWORK.GetMouse();
 }
 
 UIGo::~UIGo()

@@ -5,9 +5,10 @@
 #include "Crosshair.h"
 #include "DataTableMgr.h"
 #include "CharacterSelectTable.h"
+#include "UIGo.h"
 
 UICharacterSelect::UICharacterSelect(const std::string& name)
-	: GameObject(name)
+	: UIGo(name)
 {
 	Init();
 }
@@ -19,8 +20,6 @@ UICharacterSelect::~UICharacterSelect()
 
 void UICharacterSelect::Init()
 {
-	mouse = FRAMEWORK.GetMouse();
-
 	sf::Font& font = RES_MGR_FONT.Get("fonts/BMHANNAPro.ttf");
 
 	characterTable.push_back(DT_CHARACTER_SELECT->Get(Player::TYPES::MAN));
@@ -168,16 +167,10 @@ void UICharacterSelect::Init()
 	texts["CharacterDesc"]->sortLayer = 6;
 
 	UiInit();
-	
-	auto it = sprites.begin();
-	while (it != sprites.end())
-	{
-		sortSprites.push_back(it->second);
-		it++;
-	}
-	
-	std::sort(sortSprites.begin(), sortSprites.end(), compareSpriteGoBySortLayer);
 
+
+	ObjectsSort();
+	
 	// SetActive
 	SetCheck(false);
 
@@ -211,13 +204,6 @@ void UICharacterSelect::LateUpdate(float dt)
 	GameObject::LateUpdate(dt);
 }
 
-void UICharacterSelect::Draw(sf::RenderWindow & window)
-{
-	GameObject::Draw(window);
-
-	UiDraw(window);
-}
-
 void UICharacterSelect::SetCheck(bool c)
 {
 	sprites["ConfirmationIma"]->SetActive(c);
@@ -226,64 +212,6 @@ void UICharacterSelect::SetCheck(bool c)
 	texts["ConfirmationText"]->SetActive(c);
 	texts["NoText"]->SetActive(c);
 	texts["YesText"]->SetActive(c);
-}
-
-void UICharacterSelect::NewSpriteGo(const std::string & name, const std::string & textureId)
-{
-	sprites.insert({ name, new SpriteGo(name) });
-	sprites[name]->SetTexture(textureId);
-}
-
-void UICharacterSelect::NewTextGo(const std::string & name, const sf::Font & font, const std::wstring & str, int size, const sf::Color & color)
-{
-	texts.insert({ name , new TextGo(name) });
-	texts[name]->Set(font, str, size, color);
-}
-
-void UICharacterSelect::UiInit()
-{
-	for (auto data : sprites)
-	{
-		data.second->Init();
-	}
-
-	for (auto data : texts)
-	{
-		data.second->Init();
-	}
-}
-
-void UICharacterSelect::UiDraw(sf::RenderWindow & window)
-{
-	for (auto data : sortSprites)
-	{
-		if (data->GetActive())
-		{
-			data->Draw(window);
-		}
-
-	}
-
-	for (auto data : texts)
-	{
-		if (data.second->GetActive())
-		{
-			data.second->Draw(window);
-		}
-	}
-}
-
-void UICharacterSelect::UiDelete()
-{
-	for (auto data : sprites)
-	{
-		delete data.second;
-	}
-
-	for (auto data : texts)
-	{
-		delete data.second;
-	}
 }
 
 void UICharacterSelect::HandleMouseSelection()
@@ -337,14 +265,3 @@ void UICharacterSelect::HandleMouseSelection()
 		}
 	}
 }
-
-void UICharacterSelect::HandleCheckMouseSelection()
-{
-	
-}
-
-bool UICharacterSelect::compareSpriteGoBySortLayer(SpriteGo* a, SpriteGo* b)
-{
-	return a->sortLayer < b->sortLayer;
-}
-
