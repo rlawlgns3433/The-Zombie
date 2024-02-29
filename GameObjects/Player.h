@@ -12,7 +12,6 @@ struct DataLevelUp;
 
 class Sword;
 
-
 class Player : public SpriteGo
 {
 public:
@@ -24,6 +23,7 @@ public:
 		TIMBER,
 		COUNT
 	};
+
 protected:
 	sf::Vector2f direction;
 	sf::Vector2f look = { 1.f, 0.f };
@@ -73,6 +73,8 @@ public:
 	void AddStat(DataLevelUp data);
 	void AddHp(int value);
 	void LevelUp();
+
+	void SetPlayerType(Player::TYPES type);
 
 	inline int GetLevel() const { return level; }
 	inline int GetHp() const { return hp; }

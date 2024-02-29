@@ -14,11 +14,11 @@ SpriteGo::SpriteGo(Scene* sc, const std::string& name)
 void SpriteGo::SetTexture(const std::string& textureId)
 {
 	this->textureId = textureId;
-	sprite.setTexture(ResourceMgr<sf::Texture>::Instance().Get(textureId));
+	sprite.setTexture(ResourceMgr<sf::Texture>::Instance().Get(textureId),true);
 }
 void SpriteGo::SetTexture()
 {
-	sprite.setTexture(ResourceMgr<sf::Texture>::Instance().Get(textureId));
+	sprite.setTexture(ResourceMgr<sf::Texture>::Instance().Get(textureId), true);
 }
 
 void SpriteGo::SetPosition(const sf::Vector2f& pos)
@@ -97,5 +97,5 @@ void SpriteGo::Draw(sf::RenderWindow& window)
 void SpriteGo::Reset()
 {
 	GameObject::Reset();
-	sprite.setTexture(ResourceMgr<sf::Texture>::Instance().Get(textureId));
+	sprite.setTexture(ResourceMgr<sf::Texture>::Instance().Get(textureId), true);
 }
