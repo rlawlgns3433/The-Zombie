@@ -554,7 +554,7 @@ void SceneGame::BulletCollision(float dt)
 				bullet->Hit();
 				if (zombie->Damaged(bullet->GetDamage()))
 				{
-					AddScore(10);
+					AddScore(1000);
 					hud->SetZombieCount(--zombieCount);
 				}
 				zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);

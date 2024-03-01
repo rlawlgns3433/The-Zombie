@@ -74,14 +74,21 @@ void SceneScore::FixedUpdate(float dt)
 	if (writeMode && drawScore < currScore)
 	{
 		drawScore += dt * 1000;
+		if (drawScore - drawPreScore >= 150)
+		{
+			drawPreScore = drawScore;
+			SOUND_MGR.PlaySfx("sound/coin07.wav");
+		}
 		if (drawScore >= currScore)
 		{
 			drawScore = currScore;
+			SOUND_MGR.PlaySfx("sound/coin07.wav");
 			if (currIt == sorted.begin())
 			{
 				title.SetString("New Record!!!");
 				title.SetColor(sf::Color::Cyan);
 				title.SetOutLine(5.f, sf::Color::Black);
+				SOUND_MGR.PlaySfx("sound/hiscore.wav");
 			}
 		}
 		desc.SetString(std::to_string(drawScore));

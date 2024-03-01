@@ -16,6 +16,7 @@ protected:
 	//기록모드
 	bool writeMode = false;
 	int drawScore = 0;
+	int drawPreScore = 0;
 	int currScore = 0;
 	float currTime = 0.f;
 	std::list<std::pair<int, float>>::iterator currIt;
