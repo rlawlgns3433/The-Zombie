@@ -256,6 +256,7 @@ void UICharacterSelect::HandleMouseSelection()
 					(SCENE_MGR.GetScene(SceneIds::SceneGame)->FindGo("Player"));
 				player->SetPlayerType((Player::TYPES)playerIndex);
 				SCENE_MGR.ChangeScene(SceneIds::SceneGame);
+				SetActive(false);
 				return;
 			}
 		}
