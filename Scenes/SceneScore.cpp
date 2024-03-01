@@ -137,6 +137,7 @@ void SceneScore::GetHigh()
 	while (std::getline(buf, line))
 	{
 		count++;
+		//TODO 빈 파일을 가져올 경우 오류 발생
 		if (count % 2 == 1) { score = std::stoi(line); }
 		else if (count % 2 == 0)
 		{
