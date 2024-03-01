@@ -11,7 +11,20 @@ SceneScore::SceneScore(SceneIds id)
 void SceneScore::Init()
 {
 	Scene::Init();
+	title.Set(RES_MGR_FONT.Get("fonts/zombiecontrol.ttf")
+		, "RANKING"
+		, 150, sf::Color::Black);
+	title.SetPosition(sf::Vector2f(textSize, textSize));
+	title.SetOutLine(5, sf::Color::White);
 
+	desc.Set(RES_MGR_FONT.Get("fonts/zombiecontrol.ttf")
+		, "0"
+		, 200, sf::Color::White);
+	desc.SetPosition(sf::Vector2f(FRAMEWORK.GetWindowSize().x / 2.f - textSize * 2, textSize + 300));
+	desc.SetOutLine(7, sf::Color::Black);
+	desc.SetOrigin(Origins::TR);
+
+	back.setTexture(RES_MGR_TEXTURE.Get("graphics/d.png"));
 }
 
 void SceneScore::Release()
@@ -28,6 +41,7 @@ void SceneScore::Release()
 void SceneScore::Enter()
 {
 	Scene::Enter();
+	SOUND_MGR.StopBGM();
 	GetHigh();
 	if (writeMode) { OutHigh(); }
 }
@@ -45,6 +59,8 @@ void SceneScore::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 	}
+
+
 }
 
 void SceneScore::LateUpdate(float dt)
@@ -55,12 +71,33 @@ void SceneScore::LateUpdate(float dt)
 void SceneScore::FixedUpdate(float dt)
 {
 	Scene::FixedUpdate(dt);
+	if (writeMode && drawScore < currScore)
+	{
+		drawScore += dt * 1000;
+		if (drawScore >= currScore)
+		{
+			drawScore = currScore;
+			if (currIt == sorted.begin())
+			{
+				title.SetString("New Record!!!");
+				title.SetColor(sf::Color::Cyan);
+				title.SetOutLine(5.f, sf::Color::Black);
+			}
+		}
+		desc.SetString(std::to_string(drawScore));
+	}
 }
 
 
 void SceneScore::Draw(sf::RenderWindow& window)
 {
+	window.draw(back);
 	Scene::Draw(window);
+	title.Draw(window);
+	if (writeMode)
+	{
+		desc.Draw(window);
+	}
 }
 
 void SceneScore::OnWriteMode(int score, float time)
@@ -184,14 +221,22 @@ void SceneScore::GetHigh()
 		}
 
 		textScore = new TextGo();
-		textScore->Set(RES_MGR_FONT.Get("fonts/DOSIyagiBoldface.ttf")
-			, std::to_wstring(itScore->first) + L"점 " + space + std::to_wstring(itScore->second) + L"초"
-			, textSize, sf::Color::White);
-		if (writeMode && itScore == currIt) { textScore->SetColor(sf::Color::Yellow); }
+		if (writeMode && itScore == currIt)
+		{
+			textScore->Set(RES_MGR_FONT.Get("fonts/DOSIyagiBoldface.ttf")
+				, L"You →   " + std::to_wstring(itScore->first) + L"점 " + space + std::to_wstring(itScore->second) + L"초"
+				, textSize, sf::Color::Yellow);
+		}
+		else
+		{
+			textScore->Set(RES_MGR_FONT.Get("fonts/DOSIyagiBoldface.ttf")
+				, std::to_wstring(itScore->first) + L"점 " + space + std::to_wstring(itScore->second) + L"초"
+				, textSize, sf::Color::White);
+		}
 		textScore->SetOrigin(Origins::TR);
 		textScore->SetPosition({ uiView.getSize().x - textSize, y });
 		y += textSize;
-		AddGo(textScore,Scene::Ui);
+		AddGo(textScore, Scene::Ui);
 		itScore++;
 	};
 

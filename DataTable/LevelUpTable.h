@@ -23,6 +23,7 @@ struct DataLevelUp
 	int maxAmmo;
 	int weaponUp;
 	int projectile;
+
 };
 
 
@@ -30,6 +31,7 @@ class LevelUpTable : public DataTable
 {
 protected:
 	std::unordered_map<int, DataLevelUp> table;
+	std::vector<int> indexList;
 
 public:
 

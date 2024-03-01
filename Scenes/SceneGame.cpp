@@ -34,7 +34,8 @@ void SceneGame::Init()
 	uiLevel = dynamic_cast<UILevelUp*>(AddGo(new UILevelUp("uiLevel"), Scene::Ui));
 	//배경
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
-
+	tileMap->SetOrigin(Origins::MC);
+	tileMap->UpdateTransform();
 	//플레이어
 	player = new Player("Player");
 	AddGo(player);
@@ -97,9 +98,8 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 
 	tileMap->SetPosition(centerPos);
-	boundary = tileMap->GetBoundary();
-	tileMap->SetOrigin(Origins::MC);
-	tileMap->UpdateTransform();
+	ChangeWave(1);
+
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
 
@@ -492,10 +492,10 @@ void SceneGame::InitWave()
 		tileMap->SetOrigin(Origins::MC);
 		tileMap->UpdateTransform();
 		boundary = tileMap->GetBoundary();
-
+		srand(time(NULL));
 		for (auto s : spawners)
 		{
-			s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });
+			s->SetPosition(sf::Vector2f(Utils::RandomRange(boundary.first.x, boundary.second.x), Utils::RandomRange(boundary.first.y, boundary.second.y)));
 			AddGo(s);
 		}
 		EffectCenterText::Create(this,data.descriptionId);

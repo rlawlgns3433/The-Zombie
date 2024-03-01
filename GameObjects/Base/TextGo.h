@@ -3,10 +3,8 @@
 
 class TextGo : public GameObject
 {
-protected:
-	sf::Text text;
-
 public:
+	sf::Text text;
 	TextGo(const std::string& name = "");
 	TextGo(Scene* sc, const std::string& name = "");
 
