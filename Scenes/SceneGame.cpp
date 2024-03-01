@@ -15,6 +15,7 @@
 #include "WaveTable.h"
 #include "EffectCenterText.h"
 #include <SceneScore.h>
+#include "EffectLightLine.h"
 
 
 SceneGame::SceneGame(SceneIds id)
@@ -22,6 +23,8 @@ SceneGame::SceneGame(SceneIds id)
 {
 	CheatExp();
 	CheatHp();
+	CheatKill();
+	CheatWin();
 }
 
 void SceneGame::Init()
@@ -82,7 +85,9 @@ void SceneGame::Release()
 void SceneGame::Reset()
 {
 	Scene::Reset();
-
+	isWin = false;
+	winTimer = 0.f;
+	killTimer = 0.f;
 }
 
 void SceneGame::Enter()
@@ -124,7 +129,7 @@ void SceneGame::Update(float dt)
 		////////////////////////////////////////////////////////////////////////// PLAY_UPDATE
 	case SceneGame::Status::PLAY:
 		Scene::Update(dt);
-		playTimer += dt;
+		playTimer += isWin ? 0.f : dt;
 		//�߰�
 		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		{
@@ -228,8 +233,25 @@ void SceneGame::Update(float dt)
 
 void SceneGame::WinAnimation(float dt)
 {
-	dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
-	SCENE_MGR.ChangeScene(SceneIds::SceneScore);
+	player->SetSpeed(0.f);
+	winTimer += dt;
+	killTimer += dt;
+	if (killTimer >= 0.1f && !zombieObjects.empty())
+	{
+		killTimer = 0.f;
+		zombieObjects.front()->OnDie();
+	}
+	if (winTimer >= 1.f && winTimer < 3.f)
+	{
+		EffectLightLine::Create(this, player, player->GetPosition() + Utils::RandomInUnitCircle() * 700.f);
+	}
+	if (winTimer >= 4.f)
+	{
+		dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
+		SCENE_MGR.ChangeScene(SceneIds::SceneScore);
+	}
+
+
 }
 
 void SceneGame::LateUpdate(float dt)
@@ -305,8 +327,7 @@ void SceneGame::FixedUpdate(float dt)
 		Scene::FixedUpdate(dt);
 		zombieObjects.sort();
 		BulletCollision(dt);
-		if (!isWin && zombieCount <= 0)
-			ChangeWave(++wave);
+
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
 	case SceneGame::Status::DIE:
@@ -377,6 +398,17 @@ void SceneGame::DebugUpdate(float dt)
 		if (InputMgr::IsExllentCombo(cheatHp))
 		{
 			player->SetInvincibility();
+		}
+		if (InputMgr::IsExllentCombo(cheatKill))
+		{
+			for (auto ptr : zombieObjects)
+			{
+				ptr->OnDie();
+			}
+		}
+		if (InputMgr::IsExllentCombo(cheatWin))
+		{
+			ChangeWave(DT_WAVE->GetLastWave());
 		}
 		InputMgr::StopComboRecord();
 		InputMgr::ClearCombo();
@@ -465,6 +497,8 @@ void SceneGame::InitWave()
 	{
 		isWin = true;
 		zombieCount = 0;
+		player->SetInvincibility(true);
+		SOUND_MGR.PlayBGM("sound/bgm_tatakae.wav", false);
 	}
 	else
 	{
@@ -498,7 +532,7 @@ void SceneGame::InitWave()
 			s->SetPosition(sf::Vector2f(Utils::RandomRange(boundary.first.x, boundary.second.x), Utils::RandomRange(boundary.first.y, boundary.second.y)));
 			AddGo(s);
 		}
-		EffectCenterText::Create(this,data.descriptionId);
+		EffectCenterText::Create(this, data.descriptionId);
 	}
 }
 
@@ -552,10 +586,11 @@ void SceneGame::BulletCollision(float dt)
 			if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
 			{
 				bullet->Hit();
-				if (zombie->Damaged(bullet->GetDamage()))
+				if (zombie->Damaged(bullet->GetDamage()) && !isWin)
 				{
 					AddScore(10);
 					hud->SetZombieCount(--zombieCount);
+					if (zombieCount == 0) { ChangeWave(++wave); }
 				}
 				zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
 			}
@@ -593,4 +628,17 @@ void SceneGame::CheatHp()
 {
 	cheatHp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
 	cheatHp.push_back({ sf::Keyboard::P,InputMgr::KEY_STATE::DOWN });
+}
+void SceneGame::CheatKill()
+{
+	cheatKill.push_back({ sf::Keyboard::K,InputMgr::KEY_STATE::DOWN });
+	cheatKill.push_back({ sf::Keyboard::I,InputMgr::KEY_STATE::DOWN });
+	cheatKill.push_back({ sf::Keyboard::L,InputMgr::KEY_STATE::DOWN });
+	cheatKill.push_back({ sf::Keyboard::L,InputMgr::KEY_STATE::DOWN });
+}
+void SceneGame::CheatWin()
+{
+	cheatWin.push_back({ sf::Keyboard::W,InputMgr::KEY_STATE::DOWN });
+	cheatWin.push_back({ sf::Keyboard::I,InputMgr::KEY_STATE::DOWN });
+	cheatWin.push_back({ sf::Keyboard::N,InputMgr::KEY_STATE::DOWN });
 }

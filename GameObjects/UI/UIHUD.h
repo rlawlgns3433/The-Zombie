@@ -16,7 +16,7 @@ protected:
 	TextGo textScore;
 	std::string formatScore = "Score: ";
 	TextGo textHiScore;
-	std::string formatHiScore = "HiScore: ";
+	std::string formatHiScore = "Best: ";
 
 	//źâ
 	SpriteGo imgAmmoIcon;

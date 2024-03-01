@@ -84,6 +84,7 @@ public:
 	inline int GetMaxHP() const { return maxHp; }
 	inline float GetSpeed() const { return speed; }
 	inline sf::Vector2f GetLook() const { return look; }
+	inline void SetSpeed(float s) { speed = s; }
 	inline void SetInvincibility(bool value) { invincibility = value; }
 	inline void SetInvincibility() { invincibility = !invincibility; }
 

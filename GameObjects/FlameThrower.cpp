@@ -71,7 +71,7 @@ void FlameThrower::Attack()
 
 		Flame::Create(scene, player);
 
-		SOUND_MGR.PlaySfx("sound/shoot.wav");
+		SOUND_MGR.PlaySfx("sound/fire.wav");
 	}
 	else
 	{

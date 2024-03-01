@@ -224,6 +224,7 @@ void UICharacterSelect::HandleMouseSelection()
 			texts["CharacterDesc"]->SetString(characterTable[i].descId);
 			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 			{
+				SOUND_MGR.PlaySfx("sound/ui/select.wav");
 				SetCheck(true);
 				playerIndex = i;
 			}
@@ -245,12 +246,14 @@ void UICharacterSelect::HandleMouseSelection()
 			// 아니요
 			if (j == 0 && InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 			{
+				SOUND_MGR.PlaySfx("sound/ui/select.wav");
 				SetCheck(false);
 				return;
 			}
 			// 예
 			else if (j == 1 && InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 			{
+				SOUND_MGR.PlaySfx("sound/ui/select.wav");
 				SetCheck(false);
 				Player* player = dynamic_cast<Player*>
 					(SCENE_MGR.GetScene(SceneIds::SceneGame)->FindGo("Player"));

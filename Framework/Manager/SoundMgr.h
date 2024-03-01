@@ -25,7 +25,7 @@ private:
 
 
 	float sfxVolume = 100.f;
-	float bgmVolume = 100.f;
+	float bgmVolume = 20.f;
 	float uiVolume = 100.f;
 	bool mute = false;
 

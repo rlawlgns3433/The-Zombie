@@ -77,7 +77,7 @@ void Sword::Attack()
 		scene->AddGo(swordAttack);
 		dynamic_cast<SceneGame*>(scene)->bullets.push_back(swordAttack);
 
-		SOUND_MGR.PlaySfx("sound/shoot.wav");
+		SOUND_MGR.PlaySfx("sound/sword/sword"+ std::to_string(Utils::RandomRange(0, 3)) +".wav");
 	}
 	else
 	{

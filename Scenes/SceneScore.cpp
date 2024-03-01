@@ -41,7 +41,6 @@ void SceneScore::Release()
 void SceneScore::Enter()
 {
 	Scene::Enter();
-	SOUND_MGR.StopBGM();
 	GetHigh();
 	if (writeMode) { OutHigh(); }
 }
@@ -73,15 +72,22 @@ void SceneScore::FixedUpdate(float dt)
 	Scene::FixedUpdate(dt);
 	if (writeMode && drawScore < currScore)
 	{
-		drawScore += dt * 1000;
+		drawScore += dt * 3000;
+		if (drawScore - drawPreScore >= 1000)
+		{
+			drawPreScore = drawScore;
+			SOUND_MGR.PlaySfx("sound/coin07.wav");
+		}
 		if (drawScore >= currScore)
 		{
 			drawScore = currScore;
+			SOUND_MGR.PlaySfx("sound/pickup01.wav");
 			if (currIt == sorted.begin())
 			{
 				title.SetString("New Record!!!");
 				title.SetColor(sf::Color::Cyan);
 				title.SetOutLine(5.f, sf::Color::Black);
+				SOUND_MGR.PlaySfx("sound/hiscore.wav");
 			}
 		}
 		desc.SetString(std::to_string(drawScore));
@@ -130,6 +136,7 @@ void SceneScore::GetHigh()
 	while (std::getline(buf, line))
 	{
 		count++;
+		//TODO 빈 파일을 가져올 경우 오류 발생
 		if (count % 2 == 1) { score = std::stoi(line); }
 		else if (count % 2 == 0)
 		{

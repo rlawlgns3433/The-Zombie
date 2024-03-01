@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
+    <ClCompile Include="EffectLightLine.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectCenterText.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectDamage.cpp" />
     <ClCompile Include="GameObjects\Flame.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="CharacterSelectTable.h" />
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="EffectLightLine.h" />
     <ClInclude Include="GameObjects\Effect\EffectCenterText.h" />
     <ClInclude Include="GameObjects\Effect\EffectDamage.h" />
     <ClInclude Include="GameObjects\Flame.h" />
