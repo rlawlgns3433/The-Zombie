@@ -73,8 +73,8 @@ void SceneScore::FixedUpdate(float dt)
 	Scene::FixedUpdate(dt);
 	if (writeMode && drawScore < currScore)
 	{
-		drawScore += dt * 1000;
-		if (drawScore - drawPreScore >= 150)
+		drawScore += dt * 3000;
+		if (drawScore - drawPreScore >= 1000)
 		{
 			drawPreScore = drawScore;
 			SOUND_MGR.PlaySfx("sound/coin07.wav");

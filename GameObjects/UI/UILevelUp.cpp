@@ -109,6 +109,7 @@ void UILevelUp::LevelUp()
 {
 	currentDataLevelUp.clear();
 
+	SOUND_MGR.PlaySfx("sound/ui/jump09.wav");
 	for (int i = 1; i < 4; i++)
 	{
 		DataLevelUp dlu = DT_LEVELUP->Get();
@@ -137,6 +138,7 @@ void UILevelUp::HandleMouseSelection()
 			if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
 			{
 				playerDataLevelUp = currentDataLevelUp[i];
+				SOUND_MGR.PlaySfx("sound/ui/powerup02.wav");
 				SetActive(false);
 			}
 			break;
