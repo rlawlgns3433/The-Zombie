@@ -16,6 +16,10 @@ Flame::Flame(Player* player, const std::string& name)
     sprite.setPosition(player->GetPosition());
     sprite.setScale({ attackRadius / 60.f , attackRadius / 60.f});
     Utils::SetOrigin(sprite, Origins::TC);
+
+
+    //debug
+    SetBound();
 }
 
 void Flame::Init()
@@ -36,7 +40,7 @@ void Flame::Reset()
 void Flame::Update(float dt)
 {
     Projectile::Update(dt);
-    //shape.setPosition(player->GetPosition());
+    //sprite.setPosition(player->GetPosition());
 
     attackTimer += dt;
     if (attackTimer > attackDuration)
@@ -51,9 +55,15 @@ void Flame::Draw(sf::RenderWindow& window)
     window.draw(sprite);
 }
 
+void Flame::DebugDraw(sf::RenderWindow& window)
+{
+    Projectile::DebugDraw(window);
+    window.draw(bound);
+}
+
 void Flame::Hit()
 {
-    
+    //비어있어야 합니다.
 }
 
 void Flame::EndOfCheckZombie()
@@ -65,7 +75,7 @@ void Flame::Create(Scene* scene, Player* player)
 {
     SceneGame* sceneGame = dynamic_cast<SceneGame*>(scene);
     int count = player->GetWeapon()->GetProjectileCount();
-    auto flameList = Utils::FanSpread(player->GetLook(), count, 60.f/(count/2));
+    auto flameList = Utils::FanSpread(player->GetLook(), count, 40.f/count*2);
 
     auto ptr = flameList.begin();
     for (int i = 0; i < count; i++)
@@ -76,6 +86,7 @@ void Flame::Create(Scene* scene, Player* player)
         flame->damage = player->GetWeapon()->GetDamage();
         flame->SetDirection(*(ptr++));
         flame->scene = scene;
+        flame->player = player;
         sceneGame->AddGo(flame);
         sceneGame->bullets.push_back(flame);
     }
@@ -85,11 +96,32 @@ void Flame::SetDirection(sf::Vector2f direc)
 {
     Projectile::SetDirection(direc);
     sprite.setRotation(Utils::Angle(direc)-90);
+    SetBound();
+}
+
+void Flame::SetBound()
+{
+    int count = 10;
+    bound = sf::VertexArray(sf::LinesStrip, count);
+    bound[0].position = position;
+    bound[9].position = position;
+    bound[0].color = sf::Color::Magenta;
+    bound[9].color = sf::Color::Magenta;
+
+    auto direc = Utils::FanSpread(direction, count-2, attackAngle*2 / (count-2));
+    auto it = direc.begin();
+
+    for (int i = 1; i < count-1; i++)
+    {
+        bound[i].position = position + (*it) * attackRadius;
+        bound[i].color = sf::Color::Magenta;
+        it++;
+    }
 }
 
 bool Flame::CheckCollision(Zombie* zombie)
 {
-    float distance = Utils::Distance(position, zombie->GetPosition());
+    float distance = Utils::Distance(position, zombie->GetPosition())-zombie->GetBound().getRadius();
 
     if (distance > attackRadius)
     {
@@ -101,6 +133,5 @@ bool Flame::CheckCollision(Zombie* zombie)
     {
         return false;
     }
-
     return true;
 }

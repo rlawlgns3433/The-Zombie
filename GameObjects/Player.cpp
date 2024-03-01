@@ -133,7 +133,7 @@ void Player::Update(float dt)
 	if (currentExp >= maxExp)
 	{
 		currentExp -= maxExp;
-		maxExp *= 1.3; // roundDown
+		maxExp *= 1.2; // roundDown
 		level++;
 		LevelUp();
 		hud->SetExp(currentExp, maxExp, level);

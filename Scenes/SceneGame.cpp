@@ -372,7 +372,7 @@ void SceneGame::DebugUpdate(float dt)
 
 		if (InputMgr::IsExllentCombo(cheatExp))
 		{
-			player->AddExp(100);
+			player->AddExp(10000);
 		}
 		if (InputMgr::IsExllentCombo(cheatHp))
 		{

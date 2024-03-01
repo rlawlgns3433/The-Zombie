@@ -227,15 +227,16 @@ std::list<sf::Vector2f> Utils::DressInRow(const sf::Vector2f& pos, const sf::Vec
 std::list<sf::Vector2f> Utils::FanSpread(const sf::Vector2f& direction, int count, float angle)
 {
 	std::list<sf::Vector2f> list;
+	sf::Vector2f normalDirec = Utils::GetNormalize(direction);
 	if (count == 0) { return list; }
 	if (0.f == fmodf(angle, 90))
 	{
-		sf::Vector2f left = Utils::GetNormalize(direction);
-		sf::Vector2f right = Utils::GetNormalize(direction);
+		sf::Vector2f left = normalDirec;
+		sf::Vector2f right = normalDirec;
 
 		if (count % 2 == 1)
 		{
-			list.push_back(direction);
+			list.push_back(normalDirec);
 			for (int i = 0; i < count / 2; i++)
 			{
 				left = { -left.y,left.x };
@@ -260,12 +261,12 @@ std::list<sf::Vector2f> Utils::FanSpread(const sf::Vector2f& direction, int coun
 		}
 	}
 	else {
-		sf::Vector2f left = Utils::GetNormalize(direction);
-		sf::Vector2f right = Utils::GetNormalize(direction);
+		sf::Vector2f left = normalDirec;
+		sf::Vector2f right = normalDirec;
 
 		if (count % 2 == 1)
 		{
-			list.push_back(direction);
+			list.push_back(normalDirec);
 			for (int i = 0; i < count / 2; i++)
 			{
 				left = sf::Transform().rotate(angle) * left;
@@ -306,7 +307,9 @@ bool Utils::IsCollideWithLineSegment(const sf::Vector2f& p1, const sf::Vector2f&
 {
 	//두 점과의 거리 검사
 	if (Magnitude(lineP1 - p1) <= radius || Magnitude(lineP2 - p1) <= radius)
+	{
 		return true;
+	}
 
 	//좌표계 원점 변환, 기준점 설정
 	sf::Vector2f point1 = lineP1 - p1;
