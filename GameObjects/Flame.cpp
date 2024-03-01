@@ -2,6 +2,7 @@
 #include "Flame.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "ZombieBoss.h"
 
 Flame::Flame(Player* player, const std::string& name)
     : Projectile(name), attackAngle(40)
@@ -129,6 +130,23 @@ bool Flame::CheckCollision(Zombie* zombie)
     }
 
     float angle = Utils::Angle(direction, zombie->GetPosition() - position);
+    if (angle > attackAngle)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool Flame::CheckCollision(ZombieBoss* zombieBoss)
+{
+    float distance = Utils::Distance(position, zombieBoss->GetPosition()) - zombieBoss->GetBound().getRadius();
+
+    if (distance > attackRadius)
+    {
+        return false;
+    }
+
+    float angle = Utils::Angle(direction, zombieBoss->GetPosition() - position);
     if (angle > attackAngle)
     {
         return false;

@@ -2,6 +2,7 @@
 #include "SwordAttack.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "ZombieBoss.h"
 
 SwordAttack::SwordAttack(Player* player, const std::string& name)
 	: Projectile(name), attackAngle(90)
@@ -81,3 +82,20 @@ bool SwordAttack::CheckCollision(Zombie* zombie)
 
     return false;
 }
+
+bool SwordAttack::CheckCollision(ZombieBoss* zombieBoss)
+{
+    float angle = Utils::Angle(direction, zombieBoss->GetPosition() - position);
+    std::cout << angle << std::endl;
+    float distance = Utils::Distance(position, zombieBoss->GetPosition());
+
+    if (angle < attackAngle && distance < attackRadius)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+
+

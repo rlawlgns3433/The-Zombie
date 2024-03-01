@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Weapon.h"
+#include "ZombieBoss.h"
 
 
 Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
@@ -151,3 +152,9 @@ bool Bullet::CheckCollision(Zombie* zombie)
 {
 	return Utils::IsCollideWithLineSegment(zombie->GetPosition(), GetPosition(), prePos, zombie->GetGlobalBounds().width / 3.f);
 }
+
+bool Bullet::CheckCollision(ZombieBoss* zombieBoss)
+{
+	return Utils::IsCollideWithLineSegment(zombieBoss->GetPosition(), GetPosition(), prePos, zombieBoss->GetGlobalBounds().width / 3.f);
+}
+

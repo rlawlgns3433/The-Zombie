@@ -166,7 +166,13 @@ void Player::OnDamage(int damage)
 		hud->SetHp(hp, maxHp);
 		SOUND_MGR.PlaySfx("sound/hit.wav");
 	}
+}
 
+void Player::RangeOnDamage(int damage)
+{
+	hp = std::max(hp - damage, 0);
+	hud->SetHp(hp, maxHp);
+	SOUND_MGR.PlaySfx("sound/hit.wav");
 }
 
 void Player::AddExp(int value)

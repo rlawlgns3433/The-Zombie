@@ -10,7 +10,6 @@ public:
 		Chaser,
 		Bloater,
 		Crawler,
-
 		TIMBER_BOSS,
 		Count,
 	};
@@ -46,7 +45,6 @@ public:
 	bool isDead = false;
 
 	~Zombie() = default;
-
 
 	void Init() override;
 	void Release() override;

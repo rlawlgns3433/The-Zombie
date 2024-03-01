@@ -168,7 +168,6 @@ void UICharacterSelect::Init()
 
 	UiInit();
 
-
 	ObjectsSort();
 	
 	// SetActive
