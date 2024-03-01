@@ -137,7 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CharacterSelectTable.cpp" />
+    <ClCompile Include="GameObjects\BossRangeSkill.cpp" />
+    <ClCompile Include="DataTable\CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectCenterText.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectDamage.cpp" />
@@ -190,11 +191,13 @@
     <ClCompile Include="GameObjects\Sword.cpp" />
     <ClCompile Include="GameObjects\UI\UICharacterSelect.cpp" />
     <ClCompile Include="DataTable\WaveTable.cpp" />
-    <ClCompile Include="SwordAttack.cpp" />
-    <ClCompile Include="UIGo.cpp" />
+    <ClCompile Include="GameObjects\SwordAttack.cpp" />
+    <ClCompile Include="GameObjects\Base\UIGo.cpp" />
+    <ClCompile Include="GameObjects\ZombieBoss.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CharacterSelectTable.h" />
+    <ClInclude Include="GameObjects\BossRangeSkill.h" />
+    <ClInclude Include="DataTable\CharacterSelectTable.h" />
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="GameObjects\Effect\EffectCenterText.h" />
@@ -243,8 +246,9 @@
     <ClInclude Include="GameObjects\Sword.h" />
     <ClInclude Include="GameObjects\UI\UICharacterSelect.h" />
     <ClInclude Include="DataTable\WaveTable.h" />
-    <ClInclude Include="SwordAttack.h" />
-    <ClInclude Include="UIGo.h" />
+    <ClInclude Include="GameObjects\SwordAttack.h" />
+    <ClInclude Include="GameObjects\Base\UIGo.h" />
+    <ClInclude Include="GameObjects\ZombieBoss.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

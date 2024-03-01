@@ -14,6 +14,7 @@
 #include "UILevelUp.h"
 #include "WaveTable.h"
 #include "EffectCenterText.h"
+#include "ZombieBoss.h"
 #include <SceneScore.h>
 
 
@@ -133,6 +134,11 @@ void SceneGame::Update(float dt)
 				if (s->name == "ZombieSpawner")
 					s->Spawn(1);
 			}
+		}
+		
+		if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
+		{
+			zombieBoss = ZombieBoss::Create(this);
 		}
 		//���� ����
 		if (InputMgr::GetKeyDown(sf::Keyboard::Delete))

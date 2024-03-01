@@ -13,6 +13,7 @@ class UIHUD;
 class Crosshair;
 class Projectile;
 class UILevelUp;
+class ZombieBoss;
 
 class SceneGame : public Scene
 {
@@ -37,6 +38,7 @@ protected:
 	Player* player;
 	UIHUD* hud;
 	TileMap* tileMap;
+	ZombieBoss* zombieBoss = nullptr;
 
 	std::vector<Spawner*> spawners;
 	std::vector<std::string> highScore;
@@ -86,6 +88,8 @@ public:
 	void AddScore(int s);
 
 	inline Player* GetPlayer() { return player; }
+	inline ZombieBoss* GetZomieBoss() { return zombieBoss; }
+
 	inline const std::pair<sf::Vector2f, sf::Vector2f>& GetBoundary() const { return boundary; }
 
 	//Wave
