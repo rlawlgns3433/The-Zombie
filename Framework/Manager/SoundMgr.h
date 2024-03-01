@@ -36,7 +36,7 @@ public:
 	void Update(float dt);
 	
 	void PlayBGM(const std::string& id, bool loop = true, bool crossFade = true);
-	void StopBGM(const std::string& id);
+	void StopBGM();
 	void MixingBGM(float dt);
 	
 	void PlaySfx(const std::string& id, bool loop = false);

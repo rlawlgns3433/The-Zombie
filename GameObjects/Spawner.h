@@ -11,7 +11,7 @@ protected:
 	int spawnCount = 1;
 	int maxCount = -1;
 	int currentCount = 0;
-	float radius = 250.f;
+	float radius = 400.f;
 
 	float timer = 0.f;
 

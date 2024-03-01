@@ -29,6 +29,10 @@ bool LevelUpTable::Load()
 		table[i].textureId = row[4];
 
 		table[i].weight = std::stoi(row[5]);
+		for (int j = 0; j < table[i].weight; j++)
+		{
+			indexList.push_back(i);
+		}
 
 		table[i].maxHp = std::stoi(row[6]);
 		table[i].speed = std::stof(row[7]);
@@ -48,11 +52,12 @@ bool LevelUpTable::Load()
 void LevelUpTable::Release()
 {
 	table.clear();
+	indexList.clear();
 }
 
 const DataLevelUp& LevelUpTable::Get()
 {
-	int randomIndex = Utils::RandomRange(0, table.size());
+	int randomIndex = indexList[Utils::RandomRange(0, indexList.size())];
 
 	return table[randomIndex];
 }                                                                                                                                             

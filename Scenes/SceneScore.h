@@ -5,13 +5,20 @@ class SceneScore : public Scene
 
 protected:
 	std::list<std::pair<int,float>> sorted;
-	int textSize = 60;
+	int textSize = 60; //점수들 글자 크기
 
+	TextGo title;
+	TextGo desc;
+	sf::Sprite back;
+
+	float timer = 0.f;
+
+	//기록모드
+	bool writeMode = false;
+	int drawScore = 0;
 	int currScore = 0;
 	float currTime = 0.f;
 	std::list<std::pair<int, float>>::iterator currIt;
-
-	bool writeMode = false;
 
 public:
 	SceneScore(SceneIds id);
