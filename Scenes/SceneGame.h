@@ -96,7 +96,9 @@ public:
 
 	inline Player* GetPlayer() { return player; }
 	inline ZombieBoss* GetZomieBoss() { return zombieBoss; }
-	void SetZombieBossDead(bool dead) { zombieBossDead = true; }
+
+	void SetZombieBossDead(bool dead) { zombieBossDead = dead; }
+	bool GetZombieBossDead() { return zombieBossDead;}
 
 	inline const std::pair<sf::Vector2f, sf::Vector2f>& GetBoundary() const { return boundary; }
 

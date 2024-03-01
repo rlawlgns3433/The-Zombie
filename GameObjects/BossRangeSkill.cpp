@@ -68,38 +68,43 @@ void BossRangeSkill::FixedUpdate(float dt)
 	
 	// **********************수정해야함******************
 
-	auto it = zombieBoss->GetUseRangeSkill().begin();
-
-	while (it != zombieBoss->GetUseRangeSkill().end())
+	if (!dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->
+		GetZombieBossDead())
 	{
-		if (GetGlobalBounds().intersects(player->GetGlobalBounds()))
-		{
-			std::cout << "플레이어 맞음" << std::endl;
-			hit = true;
-			zombieBoss->GetUnUseRangeSkill().push_back(this);
-			it = zombieBoss->GetUseRangeSkill().erase(it);
-			player->RangeOnDamage(damage);
-			SetActive(false);
-			return;
-		}
-		else
-		{
-			it++;
-		}
-	}
+		auto it = zombieBoss->GetUseRangeSkill().begin();
 
-	// **********************수정해야함******************
-	if (dtime > unUseListTime && !hit)
-	{
-		auto& useRangeSkill = zombieBoss->GetUseRangeSkill();
-		auto it = std::find(useRangeSkill.begin(), useRangeSkill.end(), this);
-		if (it != useRangeSkill.end())
+		while (it != zombieBoss->GetUseRangeSkill().end())
 		{
-			zombieBoss->GetUnUseRangeSkill().push_back(*it);
-			useRangeSkill.erase(it);
+			if (GetGlobalBounds().intersects(player->GetGlobalBounds()))
+			{
+				std::cout << "플레이어 맞음" << std::endl;
+				hit = true;
+				zombieBoss->GetUnUseRangeSkill().push_back(this);
+				it = zombieBoss->GetUseRangeSkill().erase(it);
+				player->RangeOnDamage(damage);
+				SetActive(false);
+				return;
+			}
+			else
+			{
+				it++;
+			}
 		}
-	}
 
+		// **********************수정해야함******************
+		if (dtime > unUseListTime && !hit)
+		{
+			auto& useRangeSkill = zombieBoss->GetUseRangeSkill();
+			auto it = std::find(useRangeSkill.begin(), useRangeSkill.end(), this);
+			if (it != useRangeSkill.end())
+			{
+				zombieBoss->GetUnUseRangeSkill().push_back(*it);
+				useRangeSkill.erase(it);
+			}
+		}
+
+	}
+	
 }
 
 void BossRangeSkill::Draw(sf::RenderWindow & window)
