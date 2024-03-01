@@ -26,6 +26,7 @@ void BossRangeSkill::Init()
 	SetScale({ 0.2f , 0.2f });
 	SetOrigin(Origins::MC);
 	hit = false;
+	dtime = 0.f;
 
 	player = dynamic_cast<SceneGame*>
 		(SCENE_MGR.GetCurrentScene())->GetPlayer();
@@ -37,6 +38,7 @@ void BossRangeSkill::Init()
 	SetPosition(zombieBoss->GetPosition());
 
 	SetRotation(Utils::Angle(direction) + 235);
+	SetActive(true);
 }
 
 void BossRangeSkill::Release()
@@ -53,7 +55,7 @@ void BossRangeSkill::Update(float dt)
 {
 	SpriteGo::Update(dt);
 
-	
+
 }
 
 void BossRangeSkill::FixedUpdate(float dt)
@@ -65,7 +67,7 @@ void BossRangeSkill::FixedUpdate(float dt)
 	Translate(direction * speed * dt);
 	
 	// **********************수정해야함******************
-	// while 문 돌아야함
+
 	auto it = zombieBoss->GetUseRangeSkill().begin();
 
 	while (it != zombieBoss->GetUseRangeSkill().end())
@@ -76,6 +78,9 @@ void BossRangeSkill::FixedUpdate(float dt)
 			hit = true;
 			zombieBoss->GetUnUseRangeSkill().push_back(this);
 			it = zombieBoss->GetUseRangeSkill().erase(it);
+			player->RangeOnDamage(damage);
+			SetActive(false);
+			return;
 		}
 		else
 		{
@@ -86,7 +91,13 @@ void BossRangeSkill::FixedUpdate(float dt)
 	// **********************수정해야함******************
 	if (dtime > unUseListTime && !hit)
 	{
-		//zombieBoss->GetUseRangeSkill().erase(it);
+		auto& useRangeSkill = zombieBoss->GetUseRangeSkill();
+		auto it = std::find(useRangeSkill.begin(), useRangeSkill.end(), this);
+		if (it != useRangeSkill.end())
+		{
+			zombieBoss->GetUnUseRangeSkill().push_back(*it);
+			useRangeSkill.erase(it);
+		}
 	}
 
 }

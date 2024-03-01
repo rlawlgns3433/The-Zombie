@@ -1,5 +1,8 @@
 #pragma once
 #include "Projectile.h"
+
+class ZombieBoss;
+
 class SwordAttack : public Projectile
 {
 protected:
@@ -26,5 +29,6 @@ public:
     static SwordAttack* Create(Scene* scene, Player* player);
 
     bool CheckCollision(Zombie* zombie) override;
+    bool CheckCollision(ZombieBoss* zombieBoss) override;
 };
 

@@ -39,6 +39,7 @@ protected:
 	UIHUD* hud;
 	TileMap* tileMap;
 	ZombieBoss* zombieBoss = nullptr;
+	bool zombieBossDead = false;
 
 	std::vector<Spawner*> spawners;
 	std::vector<std::string> highScore;
@@ -89,6 +90,7 @@ public:
 
 	inline Player* GetPlayer() { return player; }
 	inline ZombieBoss* GetZomieBoss() { return zombieBoss; }
+	void SetZombieBossDead(bool dead) { zombieBossDead = true; }
 
 	inline const std::pair<sf::Vector2f, sf::Vector2f>& GetBoundary() const { return boundary; }
 

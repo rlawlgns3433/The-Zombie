@@ -19,14 +19,16 @@ protected:
 	std::list<BossRangeSkill*> useRangeSkill;
 	std::list<BossRangeSkill*> unuseRangeSkill;
 
-	int maxHp = 10000;
+	int maxHp = 3000;
 	float maxSpeed = 1000;
-
 	float speed = 100;
-	int hp = 10000;
+	int hp = 3000;
 	int atkDamage = 30;
 	float atkInterval = 1.f;
 	float atkTimer = 0.f;
+
+	float rangeSkillTime = 3.f;
+	float rangeSkillTimer = 0.f;
 
 	Player* player;
 	float distanceToPlayer;
@@ -69,7 +71,6 @@ public:
 	void DebugDraw(sf::RenderWindow& window) override;
 
 	void RangeSkill();
-
 
 	inline float GetDistanceToPlayer() const
 	{

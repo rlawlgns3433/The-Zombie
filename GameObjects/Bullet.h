@@ -33,5 +33,6 @@ public:
     static void Create(Scene* sc);
 
     bool CheckCollision(Zombie* zombie) override;
+    bool CheckCollision(ZombieBoss* zombieBoss) override;
 };
 

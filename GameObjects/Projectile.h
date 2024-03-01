@@ -3,6 +3,8 @@
 #include "Zombie.h"
 #include "Weapon.h"
 
+class ZombieBoss;
+
 class Projectile : public GameObject
 {
 protected:
@@ -38,5 +40,6 @@ public:
 	virtual void Hit();
 	virtual void EndOfCheckZombie() {};
 	virtual bool CheckCollision(Zombie* zombie) = 0;
+	virtual bool CheckCollision(ZombieBoss* zombieBoss) = 0;
 
 };

@@ -17,7 +17,6 @@
 #include "ZombieBoss.h"
 #include <SceneScore.h>
 
-
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr), uiLevel(nullptr)
 {
@@ -136,10 +135,10 @@ void SceneGame::Update(float dt)
 			}
 		}
 		
-		if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
-		{
-			zombieBoss = ZombieBoss::Create(this);
-		}
+		//if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
+		//{
+		//	zombieBoss = ZombieBoss::Create(this);
+		//}
 		//���� ����
 		if (InputMgr::GetKeyDown(sf::Keyboard::Delete))
 		{
@@ -311,8 +310,13 @@ void SceneGame::FixedUpdate(float dt)
 		Scene::FixedUpdate(dt);
 		zombieObjects.sort();
 		BulletCollision(dt);
-		if (!isWin && zombieCount <= 0)
+		if (!isWin && zombieCount <= 0 && wave != 5)
 			ChangeWave(++wave);
+		else if (wave == 5 && zombieBossDead)
+		{
+			isWin = true;
+			zombieCount = 0;
+		}
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
 	case SceneGame::Status::DIE:
@@ -365,7 +369,6 @@ void SceneGame::DebugUpdate(float dt)
 {
 	Scene::DebugUpdate(dt);
 	debugZombieCount->setString("zombies: " + std::to_string(zombieObjects.size()));
-
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Slash))
 	{
@@ -428,13 +431,17 @@ void SceneGame::AddScore(int s)
 	hud->SetHiScore(hiScore = std::max(score, hiScore));
 }
 
-
 void SceneGame::ChangeWave(int w)
 {
 	this->wave = w;
 
 	ReleaseWave();
 	InitWave();
+
+	if (w == 5)
+	{
+		zombieBoss = ZombieBoss::Create(this);
+	}
 
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
@@ -493,7 +500,6 @@ void SceneGame::InitWave()
 			for (int z2 = 0; z2 < data.zombie2W; z2++) { zs->AddType(Zombie::Types::Crawler); }
 			spawners.push_back(zs);
 		}
-
 
 		tileMap->SetOrigin(Origins::MC);
 		tileMap->UpdateTransform();
@@ -566,8 +572,20 @@ void SceneGame::BulletCollision(float dt)
 				zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
 			}
 		}
+
+		// TODO 좀비 보스 데미지 처리 부분 수정 해야함
+		if (zombieBoss != nullptr)
+		{
+			if (!zombieBoss->isDead && !bullet->isHit && bullet->CheckCollision(zombieBoss))
+			{
+				bullet->Hit();
+				zombieBoss->Damaged(bullet->GetDamage());
+			}
+		}
 		bullet->EndOfCheckZombie();
 	}
+
+	
 }
 
 sf::Vector2f SceneGame::GetBoundaryCenter()

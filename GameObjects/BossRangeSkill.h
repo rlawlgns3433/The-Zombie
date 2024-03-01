@@ -13,6 +13,7 @@ protected:
 	Player* player = nullptr;
 	float speed = 1.5f;
 	bool hit = false;
+	int damage = 40;
 
 	float dtime = 0.f;
 	float unUseListTime = 10.f;

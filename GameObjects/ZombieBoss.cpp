@@ -66,6 +66,7 @@ void ZombieBoss::Update(float dt)
 	SpriteGo::Update(dt);
 
 	atkTimer += dt;
+	
 
 	direction = player->GetPosition() - position;
 
@@ -74,9 +75,16 @@ void ZombieBoss::Update(float dt)
 	//충돌 검사
 	Collision(dt);
 
+	if (rangeSkillTimer > rangeSkillTime)
+	{
+		currentStatus = STATUS::RANGESKILL;
+		rangeSkillTimer = 0.f;
+	}
+
 	switch (currentStatus)
 	{
 	case ZombieBoss::STATUS::MOVE:
+		rangeSkillTimer += dt;
 		if (distanceToPlayer > GetBound().getRadius() + player->GetBound().getRadius())
 		{
 			Translate(direction * speed * dt);
@@ -124,11 +132,24 @@ void ZombieBoss::FixedUpdate(float dt)
 	distanceToPlayer = Utils::Distance(player->GetPosition(), position);
 
 	SpriteGo::Update(dt);
-
+	std::cout << hp << std::endl;
 	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius() + player->GetBound().getRadius())
 	{
 		player->OnDamage(atkDamage);
 		atkTimer = 0.f;
+	}
+
+	switch (player->GetWeaponType())
+	{
+		case Player::TYPES::MAN:
+
+			break;
+		case Player::TYPES::FIREBAT:
+
+			break;
+		case Player::TYPES::READDEATH:
+
+			break;
 	}
 }
 
@@ -216,4 +237,5 @@ void ZombieBoss::OnDie()
 {
 	isDead = true;
 	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
+	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->SetZombieBossDead(true);
 }

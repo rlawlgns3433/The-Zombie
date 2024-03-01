@@ -69,6 +69,7 @@ public:
 	void OnDie();
 	void onItem(Item* item);
 	void OnDamage(int damage);
+	void RangeOnDamage(int damage);
 
 	//레벨업 하면 true 반환
 	void AddExp(int value);
@@ -87,6 +88,7 @@ public:
 	inline void SetInvincibility(bool value) { invincibility = value; }
 	inline void SetInvincibility() { invincibility = !invincibility; }
 
+	TYPES GetWeaponType() { return type; }
 	Weapon* GetWeapon() { return weapon; }
 };
 
