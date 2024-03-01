@@ -83,7 +83,6 @@ void BossRangeSkill::FixedUpdate(float dt)
 		}
 	}
 
-
 	// **********************수정해야함******************
 	if (dtime > unUseListTime && !hit)
 	{
