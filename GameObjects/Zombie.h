@@ -40,9 +40,9 @@ protected:
 	Zombie(Scene* sc, const std::string& name="");
 
 	void Collision(float dt);
-	void OnDie();
 
 public:
+	void OnDie();
 	bool isDead = false;
 
 	~Zombie() = default;

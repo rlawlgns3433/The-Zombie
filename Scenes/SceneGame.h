@@ -32,6 +32,10 @@ private:
 	void CheatExp();
 	InputMgr::SFGM_COMBO cheatHp;
 	void CheatHp();
+	InputMgr::SFGM_COMBO cheatKill;
+	void CheatKill();
+	InputMgr::SFGM_COMBO cheatWin;
+	void CheatWin();
 protected:
 
 	Player* player;
@@ -49,10 +53,12 @@ protected:
 	int wave = 0;
 	int zombieCount = 1;
 
-	bool isWin = false;
 	std::pair<sf::Vector2f, sf::Vector2f> boundary;
 
 	bool doReset = false;
+	bool isWin = false;
+	float killTimer = 0.f;
+	float winTimer = 0.f;
 
 	void BulletCollision(float dt);
 	sf::Vector2f GetBoundaryCenter();

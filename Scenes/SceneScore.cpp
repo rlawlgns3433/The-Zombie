@@ -41,7 +41,6 @@ void SceneScore::Release()
 void SceneScore::Enter()
 {
 	Scene::Enter();
-	SOUND_MGR.StopBGM();
 	GetHigh();
 	if (writeMode) { OutHigh(); }
 }
@@ -82,7 +81,7 @@ void SceneScore::FixedUpdate(float dt)
 		if (drawScore >= currScore)
 		{
 			drawScore = currScore;
-			SOUND_MGR.PlaySfx("sound/coin07.wav");
+			SOUND_MGR.PlaySfx("sound/pickup01.wav");
 			if (currIt == sorted.begin())
 			{
 				title.SetString("New Record!!!");
