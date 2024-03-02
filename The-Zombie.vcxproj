@@ -140,7 +140,7 @@
     <ClCompile Include="GameObjects\BossRangeSkill.cpp" />
     <ClCompile Include="DataTable\CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
-    <ClCompile Include="EffectLightLine.cpp" />
+    <ClCompile Include="GameObjects\Effect\EffectLightLine.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectCenterText.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectDamage.cpp" />
     <ClCompile Include="GameObjects\Flame.cpp" />
@@ -195,13 +195,14 @@
     <ClCompile Include="GameObjects\SwordAttack.cpp" />
     <ClCompile Include="GameObjects\Base\UIGo.cpp" />
     <ClCompile Include="GameObjects\ZombieBoss.cpp" />
+    <ClCompile Include="Wand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjects\BossRangeSkill.h" />
     <ClInclude Include="DataTable\CharacterSelectTable.h" />
     <ClInclude Include="DataTable\PlayerTable.h" />
     <ClInclude Include="DataTable\DataTable.h" />
-    <ClInclude Include="EffectLightLine.h" />
+    <ClInclude Include="GameObjects\Effect\EffectLightLine.h" />
     <ClInclude Include="GameObjects\Effect\EffectCenterText.h" />
     <ClInclude Include="GameObjects\Effect\EffectDamage.h" />
     <ClInclude Include="GameObjects\Flame.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="GameObjects\SwordAttack.h" />
     <ClInclude Include="GameObjects\Base\UIGo.h" />
     <ClInclude Include="GameObjects\ZombieBoss.h" />
+    <ClInclude Include="Wand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

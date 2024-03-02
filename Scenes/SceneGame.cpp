@@ -546,7 +546,7 @@ void SceneGame::InitWave()
 			s->SetPosition(sf::Vector2f(Utils::RandomRange(boundary.first.x, boundary.second.x), Utils::RandomRange(boundary.first.y, boundary.second.y)));
 			AddGo(s);
 		}
-		EffectCenterText::Create(this, data.descriptionId);
+		EffectCenterText::Create(this, data.descriptionId + L"\n");
 	}
 }
 

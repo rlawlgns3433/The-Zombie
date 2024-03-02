@@ -12,6 +12,7 @@
 #include "FlameThrower.h"
 #include "Weapon.h"
 #include "Sword.h"
+#include "Wand.h"
 
 
 Player::Player(const std::string& name) : SpriteGo(name)
@@ -53,6 +54,11 @@ void Player::Init()
 		break;
 	case TYPES::READDEATH:
 		weapon = new Sword(this); // Type 검사
+		weapon->Init();
+		weapon->Reset();
+		break;
+	case TYPES::MAGE:
+		weapon = new Wand(this); // Type 마법사
 		weapon->Init();
 		weapon->Reset();
 		break;

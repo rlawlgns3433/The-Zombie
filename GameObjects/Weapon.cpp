@@ -8,6 +8,7 @@
 Weapon::Weapon(const std::string& name)
 	: GameObject(name)
 {
+	shotTimer = shotInterval;
 }
 
 void Weapon::Init()

@@ -10,8 +10,8 @@ class Weapon : public GameObject
 public:
 	enum class Types
 	{
-		Cloased,	// 근점
-		Ranged,		// 원기리
+		Cloased,	// 근접
+		Ranged,		// 원거리
 	};                                                                                                                             
 	static const int totalTypes = 2;
 
@@ -32,7 +32,7 @@ protected:
 	float reloadSpeed = 1.f; //time to shot
 
 	int damage = 1;
-	int projectileCount = 2;
+	int projectileCount = 1;
 
 	int maxAmmo = 26;
 	int ammo = maxAmmo;
