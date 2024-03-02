@@ -25,7 +25,7 @@ void UICharacterSelect::Init()
 	characterTable.push_back(DT_CHARACTER_SELECT->Get(Player::TYPES::MAN));
 	characterTable.push_back(DT_CHARACTER_SELECT->Get(Player::TYPES::FIREBAT));
 	characterTable.push_back(DT_CHARACTER_SELECT->Get(Player::TYPES::READDEATH));
-	characterTable.push_back(DT_CHARACTER_SELECT->Get(Player::TYPES::TIMBER));
+	characterTable.push_back(DT_CHARACTER_SELECT->Get(Player::TYPES::MAGE));
 
 	//************************캐릭터 선택 UI***********************
 	NewSpriteGo("CharacterSelect", "graphics/characterselect.PNG");
@@ -126,8 +126,8 @@ void UICharacterSelect::Init()
 	sprites["Character3Img"]->SetScale({ 1.f , 1.f });
 
 	sprites["Character4Img"]->SetPosition({ FRAMEWORK.GetWindowSize().x *
-	0.62f , FRAMEWORK.GetWindowSize().y * 0.24f });
-	sprites["Character4Img"]->SetScale({ 0.6f , 0.6f });
+	0.605f , FRAMEWORK.GetWindowSize().y * 0.23f });
+	sprites["Character4Img"]->SetScale({ 3.0f , 3.0f });
 
 	//*************************박스 포지션*************************
 	sprites["Characterbox1"]->SetPosition({ FRAMEWORK.GetWindowSize().x *

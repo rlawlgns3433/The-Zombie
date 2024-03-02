@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "Flame.h"
+#include "Crosshair.h"
 
 FlameThrower::FlameThrower(Player* player, const std::string& name)
 	: Weapon(name)
@@ -82,6 +83,8 @@ void FlameThrower::Attack()
 void FlameThrower::Reload()
 {
 	shotTimer = -0.05f;
+	FRAMEWORK.GetMouse()->MotionReload(0.05f);
+
 	int needAmmo = maxAmmo - ammo;
 	if (totalAmmo >= needAmmo)
 	{

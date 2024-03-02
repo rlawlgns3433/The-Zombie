@@ -41,13 +41,13 @@ void EffectDamage::Draw(sf::RenderWindow& window)
 
 EffectDamage* EffectDamage::Create(Scene* sc, sf::Vector2f pos, const std::wstring& text)
 {
-    EffectDamage* ef = new EffectDamage(sc);
-    ef->Init();
-    ef->SetString(text);
-    ef->SetOrigin(Origins::MC);
-    ef->SetPosition(pos);
-    sc->AddGo(ef);
-    return ef;
+        EffectDamage* ef = new EffectDamage(sc);
+        ef->Init();
+        ef->SetString(text);
+        ef->SetOrigin(Origins::MC);
+        ef->SetPosition(pos);
+        sc->AddGo(ef);
+        return ef;
 }
 
 EffectDamage* EffectDamage::Create(Scene* sc, sf::Vector2f pos, int damage)

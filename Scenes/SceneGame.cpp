@@ -460,9 +460,12 @@ void SceneGame::SetStatus(Status st)
 
 void SceneGame::AddScore(int s)
 {
-	score += s;
-	hud->SetScore(score);
-	hud->SetHiScore(hiScore = std::max(score, hiScore));
+	if (!isWin)
+	{
+		score += s;
+		hud->SetScore(score);
+		hud->SetHiScore(hiScore = std::max(score, hiScore));
+	}
 }
 
 void SceneGame::ChangeWave(int w)
@@ -546,7 +549,7 @@ void SceneGame::InitWave()
 			s->SetPosition(sf::Vector2f(Utils::RandomRange(boundary.first.x, boundary.second.x), Utils::RandomRange(boundary.first.y, boundary.second.y)));
 			AddGo(s);
 		}
-		EffectCenterText::Create(this, data.descriptionId);
+		EffectCenterText::Create(this, data.descriptionId + L"\n");
 	}
 }
 
@@ -597,10 +600,14 @@ void SceneGame::BulletCollision(float dt)
 	{
 		for (auto zombie : zombieObjects)
 		{
-			if (!zombie->isDead && !bullet->isHit && bullet->CheckCollision(zombie))
+			if (!zombie->isDead && !bullet->isHit)
 			{
+				if (!bullet->CheckCollision(zombie))
+				{
+					continue;
+				}
 				bullet->Hit();
-				if (zombie->Damaged(bullet->GetDamage()) && !isWin)
+				if (!isWin && zombie->Damaged(bullet->GetDamage()))
 				{
 					AddScore(10);
 					hud->SetZombieCount(--zombieCount);

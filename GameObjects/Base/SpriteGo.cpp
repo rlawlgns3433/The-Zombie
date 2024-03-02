@@ -11,6 +11,11 @@ SpriteGo::SpriteGo(Scene* sc, const std::string& name)
 {
 }
 
+SpriteGo::~SpriteGo()
+{
+	Release();
+}
+
 void SpriteGo::SetTexture(const std::string& textureId)
 {
 	this->textureId = textureId;

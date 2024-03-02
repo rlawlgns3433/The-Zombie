@@ -8,6 +8,7 @@
 Weapon::Weapon(const std::string& name)
 	: GameObject(name)
 {
+	shotTimer = shotInterval;
 }
 
 void Weapon::Init()
@@ -32,7 +33,10 @@ void Weapon::Update(float dt)
 {
 	GameObject::Update(dt);
 
+	if (shotTimer < shotInterval)
+	{
 	shotTimer += dt;
+	}
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
