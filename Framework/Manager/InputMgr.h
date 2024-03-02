@@ -79,7 +79,7 @@ public:
 
 
 	//ÄÞº¸
-	static bool IsPerpectCombo(const SFGM_COMBO& combo);
+	static bool IsPerfectCombo(const SFGM_COMBO& combo);
 	static bool IsExllentCombo(const SFGM_COMBO& combo);
 	static bool IsComboSuccess(const SFGM_COMBO& combo);
 	static void ComboRecord(float timeLimit);

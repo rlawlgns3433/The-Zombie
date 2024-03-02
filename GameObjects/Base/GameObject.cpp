@@ -13,6 +13,7 @@ GameObject::GameObject(Scene* sc, const std::string& name)
 
 GameObject::~GameObject()
 {
+	Release();
 }
 
 void GameObject::SetOrigin(Origins preset)
@@ -32,6 +33,7 @@ void GameObject::Init()
 
 void GameObject::Release()
 {
+	scene = nullptr;
 }
 
 void GameObject::Reset()

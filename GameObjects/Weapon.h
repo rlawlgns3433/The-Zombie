@@ -66,4 +66,5 @@ public:
 	inline int GetTotalAmmo() const { return totalAmmo; }
 	inline int GetDamage() const { return damage; }
 	inline int GetProjectileCount() const { return projectileCount; }
+	inline int GetLevel() const { return level; }
 };

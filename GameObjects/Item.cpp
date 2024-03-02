@@ -8,11 +8,13 @@
 Item::Item(const std::string& name)
 	:SpriteGo(name), type(Types::NONE), value(0), player(nullptr)
 {
+	sortLayer = 2;
 }
 
 Item::Item(Scene* sc, const std::string& name)
 	:SpriteGo(sc,name), type(Types::NONE), value(0), player(nullptr)
 {
+	sortLayer = 2;
 }
 
 void Item::Init()

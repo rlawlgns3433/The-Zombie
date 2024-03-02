@@ -44,7 +44,7 @@ public:
 	void OnDie();
 	bool isDead = false;
 
-	~Zombie() = default;
+	~Zombie() override;
 
 	void Init() override;
 	void Release() override;

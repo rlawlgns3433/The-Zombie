@@ -25,7 +25,7 @@ Zombie* Zombie::Create(Types zombieType,Scene* sc)
 {
 	Zombie* zombie = new Zombie(sc,"Zombie");
 	zombie->type = zombieType;
-
+	zombie->scene = sc;
 
 	const DataZombie& data = DT_ZOMBIE->Get(zombieType);
 	zombie->textureId = data.textureId;
@@ -44,6 +44,11 @@ Zombie* Zombie::Create(Types zombieType,Scene* sc)
 	zombie->scene->AddGo(zombie);
 
 	return zombie;
+}
+
+Zombie::~Zombie()
+{
+	Release();
 }
 
 void Zombie::Init()
@@ -192,8 +197,11 @@ bool Zombie::Damaged(int damage)
 {
 	int preHp = hp;
 	hp -= damage;
+	if (scene != nullptr)
+	{
 	EffectDamage::Create(scene,position,damage);
-	SCENE_MGR.GetCurrentScene()->AddGo(new EffectBlood(this->position))->Init();
+	scene->AddGo(new EffectBlood(this->position))->Init();
+	}
 	if (hp <= 0 && !isDead)
 	{
 		hp = 0;

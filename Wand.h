@@ -9,6 +9,7 @@ private:
 	std::vector<InputMgr::SFGM_COMBO*> comboList;
 
 	void Combo();
+	void Reload();
 
 protected:
 	float playerSpeed;
@@ -16,6 +17,7 @@ protected:
 	float comboTimeLimit = 3.f;
 	bool isChanneling = false;
 	int comboSelected = 0;
+	float perfectTimer = 0.f;
 
 public:
 	Wand(Player* player, const std::string& name = "");
@@ -31,6 +33,8 @@ public:
 
 	void MagicChanneling();
 	void MagicAttack();
+	void MagicExcellent();
+	void MagicPerfect();
 	void MagicCancle();
 
 };

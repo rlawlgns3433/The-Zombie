@@ -33,7 +33,10 @@ void Weapon::Update(float dt)
 {
 	GameObject::Update(dt);
 
+	if (shotTimer < shotInterval)
+	{
 	shotTimer += dt;
+	}
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{

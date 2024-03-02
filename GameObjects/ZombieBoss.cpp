@@ -204,7 +204,10 @@ bool ZombieBoss::Damaged(int damage)
 {
 	int preHp = hp;
 	hp -= damage;
+	if (scene != nullptr)
+	{
 	EffectDamage::Create(scene, position, damage);
+	}
 	if (hp <= 0 && !isDead)
 	{
 		hp = 0;

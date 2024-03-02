@@ -199,7 +199,7 @@ bool InputMgr::AnyKeyDown()
 }
 
 
-bool InputMgr::IsPerpectCombo(const SFGM_COMBO& combo)
+bool InputMgr::IsPerfectCombo(const SFGM_COMBO& combo)
 {
     auto c = combo.begin();
     auto input = InputMgr::combo.begin();
@@ -219,6 +219,10 @@ bool InputMgr::IsExllentCombo(const SFGM_COMBO& combo)
     auto c = combo.begin();
     for (auto& input : InputMgr::combo)
     {
+        if (c->second == KEY_STATE::UP)
+            c++;
+        if (c == combo.end())
+            return true;
         if (input.second == KEY_STATE::UP)
             continue;
         if (input == *c)
@@ -235,6 +239,10 @@ bool InputMgr::IsComboSuccess(const SFGM_COMBO& combo)
     auto c = combo.begin();
     for (auto& input : InputMgr::combo)
     {
+        if (c->second == KEY_STATE::UP)
+            c++;
+        if (c == combo.end())
+            return true;
         if (input == *c)
             c++;
         if (c == combo.end())
