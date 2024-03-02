@@ -9,12 +9,13 @@ protected:
 	sf::Color color;
 	sf::Color colorOut;
 
-	float timer = 0.0f;
-	float timer2 = 2.f;
+	float timer = 0.f;
+
 public:
 	~EffectCenterText() override = default;
 
 	float duration = 1.f;
+	float duration2 = 2.f;
 
 	void Init() override;
 	void Update(float dt) override;
@@ -22,5 +23,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	static EffectCenterText* Create(Scene* sc, const std::wstring& text);
+protected:
+	float timer2 = duration2;
 };
 

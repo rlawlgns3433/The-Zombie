@@ -21,7 +21,7 @@ void EffectCenterText::Init()
 	SetFont("fonts/DOSIyagiBoldface.ttf");
 	SetColor(color);
 	SetCharacterSize(70);
-	SetOutLine(5.f, sf::Color::Black);
+	SetOutLine(5.f, colorOut);
 	SetPosition(sf::Vector2f(FRAMEWORK.GetWindowSize()) * 0.5f);
 }
 
@@ -32,8 +32,11 @@ void EffectCenterText::Update(float dt)
 	if (timer >= duration)
 	{
 		timer2 -= dt;
-		colorOut.a = color.a = (int)(timer2 * 255);
-		if (color.a <= 0)
+		if (timer2 > 0.f)
+		{
+			colorOut.a = color.a = (int)(timer2/duration2 * 255);
+		}
+		else if(active)
 		{
 			colorOut.a = color.a = 0;
 			active = false;

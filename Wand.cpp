@@ -57,10 +57,6 @@ void Wand::Update(float dt)
 			{
 				MagicAttack();
 			}
-			else
-			{
-				std::cout << "ÄÞº¸ ½ÇÆÐ" << std::endl;
-			}
 		}
 		else if (InputMgr::IsComboSuccess(*comboList[comboSelected]))
 		{
@@ -79,7 +75,9 @@ void Wand::MagicChanneling()
 {
 	if (!isChanneling)
 	{
+		SOUND_MGR.PlaySfx("sound/magic/channeling.wav");
 		FRAMEWORK.GetMouse()->MotionReload(comboTimeLimit);
+
 		isChanneling = true;
 		playerSpeed = playerSpeed = player->GetSpeed();
 		player->SetSpeed(0.f);
@@ -120,12 +118,16 @@ void Wand::MagicAttack()
 
 void Wand::MagicCancle()
 {
-	isChanneling = false;
-	comboTimer = 0.f;
-	player->SetSpeed(playerSpeed);
-	InputMgr::StopComboRecord();
-	FRAMEWORK.GetMouse()->MotionShot();
-	FRAMEWORK.GetMouse()->MotionReload(0.f);
+	if (isChanneling)
+	{
+		isChanneling = false;
+		comboTimer = 0.f;
+		player->SetSpeed(playerSpeed);
+		InputMgr::StopComboRecord();
+		FRAMEWORK.GetMouse()->MotionShot();
+		FRAMEWORK.GetMouse()->MotionReload(0.f);
+		SOUND_MGR.PlaySfx("sound/magic/cancle.wav");
+	}
 }
 
 void Wand::Combo()
