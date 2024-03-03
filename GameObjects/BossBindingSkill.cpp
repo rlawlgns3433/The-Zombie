@@ -118,7 +118,7 @@ void BossBindingSkill::DebugDraw(sf::RenderWindow & window)
 
 void BossBindingSkill::BindingSkill()
 {
-	std::cout << "BindingSkill!!" << std::endl;
+	//std::cout << "BindingSkill!!" << std::endl; 테스트코드
 
 	isBinding = true;
 	zombieBoss = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetZomieBoss();
