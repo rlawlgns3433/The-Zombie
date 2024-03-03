@@ -37,6 +37,10 @@ public:
 
 	LevelUpTable(DataTable::Types t);
 	~LevelUpTable() override;
+	LevelUpTable(const LevelUpTable&) = delete;
+	LevelUpTable(LevelUpTable&&) = delete;
+	LevelUpTable& operator=(const LevelUpTable&) = delete;
+	LevelUpTable& operator=(LevelUpTable&&) = delete;
 
 	bool Load() override;
 	void Release() override;

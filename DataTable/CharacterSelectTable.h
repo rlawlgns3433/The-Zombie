@@ -22,6 +22,10 @@ protected:
 public:
 	CharacterSelectTable(DataTable::Types t);
 	~CharacterSelectTable() override;
+	CharacterSelectTable(const CharacterSelectTable&) = delete;
+	CharacterSelectTable(CharacterSelectTable&&) = delete;
+	CharacterSelectTable& operator=(const CharacterSelectTable&) = delete;
+	CharacterSelectTable& operator=(CharacterSelectTable&&) = delete;
 
 	bool Load() override;
 	void Release() override;

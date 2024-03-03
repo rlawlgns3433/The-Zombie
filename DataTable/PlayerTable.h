@@ -24,6 +24,10 @@ protected:
 public:
 	PlayerTable(DataTable::Types t);
 	~PlayerTable() override;
+	PlayerTable(const PlayerTable&) = delete;
+	PlayerTable(PlayerTable&&) = delete;
+	PlayerTable& operator=(const PlayerTable&) = delete;
+	PlayerTable& operator=(PlayerTable&&) = delete;
 
 	bool Load() override;
 	void Release() override;

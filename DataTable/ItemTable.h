@@ -27,6 +27,10 @@ protected :
 public :
 	ItemTable(DataTable::Types type);
 	~ItemTable() override;
+	ItemTable(const ItemTable&) = delete;
+	ItemTable(ItemTable&&) = delete;
+	ItemTable& operator=(const ItemTable&) = delete;
+	ItemTable& operator=(ItemTable&&) = delete;
 
 	bool Load() override;
 	void Release() override;

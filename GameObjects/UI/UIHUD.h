@@ -56,6 +56,10 @@ protected:
 public:
 	UIHUD(const std::string& name = "UIHUD");
 	~UIHUD() override = default;
+	UIHUD(const UIHUD&) = delete;
+	UIHUD(UIHUD&&) = delete;
+	UIHUD& operator=(const UIHUD&) = delete;
+	UIHUD& operator=(UIHUD&&) = delete;
 
 	void Init() override;
 	void Release() override;

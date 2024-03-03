@@ -26,6 +26,10 @@ protected:
 public:
 	ZombieTable(DataTable::Types t);
 	~ZombieTable() override;
+	ZombieTable(const ZombieTable&) = delete;
+	ZombieTable(ZombieTable&&) = delete;
+	ZombieTable& operator=(const ZombieTable&) = delete;
+	ZombieTable& operator=(ZombieTable&&) = delete;
 
 	bool Load() override;
 	void Release() override;

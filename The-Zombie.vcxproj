@@ -138,7 +138,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameObjects\BossBindingSkill.cpp" />
-    <ClCompile Include="GameObjects\Base\ShapeGo.cpp" />
     <ClCompile Include="GameObjects\BossRangeSkill.cpp" />
     <ClCompile Include="DataTable\CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
