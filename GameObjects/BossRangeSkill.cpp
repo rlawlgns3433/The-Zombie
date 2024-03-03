@@ -66,7 +66,6 @@ void BossRangeSkill::FixedUpdate(float dt)
 
 	Translate(direction * speed * dt);
 	
-	// **********************수정해야함******************
 
 	if (!dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->
 		GetZombieBossDead())
@@ -77,7 +76,7 @@ void BossRangeSkill::FixedUpdate(float dt)
 		{
 			if (GetGlobalBounds().intersects(player->GetGlobalBounds()))
 			{
-				std::cout << "플레이어 맞음" << std::endl;
+				//std::cout << "플레이어 맞음" << std::endl; 테스트코드
 				hit = true;
 				zombieBoss->GetUnUseRangeSkill().push_back(this);
 				it = zombieBoss->GetUseRangeSkill().erase(it);
@@ -91,7 +90,6 @@ void BossRangeSkill::FixedUpdate(float dt)
 			}
 		}
 
-		// **********************수정해야함******************
 		if (dtime > unUseListTime && !hit)
 		{
 			auto& useRangeSkill = zombieBoss->GetUseRangeSkill();

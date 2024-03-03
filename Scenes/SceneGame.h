@@ -37,6 +37,9 @@ private:
 	void CheatKill();
 	InputMgr::SFGM_COMBO cheatWin;
 	void CheatWin();
+	InputMgr::SFGM_COMBO cheatBoss;
+	void CheatBoss();
+
 protected:
 
 	SceneGame(const SceneGame&) = delete;
