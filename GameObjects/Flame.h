@@ -20,6 +20,8 @@ protected :
 public :
     ~Flame() = default;
 
+    Flame(const Flame&) = delete;
+    Flame(Flame&&) = delete;
     Flame& operator=(const Flame&) = delete;
     Flame& operator=(Flame&&) = delete;
 
