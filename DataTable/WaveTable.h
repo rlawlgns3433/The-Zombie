@@ -30,6 +30,10 @@ protected:
 public:
 	WaveTable(DataTable::Types t);
 	~WaveTable() override;
+	WaveTable(const WaveTable&) = delete;
+	WaveTable(WaveTable&&) = delete;
+	WaveTable& operator=(const WaveTable&) = delete;
+	WaveTable& operator=(WaveTable&&) = delete;
 
 	bool Load() override;
 	void Release() override;

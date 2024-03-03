@@ -138,7 +138,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameObjects\BossBindingSkill.cpp" />
-    <ClCompile Include="GameObjects\Base\ShapeGo.cpp" />
     <ClCompile Include="GameObjects\BossRangeSkill.cpp" />
     <ClCompile Include="DataTable\CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
@@ -167,7 +166,7 @@
     <ClCompile Include="GameObjects\Gun.cpp" />
     <ClCompile Include="DataTable\LevelUpTable.cpp" />
     <ClCompile Include="DataTable\ItemTable.cpp" />
-    <ClCompile Include="Lighting.cpp" />
+    <ClCompile Include="GameObjects\Lighting.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -198,7 +197,7 @@
     <ClCompile Include="GameObjects\SwordAttack.cpp" />
     <ClCompile Include="GameObjects\Base\UIGo.cpp" />
     <ClCompile Include="GameObjects\ZombieBoss.cpp" />
-    <ClCompile Include="Wand.cpp" />
+    <ClCompile Include="GameObjects\Wand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjects\BossBindingSkill.h" />
@@ -231,7 +230,7 @@
     <ClInclude Include="GameObjects\Gun.h" />
     <ClInclude Include="DataTable\LevelUpTable.h" />
     <ClInclude Include="DataTable\ItemTable.h" />
-    <ClInclude Include="Lighting.h" />
+    <ClInclude Include="GameObjects\Lighting.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="GameObjects\Projectile.h" />
@@ -258,7 +257,7 @@
     <ClInclude Include="GameObjects\SwordAttack.h" />
     <ClInclude Include="GameObjects\Base\UIGo.h" />
     <ClInclude Include="GameObjects\ZombieBoss.h" />
-    <ClInclude Include="Wand.h" />
+    <ClInclude Include="GameObjects\Wand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

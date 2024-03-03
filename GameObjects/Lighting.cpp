@@ -85,7 +85,7 @@ void Lighting::Draw(sf::RenderWindow& window)
 	window.draw(circle);
 }
 
-bool Lighting::CheckCollision(Zombie* zombie)
+bool Lighting::CheckCollision(SpriteGo* zombie)
 {
 	if (Utils::Distance(zombie->GetPosition(), firstPos) <= 500.f)
 	{
@@ -94,12 +94,6 @@ bool Lighting::CheckCollision(Zombie* zombie)
 		return true;
 	}
 }
-
-bool Lighting::CheckCollision(ZombieBoss* zombieBoss)
-{
-	return false;
-}
-
 void Lighting::Create(Scene* sc)
 {
 	SceneGame* sceneGame = dynamic_cast<SceneGame*>(sc);
@@ -165,7 +159,7 @@ void Lighting::SortAndSetPosition()
 
 	//현재 위치에서 가장 가까운 좀비를 탐색
 	float minDistance = -1.f;
-	Zombie* minZombie = nullptr;
+	SpriteGo* minZombie = nullptr;
 	for (auto ptr : zombies)
 	{
 		sf::Vector2f zombiePos = ptr->GetPosition();

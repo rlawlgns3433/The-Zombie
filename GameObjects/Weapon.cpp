@@ -35,7 +35,7 @@ void Weapon::Update(float dt)
 
 	if (shotTimer < shotInterval)
 	{
-	shotTimer += dt;
+		shotTimer += dt;
 	}
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
@@ -95,6 +95,12 @@ void  Weapon::AddReloadSpeed(float value)
 void Weapon::AddProjectile(int value)
 {
 	projectileCount = std::max(1, projectileCount + value);
+}
+
+void Weapon::AddLevel(int value)
+{
+	level += value;
+	damage *= 1.f + (level - 1) * 0.05; //소수점 절삭.
 }
 
 void Weapon::AddTotalAmmo(int add)

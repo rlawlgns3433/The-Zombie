@@ -11,6 +11,10 @@ protected:
 public:
 	StringTable(Types t);
 	~StringTable() override;
+	StringTable(const StringTable&) = delete;
+	StringTable(StringTable&&) = delete;
+	StringTable& operator=(const StringTable&) = delete;
+	StringTable& operator=(StringTable&&) = delete;
 
 	bool Load() override;
 	bool Load(Languages lang);

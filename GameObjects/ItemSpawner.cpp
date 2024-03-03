@@ -6,17 +6,17 @@
 ItemSpawner::ItemSpawner(const std::string& name)
 	:Spawner(name)
 {
-	interval = 5.f; //주기
+	//아이템 스포너 수치는 고정.
+	//추후 아이템이 추가될 때 변경.
+	interval = 5.f;
 	spawnCount = 2;
 	radius = 500.f;
 	timer = 0.f;
-	//생성시에 값을 받을 수 있도록 or 랜덤
 }
 
 ItemSpawner::ItemSpawner(Scene* sc, const std::string& name)
 	:Spawner(sc, name)
 {
-	//TODO 외부에서 멤버변수 수정할 수 있게
 	interval = 5.f;
 	spawnCount = 2;
 	radius = 500.f;

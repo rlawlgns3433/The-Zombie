@@ -25,6 +25,10 @@ public:
 	GameObject(const std::string& name = "");
 	GameObject(Scene* sc, const std::string& name = "");
 	virtual ~GameObject();
+	GameObject(const GameObject&) = delete;
+	GameObject(GameObject&&) = delete;
+	GameObject& operator=(const GameObject&) = delete;
+	GameObject& operator=(GameObject&&) = delete;
 
 	static bool CompareDrawOrder(const GameObject* lhs, const GameObject* rhs)
 	{

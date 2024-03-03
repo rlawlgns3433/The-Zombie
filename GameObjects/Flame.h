@@ -38,6 +38,5 @@ public :
     void SetDirection(sf::Vector2f direction) override;
     void SetBound();
 
-    bool CheckCollision(Zombie* zombie) override;
-    bool CheckCollision(ZombieBoss* zombieBoss) override;
+    bool CheckCollision(SpriteGo* zombie) override;
 };

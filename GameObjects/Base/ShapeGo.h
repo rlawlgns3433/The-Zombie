@@ -14,6 +14,11 @@ public:
 
 	}
 
+	ShapeGo(const ShapeGo&) = delete;
+	ShapeGo(ShapeGo&&) = delete;
+	ShapeGo& operator=(const ShapeGo&) = delete;
+	ShapeGo& operator=(ShapeGo&&) = delete;
+
 	void Init() override
 	{
 

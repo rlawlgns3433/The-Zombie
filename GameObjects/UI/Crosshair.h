@@ -5,6 +5,10 @@ class Crosshair : public SpriteGo
 public:
 	Crosshair(const std::string& name = "crosshair");
 	~Crosshair() override = default;
+	Crosshair(const Crosshair&) = delete;
+	Crosshair(Crosshair&&) = delete;
+	Crosshair& operator=(const Crosshair&) = delete;
+	Crosshair& operator=(Crosshair&&) = delete;
 
 	void Init();
 	void Release();

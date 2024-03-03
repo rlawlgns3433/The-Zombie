@@ -58,7 +58,7 @@ public:
 	void AddDamage(int value);
 	void AddReloadSpeed(float value);
 	void AddProjectile(int value);
-	inline void AddLevel(int value) { level += value; }
+	void AddLevel(int value);
 
 	inline void SetDamage(int value) { damage = value; }
 

@@ -21,6 +21,10 @@ protected:
 public:
 	UICharacterSelect(const std::string& name = "");
 	~UICharacterSelect() override;
+	UICharacterSelect(const UICharacterSelect&) = delete;
+	UICharacterSelect(UICharacterSelect&&) = delete;
+	UICharacterSelect& operator=(const UICharacterSelect&) = delete;
+	UICharacterSelect& operator=(UICharacterSelect&&) = delete;
 
 	void Init() override;
 	void Release() override;

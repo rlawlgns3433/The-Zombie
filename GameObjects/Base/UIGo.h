@@ -17,7 +17,11 @@ protected:
 
 public:
 	UIGo(const std::string& name = "");
-	virtual ~UIGo();
+	~UIGo() override;
+	UIGo(const UIGo&) = delete;
+	UIGo(UIGo&&) = delete;
+	UIGo& operator=(const UIGo&) = delete;
+	UIGo& operator=(UIGo&&) = delete;
 
 	void Init() override;
 	void Release() override;

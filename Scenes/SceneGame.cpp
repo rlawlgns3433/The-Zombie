@@ -103,7 +103,7 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 
 	tileMap->SetPosition(centerPos);
-	ChangeWave(1);
+	ChangeWave(5);
 
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
@@ -189,7 +189,6 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
 		{
-			//SaveHighScore(); //TODO 옮겨라 - CHECK SceneScore에서 저장할 예정
 			hud->SetGameOver(false);
 			dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
 			SCENE_MGR.ChangeScene(SceneIds::SceneScore);
@@ -639,7 +638,7 @@ sf::Vector2f SceneGame::GetBoundaryCenter()
 
 
 
-//치트 콤보 - TODO 데이터테이블화..?
+//치트 콤보 - NO 데이터테이블화..?
 void SceneGame::CheatExp()
 {
 	cheatExp.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });

@@ -69,7 +69,7 @@ SwordAttack* SwordAttack::Create(Scene* scene, Player* player)
     return swordAttack;
 }
 
-bool SwordAttack::CheckCollision(Zombie* zombie)
+bool SwordAttack::CheckCollision(SpriteGo* zombie)
 {
     float angle = Utils::Angle(direction, zombie->GetPosition() - position);
     std::cout << angle << std::endl;
@@ -82,20 +82,3 @@ bool SwordAttack::CheckCollision(Zombie* zombie)
 
     return false;
 }
-
-bool SwordAttack::CheckCollision(ZombieBoss* zombieBoss)
-{
-    float angle = Utils::Angle(direction, zombieBoss->GetPosition() - position);
-    std::cout << angle << std::endl;
-    float distance = Utils::Distance(position, zombieBoss->GetPosition());
-
-    if (angle < attackAngle && distance < attackRadius)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-
-
