@@ -4,6 +4,7 @@
 #include "EffectDamage.h"
 #include "SpriteGo.h"
 #include "BossRangeSkill.h"
+#include "BossBindingSkill.h"
 
 ZombieBoss* ZombieBoss::Create(Scene* sc)
 {
@@ -60,6 +61,10 @@ void ZombieBoss::Init()
 	hpBar->SetPosition({ 1920 * 0.5f , 0.f });
 	hpBarBlack->SetPosition({ 1920 * 0.5f , 0.f });
 
+	bossBindingSkill = new BossBindingSkill("BossBindingSkill");
+	bossBindingSkill->Init();
+
+	(SCENE_MGR.GetScene(SceneIds::SceneGame)->AddGo(bossBindingSkill, Scene::World));
 	(SCENE_MGR.GetScene(SceneIds::SceneGame)->AddGo(hpBarBlack, Scene::Ui));
 	(SCENE_MGR.GetScene(SceneIds::SceneGame)->AddGo(hpBar , Scene::Ui));
 
@@ -91,16 +96,22 @@ void ZombieBoss::Update(float dt)
 	//충돌 검사
 	Collision(dt);
 
-	if (rangeSkillTimer > rangeSkillTime)
+	if (currentStatus == STATUS::MOVE && rangeSkillTimer > rangeSkillTime)
 	{
 		currentStatus = STATUS::RANGESKILL;
 		rangeSkillTimer = 0.f;
+	}
+	else if (currentStatus == STATUS::MOVE && bidingSkillTimer > bidingSkillTime)
+	{
+		currentStatus = STATUS::BINDING_SKILL;
+		bidingSkillTimer = 0.f;
 	}
 
 	switch (currentStatus)
 	{
 	case ZombieBoss::STATUS::MOVE:
 		rangeSkillTimer += dt;
+		bidingSkillTimer += dt;
 		if (distanceToPlayer > GetBound().getRadius() + player->GetBound().getRadius())
 		{
 			Translate(direction * speed * dt);
@@ -113,8 +124,9 @@ void ZombieBoss::Update(float dt)
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 		{
-			currentStatus = STATUS::RANGESKILL;
+			currentStatus = STATUS::BINDING_SKILL;
 		}
+
 		break;
 	case ZombieBoss::STATUS::RANGESKILL:
 		rangeSkillDT += dt;
@@ -132,7 +144,8 @@ void ZombieBoss::Update(float dt)
 		}
 		break;
 	case ZombieBoss::STATUS::BINDING_SKILL:
-
+		bossBindingSkill->BindingSkill();
+		currentStatus = STATUS::MOVE;
 		break;
 	}
 
@@ -221,6 +234,16 @@ void ZombieBoss::RangeSkill()
 	//useRangeSkill.push_back(rangeSkill);
 	
 	//SCENE_MGR.GetCurrentScene()->AddGo(rangeSkill);
+}
+
+void ZombieBoss::BindingSkill()
+{
+
+}
+
+void ZombieBoss::SetStatus(STATUS stat)
+{
+	currentStatus = stat;
 }
 
 bool ZombieBoss::Damaged(int damage)

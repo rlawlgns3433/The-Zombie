@@ -11,7 +11,7 @@ protected:
 	sf::Vector2f direction;
 	ZombieBoss* zombieBoss = nullptr;
 	Player* player = nullptr;
-	float speed = 1.5f;
+	float speed = 0.5f;
 	bool hit = false;
 	int damage = 40;
 

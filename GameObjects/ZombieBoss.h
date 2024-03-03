@@ -4,9 +4,11 @@
 
 class Player;
 class BossRangeSkill;
+class BossBindingSkill;
 
 class ZombieBoss : public SpriteGo
 {
+public:
 	enum class STATUS
 	{
 		MOVE,
@@ -19,11 +21,13 @@ protected:
 	
 	ShapeGo<sf::RectangleShape>* hpBar;
 	ShapeGo<sf::RectangleShape>* hpBarBlack;
-	//sf::RectangleShape hpBar;
+	
 	sf::Vector2f hpBarSize;
 
 	std::list<BossRangeSkill*> useRangeSkill;
 	std::list<BossRangeSkill*> unuseRangeSkill;
+
+	BossBindingSkill* bossBindingSkill = nullptr;
 
 	int maxHp = 3000;
 	float maxSpeed = 1000;
@@ -35,6 +39,9 @@ protected:
 
 	float rangeSkillTime = 3.f;
 	float rangeSkillTimer = 0.f;
+
+	float bidingSkillTime = 12.f;
+	float bidingSkillTimer = 0.f;
 
 	Player* player;
 	float distanceToPlayer;
@@ -78,6 +85,9 @@ public:
 	void DebugDraw(sf::RenderWindow& window) override;
 
 	void RangeSkill();
+	void BindingSkill();
+
+	void SetStatus(STATUS stat);
 
 	inline float GetDistanceToPlayer() const
 	{
