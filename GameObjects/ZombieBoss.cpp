@@ -47,6 +47,22 @@ void ZombieBoss::Init()
 	bound.setFillColor(sf::Color(255, 255, 255, 0));
 	rangeSkillDT = 0.3f;
 
+	hpBar = new ShapeGo<sf::RectangleShape>("BossHpBar");
+	hpBarBlack = new ShapeGo<sf::RectangleShape>("BossHpBarBlack");
+
+	hpBar->SetColor(sf::Color::Red);
+	hpBarBlack->SetColor(sf::Color::Black);
+	hpBarSize = { 1920.f, 20.f };
+	hpBar->SetSize(hpBarSize);
+	hpBarBlack->SetSize(hpBarSize);
+	hpBar->SetOrigin(Origins::TC);
+	hpBarBlack->SetOrigin(Origins::TC);
+	hpBar->SetPosition({ 1920 * 0.5f , 0.f });
+	hpBarBlack->SetPosition({ 1920 * 0.5f , 0.f });
+
+	(SCENE_MGR.GetScene(SceneIds::SceneGame)->AddGo(hpBarBlack, Scene::Ui));
+	(SCENE_MGR.GetScene(SceneIds::SceneGame)->AddGo(hpBar , Scene::Ui));
+
 	player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
 
 }
@@ -115,7 +131,7 @@ void ZombieBoss::Update(float dt)
 			break;
 		}
 		break;
-	case ZombieBoss::STATUS::SKILL2:
+	case ZombieBoss::STATUS::BINDING_SKILL:
 
 		break;
 	}
@@ -132,7 +148,7 @@ void ZombieBoss::FixedUpdate(float dt)
 	distanceToPlayer = Utils::Distance(player->GetPosition(), position);
 
 	SpriteGo::Update(dt);
-	std::cout << hp << std::endl;
+
 	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius() + player->GetBound().getRadius())
 	{
 		player->OnDamage(atkDamage);
@@ -156,6 +172,13 @@ void ZombieBoss::FixedUpdate(float dt)
 void ZombieBoss::Draw(sf::RenderWindow & window)
 {
 	SpriteGo::Draw(window);
+
+}
+
+void ZombieBoss::SetHp(int hp, int max)
+{
+	float value = max > 0 ? (float)hp / max : 0;
+	hpBar->SetSize({ hpBarSize.x * value, hpBarSize.y });
 }
 
 void ZombieBoss::DebugUpdate(float dt)
@@ -203,7 +226,9 @@ void ZombieBoss::RangeSkill()
 bool ZombieBoss::Damaged(int damage)
 {
 	int preHp = hp;
-	hp -= damage;
+	hp = std::max(hp - damage, 0);
+	SetHp(hp, maxHp);
+	//hp -= damage;
 	if (scene != nullptr)
 	{
 	EffectDamage::Create(scene, position, damage);
@@ -240,5 +265,7 @@ void ZombieBoss::OnDie()
 {
 	isDead = true;
 	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
+	SCENE_MGR.GetCurrentScene()->DeleteGo(hpBar);
+	SCENE_MGR.GetCurrentScene()->DeleteGo(hpBarBlack);
 	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->SetZombieBossDead(true);
 }

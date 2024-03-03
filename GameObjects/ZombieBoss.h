@@ -1,5 +1,6 @@
 #pragma once
 #include "SpriteGo.h"
+#include "ShapeGo.h"
 
 class Player;
 class BossRangeSkill;
@@ -10,11 +11,16 @@ class ZombieBoss : public SpriteGo
 	{
 		MOVE,
 		RANGESKILL,
-		SKILL2,
+		BINDING_SKILL,
 	};
 
 protected:
 	STATUS currentStatus;
+	
+	ShapeGo<sf::RectangleShape>* hpBar;
+	ShapeGo<sf::RectangleShape>* hpBarBlack;
+	//sf::RectangleShape hpBar;
+	sf::Vector2f hpBarSize;
 
 	std::list<BossRangeSkill*> useRangeSkill;
 	std::list<BossRangeSkill*> unuseRangeSkill;
@@ -66,6 +72,7 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+	void SetHp(int hp, int max);
 
 	void DebugUpdate(float dt) override;
 	void DebugDraw(sf::RenderWindow& window) override;

@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\Base\ShapeGo.cpp" />
     <ClCompile Include="GameObjects\BossRangeSkill.cpp" />
     <ClCompile Include="DataTable\CharacterSelectTable.cpp" />
     <ClCompile Include="DataTable\PlayerTable.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="Wand.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjects\Base\ShapeGo.h" />
     <ClInclude Include="GameObjects\BossRangeSkill.h" />
     <ClInclude Include="DataTable\CharacterSelectTable.h" />
     <ClInclude Include="DataTable\PlayerTable.h" />
