@@ -68,6 +68,8 @@ void Zombie::Init()
 void Zombie::Release()
 {
 	SpriteGo::Release();
+	player = nullptr;
+
 }
 
 void Zombie::Reset()
@@ -178,6 +180,7 @@ void Zombie::Collision(float dt)
 void Zombie::OnDie()
 {
 	isDead = true;
+	scene->AddGo(new EffectBlood(this->position))->Init();
 	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
 	SOUND_MGR.PlaySfx("sound/splat.wav");
 	switch (Utils::RandomRange(0, 2))
@@ -197,15 +200,15 @@ bool Zombie::Damaged(int damage)
 {
 	int preHp = hp;
 	hp -= damage;
-	if (scene != nullptr)
-	{
-	EffectDamage::Create(scene,position,damage);
-	scene->AddGo(new EffectBlood(this->position))->Init();
-	}
 	if (hp <= 0 && !isDead)
 	{
 		hp = 0;
 		OnDie();
+	}
+	else if (scene != nullptr)
+	{
+		EffectDamage::Create(scene, position, damage);
+		scene->AddGo(new EffectBlood(this->position))->Init();
 	}
 	return isDead;
 }

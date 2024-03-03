@@ -49,6 +49,10 @@ void SceneGame::Init()
 	//웨이브
 	ChangeWave(1);
 
+	//승리 음악 미리 로드
+	RES_MGR_SOUND_BUFFER.Load("sound/bgm_tatakae.wav");
+
+	//hun 갱신
 	hud->SetScore(score);
 	hud->SetHiScore(GetHighScore());
 }
@@ -89,6 +93,7 @@ void SceneGame::Reset()
 	isWin = false;
 	winTimer = 0.f;
 	killTimer = 0.f;
+	zombieBossDead = false;
 }
 
 void SceneGame::Enter()
