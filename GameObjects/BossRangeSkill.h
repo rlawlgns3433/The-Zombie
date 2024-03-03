@@ -24,6 +24,11 @@ public:
 	BossRangeSkill(const std::string& name = "");
 	~BossRangeSkill() = default;
 
+	BossRangeSkill(const BossRangeSkill&) = delete;
+	BossRangeSkill(BossRangeSkill&&) = delete;
+	BossRangeSkill& operator=(const BossRangeSkill&) = delete;
+	BossRangeSkill& operator=(BossRangeSkill&&) = delete;
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

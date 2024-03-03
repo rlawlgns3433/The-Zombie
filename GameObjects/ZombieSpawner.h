@@ -13,6 +13,11 @@ public:
 	ZombieSpawner(Scene* sc, const std::string& name = "ZombieSpawner");
 	~ZombieSpawner()override =default;
 
+	ZombieSpawner(const ZombieSpawner&) = delete;
+	ZombieSpawner(ZombieSpawner&&) = delete;
+	ZombieSpawner& operator=(const ZombieSpawner&) = delete;
+	ZombieSpawner& operator=(ZombieSpawner&&) = delete;
+
 	void Reset() override;
 
 

@@ -20,6 +20,9 @@ protected :
 public :
     ~Flame() = default;
 
+    Flame& operator=(const Flame&) = delete;
+    Flame& operator=(Flame&&) = delete;
+
     void Init()override;
     void Release() override;
     void Reset() override;

@@ -19,6 +19,11 @@ public:
     SwordAttack(Player* player, const std::string& name = "flame");
     ~SwordAttack() = default;
 
+    SwordAttack(const SwordAttack&) = delete;
+    SwordAttack(SwordAttack&&) = delete;
+    SwordAttack& operator=(const SwordAttack&) = delete;
+    SwordAttack& operator=(SwordAttack&&) = delete;
+
     void Init()override;
     void Release() override;
     void Reset() override;

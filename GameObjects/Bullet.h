@@ -19,6 +19,11 @@ public:
     Bullet(const sf::Vector2f& position, const std::string& name = "bullet");
     ~Bullet() = default;
 
+    Bullet(const Bullet&) = delete;
+    Bullet(Bullet&&) = delete;
+    Bullet& operator=(const Bullet&) = delete;
+    Bullet& operator=(Bullet&&) = delete;
+
 
     void Init()override;
     void Release() override;

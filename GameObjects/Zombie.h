@@ -46,6 +46,11 @@ public:
 
 	~Zombie() override;
 
+	Zombie(const Zombie&) = delete;
+	Zombie(Zombie&&) = delete;
+	Zombie& operator=(const Zombie&) = delete;
+	Zombie& operator=(Zombie&&) = delete;
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

@@ -25,6 +25,11 @@ public:
 	Item(Scene* sc, const std::string& name = "");
 	~Item() override = default;
 
+	Item(const Item&) = delete;
+	Item(Item&&) = delete;
+	Item& operator=(const Item&) = delete;
+	Item& operator=(Item&&) = delete;
+
 	void Init() override;
 	void Release() override;
 

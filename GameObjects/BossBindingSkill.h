@@ -25,6 +25,11 @@ public:
 	BossBindingSkill(const std::string& name = "");
 	~BossBindingSkill();
 
+	BossBindingSkill(const BossBindingSkill&) = delete;
+	BossBindingSkill(BossBindingSkill&&) = delete;
+	BossBindingSkill& operator=(const BossBindingSkill&) = delete;
+	BossBindingSkill& operator=(BossBindingSkill&&) = delete;
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

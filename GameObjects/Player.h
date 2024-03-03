@@ -56,7 +56,11 @@ public:
 
 	Player(const std::string& name);
 	~Player() override = default;
-	Player(const Player&) = default;
+
+	Player(const Player&) = delete;
+	Player(Player&&) = delete;
+	Player& operator=(const Player&) = delete;
+	Player& operator=(Player&&) = delete;
 
 	void Init() override;
 	void Release() override;

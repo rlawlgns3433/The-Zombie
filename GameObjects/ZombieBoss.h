@@ -73,6 +73,11 @@ public:
 	ZombieBoss(Scene* sc , const std::string& name = "");
 	~ZombieBoss() = default;
 
+	ZombieBoss(const ZombieBoss&) = delete;
+	ZombieBoss(ZombieBoss&&) = delete;
+	ZombieBoss& operator=(const ZombieBoss&) = delete;
+	ZombieBoss& operator=(ZombieBoss&&) = delete;
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

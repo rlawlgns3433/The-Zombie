@@ -25,6 +25,11 @@ public:
 	Spawner(Scene* sc, const std::string& name = "");
 	~Spawner()override = default;
 
+	Spawner(const Spawner&) = delete;
+	Spawner(Spawner&&) = delete;
+	Spawner& operator=(const Spawner&) = delete;
+	Spawner& operator=(Spawner&&) = delete;
+
 	void Init();
 	void Release();
 	void Reset();
