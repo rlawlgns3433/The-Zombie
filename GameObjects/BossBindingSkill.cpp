@@ -30,6 +30,7 @@ void BossBindingSkill::Init()
 	binding->SetOrigin(Origins::MC);
 	binding->SetCharacterSize(40);
 
+	binding->sortLayer = 22;
 	sortLayer = 22;
 
 	SetPosition(player->GetPosition());

@@ -15,7 +15,15 @@ UICharacterSelect::UICharacterSelect(const std::string& name)
 
 UICharacterSelect::~UICharacterSelect()
 {
-	
+	for (auto data : selectBoxs)
+	{
+		data = nullptr;
+	}
+
+	for (auto data : checkBoxs)
+	{
+		data = nullptr;
+	}
 }
 
 void UICharacterSelect::Init()
