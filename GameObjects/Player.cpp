@@ -176,7 +176,7 @@ void Player::OnDamage(int damage)
 
 void Player::RangeOnDamage(int damage)
 {
-	hp = std::max(hp - damage, 0);
+	if (!invincibility) { hp = std::max(hp - damage, 0); }
 	hud->SetHp(hp, maxHp);
 	SOUND_MGR.PlaySfx("sound/hit.wav");
 }

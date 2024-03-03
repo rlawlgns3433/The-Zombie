@@ -333,8 +333,7 @@ void SceneGame::FixedUpdate(float dt)
 			ChangeWave(++wave);
 		else if (wave == 5 && zombieBossDead)
 		{
-			isWin = true;
-			zombieCount = 0;
+			Win();
 		}
 		break;
 		////////////////////////////////////////////////////////////////////////// DIE_FIXED
@@ -513,10 +512,7 @@ void SceneGame::InitWave()
 
 	if (wave == DT_WAVE->GetLastWave())
 	{
-		isWin = true;
-		zombieCount = 0;
-		player->SetInvincibility(true);
-		SOUND_MGR.PlayBGM("sound/bgm_tatakae.wav", false);
+		Win();
 	}
 	else
 	{
@@ -681,4 +677,12 @@ void SceneGame::CheatBoss()
 	cheatBoss.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
 	cheatBoss.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
 	cheatBoss.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
+}
+
+void SceneGame::Win()
+{
+	isWin = true;
+	zombieCount = 0;
+	player->SetInvincibility(true);
+	SOUND_MGR.PlayBGM("sound/bgm_tatakae.wav", false);
 }

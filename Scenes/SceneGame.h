@@ -118,5 +118,7 @@ public:
 	UIHUD* GetHUD() { return this->hud; }
 	void SaveHighScore(); //CHECK SceneScore에서 저장할 예정
 	int GetHighScore();
+
+	void Win();
 };
 
