@@ -8,8 +8,7 @@ enum class SceneIds
 	None = -1,
 	SceneTitle,
 	SceneGame,
-	
-	
+	SceneScore,
 	Count
 };
 
@@ -33,11 +32,15 @@ public:
 	void ChangeScene(SceneIds id);
 
 	Scene* GetCurrentScene() { return scenes[(int)currentScene]; }
+	Scene* GetScene(SceneIds id) { return scenes[(int)id]; }
+
 
 	void Update(float dt);
 	void LateUpdate(float dt);
 	void FixedUpdate(float dt);
+	void DebugUpdate(float dt);
 	void Draw(sf::RenderWindow& window);
+	void DebugDraw(sf::RenderWindow& window);
 
 	SceneMgr(const SceneMgr&) = delete;
 	SceneMgr(SceneMgr&&) = delete;

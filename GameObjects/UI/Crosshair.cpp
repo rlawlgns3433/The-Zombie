@@ -2,7 +2,7 @@
 #include "Crosshair.h"
 
 Crosshair::Crosshair(const std::string& name)
-	:SpriteGo(name), defaultScale(1.f, 1.f), defaultRotation(0.f)
+	:SpriteGo(name), defaultScale(0.7f, 0.7f), defaultRotation(0.f)
 {
 	sortLayer = 20;
 	textureId = "graphics/crosshair.png";
@@ -53,9 +53,15 @@ void Crosshair::MotionUpdate(float dt)
 	}
 	if (rotation != defaultRotation)
 	{
-		rotation = std::max(0.f,rotation - 360.f*dt);
+		rotation = std::max(0.f,rotation - 90.f*dt);
 		doUpdate = true;
 	}
+
+	if (!isPlaying&&InputMgr::GetMouseButtonDown(sf::Mouse::Button::Left))
+	{
+		MotionShot();
+	}
+
 
 	if (doUpdate)
 	{
@@ -64,12 +70,12 @@ void Crosshair::MotionUpdate(float dt)
 	}
 }
 
-void Crosshair::MotionReload()
+void Crosshair::MotionReload(float reloadSpeed)
 {
-	SetRotation(180.f);
+	SetRotation(90.f*reloadSpeed);
 }
 
 void Crosshair::MotionShot()
 {
-	SetScale({ 1.3f, 1.3f });
+	SetScale({ 1.0f, 1.0f });
 }

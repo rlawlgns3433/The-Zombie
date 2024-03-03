@@ -19,6 +19,11 @@ public:
 	TileMap(const std::string& name = "name");
 	~TileMap() = default;
 
+	TileMap(const TileMap&) = delete;
+	TileMap(TileMap&&) = delete;
+	TileMap& operator=(const TileMap&) = delete;
+	TileMap& operator=(TileMap&&) = delete;
+
 	void Set(const sf::Vector2i& count, const sf::Vector2f& size);
 	void SetSpriteSheetId(const std::string& id);
 	void UpdateTransform();

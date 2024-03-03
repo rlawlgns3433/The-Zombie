@@ -7,13 +7,25 @@
 #include "ItemSpawner.h"
 #include "Bullet.h"
 #include "Crosshair.h"
-#include "Item.h"
-#include "DebugString.h"
 #include "UIHUD.h"
+#include "UIDebug.h"
+#include "Flame.h"
+#include "Projectile.h"
+#include "UILevelUp.h"
+#include "WaveTable.h"
+#include "EffectCenterText.h"
+#include "ZombieBoss.h"
+#include <SceneScore.h>
+#include "EffectLightLine.h"
 
 SceneGame::SceneGame(SceneIds id)
-	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr)
+	:Scene(id), player(nullptr), hud(nullptr), tileMap(nullptr), uiLevel(nullptr)
 {
+	CheatExp();
+	CheatHp();
+	CheatKill();
+	CheatWin();
+	CheatBoss();
 }
 
 void SceneGame::Init()
@@ -21,46 +33,24 @@ void SceneGame::Init()
 	Release();
 
 	//UI
-	crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
-
+	//crosshair = dynamic_cast<Crosshair*>(AddGo(new Crosshair(), Scene::Ui));
 	hud = dynamic_cast<UIHUD*>(AddGo(new UIHUD(), Scene::Ui));
-
-	//AddGo(new DebugString(), Scene::Ui);
-
-	//πË∞Ê
+	uiLevel = dynamic_cast<UILevelUp*>(AddGo(new UILevelUp("uiLevel"), Scene::Ui));
+	//Î∞∞Í≤Ω
 	tileMap = dynamic_cast<TileMap*>(AddGo(new TileMap("Background")));
-
-	//¡ª∫Ò Ω∫∆˜≥ 
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ItemSpawner());
-	for (auto s : spawners)
-	{
-		if (s->name == "ItemSpawner")
-		{
-			s->SetPosition({ FRAMEWORK.GetWindowSize().x * 0.5f, FRAMEWORK.GetWindowSize().y * 0.5f });
-		}
-		else if (s->name == "ZombieSpawner")
-		{
-			s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });
-		}
-		AddGo(s);
-	}
-
-	//«√∑π¿ÃæÓ
+	tileMap->SetOrigin(Origins::MC);
+	tileMap->UpdateTransform();
+	//ÌîåÎ†àÏù¥Ïñ¥
 	player = new Player("Player");
 	AddGo(player);
 
 	Scene::Init();
 
-	//ø˛¿Ã∫Í
-	wave = 0;
-	zombieCount = 1;
+	//Ïõ®Ïù¥Î∏å
+	ChangeWave(1);
 
 	hud->SetScore(score);
-	hud->SetHiScore(hiScore);
-	hud->SetAmmo(0, 0);
-	hud->SetWave(wave);
-	hud->SetZombieCount(zombieCount);
+	hud->SetHiScore(GetHighScore());
 }
 
 void SceneGame::Release()
@@ -84,12 +74,28 @@ void SceneGame::Release()
 	player = nullptr;
 	score = 0;
 	wave = 0;
+
+	UI_DEBUG.RemoveText(debugZombieCount);
+	if (debugZombieCount != nullptr)
+	{
+		delete debugZombieCount;
+		debugZombieCount = nullptr;
+	}
+}
+
+void SceneGame::Reset()
+{
+	Scene::Reset();
+	isWin = false;
+	winTimer = 0.f;
+	killTimer = 0.f;
 }
 
 void SceneGame::Enter()
 {
-	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 	Scene::Enter();
+	Reset();
+	SetStatus(Status::PLAY);
 
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
 	sf::Vector2f centerPos = windowSize * 0.5f;
@@ -97,127 +103,215 @@ void SceneGame::Enter()
 	worldView.setCenter({ 0.f,0.f });
 	uiView.setSize(windowSize);
 
-	//tileMap = dynamic_cast<TileMap*>(FindGo("Background"));
 	tileMap->SetPosition(centerPos);
-	boundary = tileMap->GetBoundary();
-	tileMap->SetOrigin(Origins::MC);
-	//tileMap->SetRotation(45);
-	//tileMap->SetScale({ 2.f,2.f });
-	tileMap->UpdateTransform();
+	ChangeWave(1);
 
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
 
+	playTimer = 0.f;
+
+	//Debug
+	debugZombieCount = UI_DEBUG.AddText(new sf::Text);
 }
 
 void SceneGame::Exit()
 {
 	Scene::Exit();
-	FRAMEWORK.GetWindow().setMouseCursorVisible(true);
-	doReset = true;
+	Init();
+	FRAMEWORK.GetMouse()->isPlaying = false;
 }
 
 void SceneGame::Update(float dt)
 {
+
 	switch (status)
 	{
-		/////////////////////////////////////////////////////////////////////////////PLAY
+		////////////////////////////////////////////////////////////////////////// PLAY_UPDATE
 	case SceneGame::Status::PLAY:
 		Scene::Update(dt);
-		//√ﬂ∞°
-		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-		{
-			for (auto s : spawners)
-			{
-				if (s->name == "ZombieSpawner")
-					s->Spawn(1);
-			}
-		}
-		//¿¸∫Œ ¡¶∞≈
-		if (InputMgr::GetKeyDown(sf::Keyboard::Delete))
-		{
-			while (zombieObjects.size() > 0)
-			{
-				Zombie* temp = zombieObjects.front();
-				RemoveGo(temp);
-				zombieObjects.pop_front();
-				delete temp;
-			}
-		}
-		//«œ≥™æø ∑£¥˝«œ∞‘ ¡¶∞≈
-		if (InputMgr::GetKey(sf::Keyboard::BackSpace))
-		{
-			size_t siz = zombieObjects.size();
-			if (siz != 0)
-			{
-				int t = rand() % siz;
-				auto it = zombieObjects.begin();
-				for (int i = 0; i < t; i++)
-				{
-					it++;
-				}
-				RemoveGo(*it);
-				Zombie* z = *it;
-				zombieObjects.remove(*it);
-				delete z;
-			}
-		}
-		zombieObjects.sort();
+		playTimer += isWin ? 0.f : dt;
 
-		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		//Ï¢ÄÎπÑ ÏÉùÏÑ±, ÌÖåÏä§Ìä∏Ïö©
+		//if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+		//{
+		//	for (auto s : spawners)
+		//	{
+		//		if (s->name == "ZombieSpawner")
+		//			s->Spawn(1);
+		//	}
+		//}
+		//Ï¢ÄÎπÑ Ï†ÑÏ≤¥ ÏÇ≠Ï†ú, ÌÖåÏä§Ìä∏Ïö©
+		//if (InputMgr::GetKeyDown(sf::Keyboard::Delete))
+		//{
+		//	while (zombieObjects.size() > 0)
+		//	{
+		//		Zombie* temp = zombieObjects.front();
+		//		RemoveGo(temp);
+		//		zombieObjects.pop_front();
+		//		delete temp;
+		//	}
+		//}
+		//ÎûúÎç§ Ï¢ÄÎπÑ ÏÇ≠Ï†ú, ÌÖåÏä§Ìä∏Ïö©
+		//if (InputMgr::GetKey(sf::Keyboard::BackSpace))
+		//{
+		//	size_t siz = zombieObjects.size();
+		//	if (siz != 0)
+		//	{
+		//		int t = rand() % siz;
+		//		auto it = zombieObjects.begin();
+		//		for (int i = 0; i < t; i++)
+		//		{
+		//			it++;
+		//		}
+		//		RemoveGo(*it);
+		//		Zombie* z = *it;
+		//		zombieObjects.remove(*it);
+		//		delete z;
+		//	}
+		//}
+
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
-			status = Status::PAUSE;
+			SetStatus(Status::PAUSE);
+		}
+		if (isWin)
+		{
+			WinAnimation(dt);
 		}
 
 		break;
-		////////////////////////////////////////////////////////////////////////////PAUSE
+		////////////////////////////////////////////////////////////////////////// DIE_UPDATE
+	case SceneGame::Status::DIE:
+
+		if (InputMgr::GetKeyUp(sf::Keyboard::Escape) || InputMgr::GetKeyUp(sf::Keyboard::Space) || InputMgr::GetKeyUp(sf::Keyboard::Enter))
+		{
+			hud->SetGameOver(false);
+			dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
+			SCENE_MGR.ChangeScene(SceneIds::SceneScore);
+		}
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// PAUSE_UPDATE
 	case SceneGame::Status::PAUSE:
 
-		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
-			status = Status::PLAY;
+			hud->SetPause(false);
+			SetStatus(Status::PLAY);
 		}
-		crosshair->Update(dt);
 
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
 		break;
+		////////////////////////////////////////////////////////////////////////// LEVELUP_UPDATE
+	case SceneGame::Status::LEVELUP:
+
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->Update(dt);
+			}
+		}
+		break;
+
 	default:
 		break;
 	}
 }
 
+void SceneGame::WinAnimation(float dt)
+{
+	player->SetSpeed(0.f);
+	winTimer += dt;
+	killTimer += dt;
+	if (killTimer >= 0.1f && !zombieObjects.empty())
+	{
+		killTimer = 0.f;
+		zombieObjects.front()->OnDie();
+	}
+	if (winTimer >= 1.f && winTimer < 3.f)
+	{
+		EffectLightLine::Create(this, player, player->GetPosition() + Utils::RandomInUnitCircle() * 700.f);
+	}
+	if (winTimer >= 4.f)
+	{
+		dynamic_cast<SceneScore*>(SCENE_MGR.GetScene(SceneIds::SceneScore))->OnWriteMode(score, playTimer);
+		SCENE_MGR.ChangeScene(SceneIds::SceneScore);
+	}
+
+
+}
+
 void SceneGame::LateUpdate(float dt)
 {
+	while (!deleteDeque.empty())
+	{
+		//ÔøΩ øÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩÃ∏ÔøΩ ÔøΩÔøΩÔøΩÔøΩÔøΩ¬¥ÔøΩ.
+		GameObject* temp = deleteDeque.front();
+		int tag = temp->GetTag();
+
+		//ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
+		RemoveGo(temp);
+		if (tag == 0)
+			zombieObjects.remove(dynamic_cast<Zombie*>(temp));
+		else if (tag == 1)
+			bullets.remove(dynamic_cast<Projectile*>(temp));
+		deleteDeque.pop_front();
+		delete temp;
+	}
+
 	switch (status)
 	{
+		////////////////////////////////////////////////////////////////////////// PLAY_LATE
 	case SceneGame::Status::PLAY:
 		Scene::LateUpdate(dt);
 
-		//ø¿∫Í¡ß∆Æ ªË¡¶ (delete)
-		while (deleteDeque.size() > 0)
-		{
-			//« ø‰«— ¡§∫∏∏¶ πÃ∏Æ ∞°¡Æø¬¥Ÿ.
-			GameObject* temp = deleteDeque.front();
-			int tag = temp->GetTag();
+		//ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ∆Æ ÔøΩÔøΩÔøΩÔøΩ (delete)
 
-			//ªË¡¶ Ω√¿€
-			RemoveGo(temp);
-			deleteDeque.pop_front();
-			if (tag == 0)
-				zombieObjects.remove(dynamic_cast<Zombie*>(temp));
-			else if (tag == 1)
-				bullets.remove(dynamic_cast<Bullet*>(temp));
-			delete temp;
-		}
-		if (doReset)
+		break;
+		////////////////////////////////////////////////////////////////////////// DIE_LATE
+	case SceneGame::Status::DIE:
+		for (auto obj : uiObjects)
 		{
-			doReset = false;
-			Release();
-			Init();
-			Enter();
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
 		}
 		break;
+		////////////////////////////////////////////////////////////////////////// PAUSE_LATE
 	case SceneGame::Status::PAUSE:
-		crosshair->LateUpdate(dt);
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// LEVELUP_LATE
+	case SceneGame::Status::LEVELUP:
+
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->LateUpdate(dt);
+			}
+		}
 		break;
 	default:
 		break;
@@ -229,14 +323,53 @@ void SceneGame::FixedUpdate(float dt)
 {
 	switch (status)
 	{
+		////////////////////////////////////////////////////////////////////////// PLAY_FIXED
 	case SceneGame::Status::PLAY:
 		Scene::FixedUpdate(dt);
+		zombieObjects.sort();
 		BulletCollision(dt);
-		if (zombieCount <= 0)
+
+		if (!isWin && zombieCount <= 0 && wave != 5)
 			ChangeWave(++wave);
+		else if (wave == 5 && zombieBossDead)
+		{
+			Win();
+		}
 		break;
+		////////////////////////////////////////////////////////////////////////// DIE_FIXED
+	case SceneGame::Status::DIE:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->FixedUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// PAUSE_FIXED
 	case SceneGame::Status::PAUSE:
-		crosshair->FixedUpdate(dt);
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->FixedUpdate(dt);
+			}
+		}
+		break;
+		////////////////////////////////////////////////////////////////////////// LEVELUP_FIXED
+	case SceneGame::Status::LEVELUP:
+		for (auto obj : uiObjects)
+		{
+			if (obj->GetActive())
+			{
+				obj->FixedUpdate(dt);
+			}
+		}
+		if (!uiLevel->GetActive())
+		{
+			SetStatus(Status::PLAY);
+			player->AddStat(uiLevel->PlayerLevelUp());
+		}
 		break;
 	default:
 		break;
@@ -250,19 +383,89 @@ void SceneGame::FixedUpdate(float dt)
 		worldView.setCenter(player->GetPosition());
 }
 
+void SceneGame::DebugUpdate(float dt)
+{
+	Scene::DebugUpdate(dt);
+	debugZombieCount->setString("zombies: " + std::to_string(zombieObjects.size()));
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Slash))
+	{
+		InputMgr::StopComboRecord();
+		InputMgr::ClearCombo();
+		InputMgr::ComboRecord(10.f);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Period))
+	{
+
+		if (InputMgr::IsExllentCombo(cheatExp))
+		{
+			player->AddExp(10000);
+		}
+		if (InputMgr::IsExllentCombo(cheatHp))
+		{
+			player->SetInvincibility();
+		}
+		if (InputMgr::IsExllentCombo(cheatKill))
+		{
+			for (auto ptr : zombieObjects)
+			{
+				ptr->OnDie();
+			}
+		}
+		if (InputMgr::IsExllentCombo(cheatWin))
+		{
+			ChangeWave(DT_WAVE->GetLastWave());
+		}
+		if (InputMgr::IsExllentCombo(cheatBoss))
+		{
+			ChangeWave(DT_WAVE->GetLastWave() - 1);
+		}
+		InputMgr::StopComboRecord();
+		InputMgr::ClearCombo();
+	}
+}
+
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 }
 
-void SceneGame::AddScore(int s)
+void SceneGame::SetStatus(Status st)
 {
-	score += s;
-	hud->SetScore(score);
-	hud->SetHiScore(hiScore = std::max(score, hiScore));
+
+	switch (st)
+	{
+	case SceneGame::Status::PLAY:
+		FRAMEWORK.GetMouse()->isPlaying = true;
+		break;
+	case SceneGame::Status::PAUSE:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		hud->SetPause(true);
+		break;
+	case SceneGame::Status::DIE:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		hud->SetGameOver(true);
+		break;
+	case SceneGame::Status::LEVELUP:
+		FRAMEWORK.GetMouse()->isPlaying = false;
+		uiLevel->LevelUp();
+		break;
+	default:
+		break;
+	}
+
+	status = st;
 }
 
-
+void SceneGame::AddScore(int s)
+{
+	if (!isWin)
+	{
+		score += s;
+		hud->SetScore(score);
+		hud->SetHiScore(hiScore = std::max(score, hiScore));
+	}
+}
 
 void SceneGame::ChangeWave(int w)
 {
@@ -271,121 +474,215 @@ void SceneGame::ChangeWave(int w)
 	ReleaseWave();
 	InitWave();
 
+	if (w == 5)
+	{
+		zombieBoss = ZombieBoss::Create(this);
+	}
+
 	hud->SetWave(wave);
 	hud->SetZombieCount(zombieCount);
-
-	status = Status::PLAY;
 }
 
 void SceneGame::ReleaseWave()
 {
 
-	deleteDeque.clear();
-	auto it = gameObjects.begin();
-	while (it != gameObjects.end())
+	for (auto sPtr : spawners)
 	{
-		if ((*it)->name == "Player" || (*it)->name == "Background")
+		gameObjects.remove(sPtr);
+		auto dIt = deleteDeque.begin();
+		while (dIt != deleteDeque.end())
 		{
-			it++;
+			if (*dIt == sPtr)
+			{
+				dIt = deleteDeque.erase(dIt);
+			}
+			else
+			{
+				dIt++;
+			}
 		}
-		else
-		{
-			delete* it;
-			it = gameObjects.erase(it);
-		}
-	}
-
-	for (auto ptr : zombieObjects)
-	{
-		ptr = nullptr;
-	}
-	zombieObjects.clear();
-	for (auto ptr : spawners)
-	{
-		ptr = nullptr;
+		delete sPtr;
 	}
 	spawners.clear();
-	for (auto ptr : bullets)
-	{
-		ptr = nullptr;
-	}
-	bullets.clear();
 }
 
 void SceneGame::InitWave()
 {
-	switch (wave)
+	const DATA_WAVE& data = DT_WAVE->Get(wave);
+
+	if (wave == DT_WAVE->GetLastWave())
 	{
-	case 0:
-		break;
-	case 1:
-		tileMap->Set({ (int)20,(int)100 }, { 50.f,50.f });
-		//tileMap->UpdateTransform();
-		zombieCount = 1000000;
-		break;
-	default:
-		break;
+		Win();
 	}
-
-
-
-	tileMap->SetOrigin(Origins::MC);
-	tileMap->UpdateTransform();
-	boundary = tileMap->GetBoundary();
-	player->SetPosition(GetBoundaryCenter());
-
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ItemSpawner());
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ZombieSpawner());
-	spawners.push_back(new ZombieSpawner());
-	for (auto s : spawners)
+	else
 	{
-		s->SetPosition({ Utils::RandomRange(boundary.first.x,boundary.second.x),Utils::RandomRange(boundary.first.y,boundary.second.y) });
-		AddGo(s);
-		s->Init();
-		s->Reset();
+		tileMap->Set({ data.tileX,data.tileY }, { 50.f, 50.f });
+		zombieCount = data.zombieCount;
+		for (int i = 0; i < data.itemAmount; i++)
+		{
+			ItemSpawner* is = new ItemSpawner(this);
+			is->Init();
+			is->Reset();
+			spawners.push_back(is);
+		}
+		for (int i = 0; i < data.zombieAmount; i++)
+		{
+			ZombieSpawner* zs = new ZombieSpawner(this);
+			zs->Init();
+			zs->Reset();
+			for (int z0 = 0; z0 < data.zombie0W; z0++) { zs->AddType(Zombie::Types::Chaser); }
+			for (int z1 = 0; z1 < data.zombie1W; z1++) { zs->AddType(Zombie::Types::Bloater); }
+			for (int z2 = 0; z2 < data.zombie2W; z2++) { zs->AddType(Zombie::Types::Crawler); }
+			spawners.push_back(zs);
+		}
+
+		tileMap->SetOrigin(Origins::MC);
+		tileMap->UpdateTransform();
+		boundary = tileMap->GetBoundary();
+		srand(time(NULL));
+		for (auto s : spawners)
+		{
+			s->SetPosition(sf::Vector2f(Utils::RandomRange(boundary.first.x, boundary.second.x), Utils::RandomRange(boundary.first.y, boundary.second.y)));
+			AddGo(s);
+		}
+		EffectCenterText::Create(this, data.descriptionId + L"\n");
 	}
 }
 
+void SceneGame::SaveHighScore()
+{
+	std::ifstream file("highScore.txt");
 
+	if (!file.is_open()) {
+		std::cerr << "ÌååÏùºÏùÑ Ïó¥ Ïàò ÏóÜÏäµÎãàÎã§." << std::endl;
+		return;
+	}
 
+	std::stringstream buffer;
+	buffer << file.rdbuf();
+	file.close();
+
+	std::vector<std::string> lines;
+	std::string line;
+
+	std::ofstream input;
+	input.open("highScore.txt", std::ios::app);
+	if (input.is_open())
+	{
+		input << score << '\n' << playTimer;
+	}
+
+	input.close();
+}
+
+int SceneGame::GetHighScore()
+{
+	std::ifstream output;
+	output.open("highScore.txt");
+
+	if (output.is_open())
+	{
+		output >> hiScore;
+	}
+	output.close();
+
+	return hiScore;
+}
 
 void SceneGame::BulletCollision(float dt)
 {
-	for (auto zombie : zombieObjects)
+
+	for (auto bullet : bullets)
 	{
-		if (zombie->isDead)
-			continue;
-		for (auto bullet : bullets)
+		for (auto zombie : zombieObjects)
 		{
-			if (!zombie->isDead && !bullet->isHit && Utils::IsCollideWithLineSegment(zombie->GetPosition(), bullet->GetPosition(), bullet->prePos, zombie->GetGlobalBounds().width / 3.f))
+			if (!zombie->isDead && !bullet->isHit)
 			{
+				if (!bullet->CheckCollision(zombie))
+				{
+					continue;
+				}
 				bullet->Hit();
-				if (zombie->Damaged(bullet->damage))
+				if (!isWin && zombie->Damaged(bullet->GetDamage()))
 				{
 					AddScore(10);
 					hud->SetZombieCount(--zombieCount);
+					if (zombieCount == 0) { ChangeWave(++wave); }
 				}
 				zombie->SetPosition(zombie->GetPosition() + zombie->GetDirection() * -1.f * 5.f);
 			}
 		}
+
+		if (zombieBoss != nullptr)
+		{
+			if (!zombieBoss->isDead && !bullet->isHit && bullet->CheckCollision(zombieBoss))
+			{
+				bullet->Hit();
+				zombieBoss->Damaged(bullet->GetDamage());
+			}
+		}
+		bullet->EndOfCheckZombie();
 	}
+
+
 }
 
 sf::Vector2f SceneGame::GetBoundaryCenter()
 {
-	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y+(boundary.second.y - boundary.first.y)*0.5);
+	return sf::Vector2f(boundary.first.x + (boundary.second.x - boundary.first.x) * 0.5, boundary.first.y + (boundary.second.y - boundary.first.y) * 0.5);
 }
 
-//sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
-//{
-//	sf::FloatRect rect = tileMap->GetGlobalBounds();
-//	rect = Utils::ResizeRect(rect, tileMap->GetCellSize() * -2.f);
-//
-//	return Utils::Clamp();
-//}
+
+
+//ÏπòÌä∏ ÏΩ§Î≥¥
+void SceneGame::CheatExp()
+{
+	cheatExp.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::W,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::M,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::E,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::T,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::E,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::M,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::N,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::E,InputMgr::KEY_STATE::DOWN });
+	cheatExp.push_back({ sf::Keyboard::Y,InputMgr::KEY_STATE::DOWN });
+}
+void SceneGame::CheatHp()
+{
+	cheatHp.push_back({ sf::Keyboard::H,InputMgr::KEY_STATE::DOWN });
+	cheatHp.push_back({ sf::Keyboard::P,InputMgr::KEY_STATE::DOWN });
+}
+void SceneGame::CheatKill()
+{
+	cheatKill.push_back({ sf::Keyboard::K,InputMgr::KEY_STATE::DOWN });
+	cheatKill.push_back({ sf::Keyboard::I,InputMgr::KEY_STATE::DOWN });
+	cheatKill.push_back({ sf::Keyboard::L,InputMgr::KEY_STATE::DOWN });
+	cheatKill.push_back({ sf::Keyboard::L,InputMgr::KEY_STATE::DOWN });
+}
+void SceneGame::CheatWin()
+{
+	cheatWin.push_back({ sf::Keyboard::W,InputMgr::KEY_STATE::DOWN });
+	cheatWin.push_back({ sf::Keyboard::I,InputMgr::KEY_STATE::DOWN });
+	cheatWin.push_back({ sf::Keyboard::N,InputMgr::KEY_STATE::DOWN });
+}
+
+void SceneGame::CheatBoss()
+{
+	cheatBoss.push_back({ sf::Keyboard::B,InputMgr::KEY_STATE::DOWN });
+	cheatBoss.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
+	cheatBoss.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
+	cheatBoss.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
+}
+
+void SceneGame::Win()
+{
+	isWin = true;
+	zombieCount = 0;
+	player->SetInvincibility(true);
+	SOUND_MGR.PlayBGM("sound/bgm_tatakae.wav", false);
+}

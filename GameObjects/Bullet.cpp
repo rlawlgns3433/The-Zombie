@@ -2,12 +2,15 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "Weapon.h"
+#include "ZombieBoss.h"
+
 
 Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
-	:GameObject(name), speed(3000), damage(34)
+	:Projectile(name), speed(3000)
 {
-	sortLayer = 4;
-	tag = 1;
+	//damage = 34;
+
 	shape.setSize({ 3.f, 3.f });
 	shape.setFillColor(sf::Color::Yellow);
 	Utils::SetOrigin(shape, Origins::MR);
@@ -21,21 +24,26 @@ Bullet::Bullet(const sf::Vector2f& position, const std::string& name)
 
 	shape.setScale({ 0.f , 1.f });
 	prePos = position;
+
+	//Debug
+	bound.setRotation(Utils::Angle(direction));
+	bound.setOutlineColor(sf::Color::Magenta);
+	bound.setOutlineThickness(1.f);
 }
 
 void Bullet::Init()
 {
-	GameObject::Init();
+	Projectile::Init();
 }
 
 void Bullet::Release()
 {
-	GameObject::Release();
+	Projectile::Release();
 }
 
 void Bullet::Reset()
 {
-	GameObject::Reset();
+	Projectile::Reset();
 }
 
 void Bullet::Update(float dt)
@@ -44,7 +52,7 @@ void Bullet::Update(float dt)
 
 	prePos = position;
 
-	GameObject::Update(dt);
+	Projectile::Update(dt);
 	Translate(direction * speed * dt);
 
 	//충돌 검사
@@ -82,28 +90,71 @@ void Bullet::Update(float dt)
 
 }
 
+void Bullet::DebugUpdate(float dt)
+{
+	bound.setSize({ Utils::Distance(prePos, position),0.f });
+	Utils::SetOrigin(bound, Origins::MR);
+	bound.setPosition(position);
+
+}
+
 void Bullet::Draw(sf::RenderWindow& window)
 {
-	GameObject::Draw(window);
+	Projectile::Draw(window);
 	window.draw(shape);
 	if (isHit)
 	{
 		active = false;
-		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
+		scene->DeleteGo(this);
 	}
 }
 
-void Bullet::Hit()
+void Bullet::DebugDraw(sf::RenderWindow& window)
 {
-	if (!isHit)
+	window.draw(bound);
+}
+
+void Bullet::SetDirection(sf::Vector2f direc)
+{
+	Projectile::SetDirection(direc);
+	bound.setRotation(Utils::Angle(direc));
+	shape.setRotation(Utils::Angle(direc));
+}
+
+void Bullet::Create(Scene* sc)
+{
+	SceneGame* sceneGame = dynamic_cast<SceneGame*>(sc);
+	Player* player = sceneGame->GetPlayer();
+	int count = player->GetWeapon()->GetProjectileCount();
+
+	std::list<Bullet*> bulletList;
+	auto bPos = Utils::DressInRow(player->GetPosition(), player->GetLook(), count, 5.f);
+
+	for (auto& ptr : bPos)
 	{
-		isHit = true;
+		bulletList.push_back(new Bullet(ptr));
 	}
+
+	for (auto ptr : bulletList)
+	{
+		ptr->Init();
+		ptr->Reset();
+		ptr->damage = player->GetWeapon()->GetDamage();
+		ptr->SetDirection(player->GetLook());
+		ptr->scene = sc;
+		sceneGame->AddGo(ptr);
+		sceneGame->bullets.push_back(ptr);
+	}
+
 }
 
-Bullet* Bullet::Create(Player* player)
+bool Bullet::CheckCollision(SpriteGo* zombie)
 {
-	Bullet* bullet = new Bullet(player->GetPosition());
-	bullet->Init();
-	return bullet;
+	return Utils::IsCollideWithLineSegment(zombie->GetPosition(), GetPosition(), prePos, zombie->GetGlobalBounds().width / 3.f);
 }
+//
+//bool Bullet::CheckCollision(ZombieBoss* zombieBoss)
+//{
+//	return Utils::IsCollideWithLineSegment(zombieBoss->GetPosition(), GetPosition(), prePos, zombieBoss->GetGlobalBounds().width / 3.f);
+//}
+

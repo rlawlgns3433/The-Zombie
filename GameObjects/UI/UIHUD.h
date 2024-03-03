@@ -16,7 +16,7 @@ protected:
 	TextGo textScore;
 	std::string formatScore = "Score: ";
 	TextGo textHiScore;
-	std::string formatHiScore = "HiScore: ";
+	std::string formatHiScore = "Best: ";
 
 	//탄창
 	SpriteGo imgAmmoIcon;
@@ -39,10 +39,27 @@ protected:
 	sf::Vector2f referenceResolution = {1920, 1080};
 	sf::Vector2f resolution = referenceResolution;
 
+	//경험치
+	TextGo textLevel;
+	sf::RectangleShape exp;
+
+	//일시정지
+	TextGo textPause;
+	sf::RectangleShape pauseRect;
+	sf::Color pauseColor;
+	bool isPause = false;
+
+	//일시정지
+	TextGo textOver;
+	bool isGameOver = false;
 
 public:
 	UIHUD(const std::string& name = "UIHUD");
 	~UIHUD() override = default;
+	UIHUD(const UIHUD&) = delete;
+	UIHUD(UIHUD&&) = delete;
+	UIHUD& operator=(const UIHUD&) = delete;
+	UIHUD& operator=(UIHUD&&) = delete;
 
 	void Init() override;
 	void Release() override;
@@ -62,6 +79,10 @@ public:
 	void SetHp(int hp,int max);
 	void SetWave(int w);
 	void SetZombieCount(int count);
+	void SetExp(int ex, int max, int level);
+
+	void SetPause(bool value);
+	void SetGameOver(bool value);
 
 	void SetResolution(const sf::Vector2f resolution);
 };

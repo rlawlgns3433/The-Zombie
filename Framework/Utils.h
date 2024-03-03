@@ -34,9 +34,14 @@ public:
 	static float RadianToDegree(float radian);
 	static float DegreeToRadian(float degree);
 	static float Angle(const sf::Vector2f& vec);
+	static float Angle(const sf::Vector2f& origin, const sf::Vector2f& pos1, const sf::Vector2f& pos2);
+	static float Angle(const sf::Vector2f& vec1, const sf::Vector2f& vec2);
 	static void Rotate(sf::Vector2f& vec, float degree); //회전
 	static float Lerp(float min, float max, float t); //선형보간
 	static sf::Vector2f Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float t); //선형보간
+
+	static std::list<sf::Vector2f> DressInRow(const sf::Vector2f& pos, const sf::Vector2f& direction, int count, float interval); //일렬횡대로 늘리기
+	static std::list<sf::Vector2f> FanSpread(const sf::Vector2f& direction, int count, float angle); //각도 벌리며 늘리기
 
 
 	//충돌
@@ -44,6 +49,8 @@ public:
 	static float GetElasticCollision(float coord, float border, float cor = 1.f);
 	static bool IsCollideWithLineSegment(const sf::Vector2f& p1, const sf::Vector2f& lineP1, const sf::Vector2f& lineP2, float radius);
 
+	// CP949 to WSTRING
+	static std::wstring CP949ToWString(const std::string& str);
 
 	
 };

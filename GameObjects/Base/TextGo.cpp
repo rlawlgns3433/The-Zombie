@@ -6,7 +6,18 @@ TextGo::TextGo(const std::string& name)
 {
 }
 
+TextGo::TextGo(Scene* sc, const std::string& name)
+	: GameObject(sc, name)
+{
+}
+
 void TextGo::SetString(const std::string& str)
+{
+	text.setString(str);
+	SetOrigin(originPreset);
+}
+
+void TextGo::SetString(const std::wstring& str)
 {
 	text.setString(str);
 	SetOrigin(originPreset);
@@ -16,6 +27,14 @@ void TextGo::Set(const sf::Font& texture,
 	const std::string& str,
 	int size, 
 	const sf::Color& color)
+{
+	SetFont(texture);
+	text.setString(str);
+	text.setCharacterSize(size);
+	text.setFillColor(color);
+}
+
+void TextGo::Set(const sf::Font& texture, const std::wstring& str, int size, const sf::Color& color)
 {
 	SetFont(texture);
 	text.setString(str);
@@ -97,6 +116,27 @@ void TextGo::SetFlipY(bool filp)
 
 	isFlipY = filp;
 	SetScale(scale);
+}
+
+void TextGo::SetCharacterSize(int size)
+{
+	text.setCharacterSize(size);
+}
+
+void TextGo::SetColor(sf::Color color)
+{
+	text.setFillColor(color);
+}
+
+void TextGo::SetOutLine(float thick, sf::Color color)
+{
+	text.setOutlineThickness(thick);
+	text.setOutlineColor(color);
+}
+
+sf::FloatRect TextGo::GetGlobalBounds()
+{
+	return text.getGlobalBounds();
 }
 
 void TextGo::Draw(sf::RenderWindow& window)

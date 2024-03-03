@@ -109,7 +109,7 @@ void SoundMgr::PlayBGM(const std::string& id, bool crossFade, bool loop)
 	}
 }
 
-void SoundMgr::StopBGM(const std::string& id)
+void SoundMgr::StopBGM()
 {
 	for (int i = 0; i < _countof(bgm); i++)
 	{

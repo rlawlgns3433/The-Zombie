@@ -1,0 +1,110 @@
+#include "pch.h"
+#include "Weapon.h"
+#include "Player.h"
+#include "SceneGame.h"
+#include "UIHUD.h"
+#include "Crosshair.h"
+
+Weapon::Weapon(const std::string& name)
+	: GameObject(name)
+{
+	shotTimer = shotInterval;
+}
+
+void Weapon::Init()
+{
+	GameObject::Init();
+	hud = dynamic_cast<UIHUD*>((SCENE_MGR.GetScene(SceneIds::SceneGame))->FindGo("UIHUD"));
+	hud->SetAmmo(ammo, totalAmmo);
+}
+
+void Weapon::Release()
+{
+	GameObject::Release();
+}
+
+void Weapon::Reset()
+{
+	GameObject::Reset();
+	hud->SetAmmo(ammo, totalAmmo);
+}
+
+void Weapon::Update(float dt)
+{
+	GameObject::Update(dt);
+
+	if (shotTimer < shotInterval)
+	{
+		shotTimer += dt;
+	}
+
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		if (shotTimer >= shotInterval)
+		{
+			shotTimer = 0.f;
+			Attack();
+			FRAMEWORK.GetMouse()->MotionShot();
+		}
+	}
+	if (InputMgr::GetMouseButton(sf::Mouse::Right))
+	{
+		if (shotTimer >= shotInterval)
+		{
+			shotTimer = 0.f;
+			Attack();
+			FRAMEWORK.GetMouse()->MotionShot();
+		}
+	}
+}
+
+void Weapon::LateUpdate(float dt)
+{
+	GameObject::LateUpdate(dt);
+}
+
+void Weapon::FixedUpdate(float dt)
+{
+	GameObject::FixedUpdate(dt);
+}
+
+void Weapon::Draw(sf::RenderWindow& window)
+{
+	GameObject::Draw(window);
+}
+
+
+void  Weapon::AddMaxAmmo(int value)
+{
+	maxAmmo = std::max(1, maxAmmo + value);
+	hud->SetAmmo(ammo, totalAmmo);
+}
+void  Weapon::AddShotInterval(float value)
+{
+	shotInterval = std::max(0.01f, shotInterval + value);
+}
+void  Weapon::AddDamage(int value)
+{
+	damage = std::max(1, damage + value);
+}
+void  Weapon::AddReloadSpeed(float value)
+{
+	reloadSpeed = std::max(0.f, reloadSpeed + value);
+}
+
+void Weapon::AddProjectile(int value)
+{
+	projectileCount = std::max(1, projectileCount + value);
+}
+
+void Weapon::AddLevel(int value)
+{
+	level += value;
+	damage *= 1.f + (level - 1) * 0.05; //소수점 절삭.
+}
+
+void Weapon::AddTotalAmmo(int add)
+{
+	totalAmmo += add;
+	hud->SetAmmo(ammo, totalAmmo);
+}

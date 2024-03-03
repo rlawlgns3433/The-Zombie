@@ -2,12 +2,18 @@
 #include "GameObject.h"
 
 GameObject::GameObject(const std::string& name)
-	: name(name)
+	: name(name), scene(nullptr)
+{
+}
+
+GameObject::GameObject(Scene* sc, const std::string& name)
+	:name(name), scene(sc)
 {
 }
 
 GameObject::~GameObject()
 {
+	Release();
 }
 
 void GameObject::SetOrigin(Origins preset)
@@ -27,6 +33,7 @@ void GameObject::Init()
 
 void GameObject::Release()
 {
+	scene = nullptr;
 }
 
 void GameObject::Reset()
@@ -45,6 +52,14 @@ void GameObject::FixedUpdate(float dt)
 {
 }
 
+void GameObject::DebugUpdate(float dt)
+{
+}
+
 void GameObject::Draw(sf::RenderWindow& window)
+{
+}
+
+void GameObject::DebugDraw(sf::RenderWindow& window)
 {
 }

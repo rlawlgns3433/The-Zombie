@@ -3,6 +3,8 @@
 class GameObject
 {
 protected:
+	Scene* scene;
+
 	bool active = true;
 	int tag = -1;
 
@@ -21,7 +23,12 @@ public:
 	int sortOrder = 0;
 
 	GameObject(const std::string& name = "");
+	GameObject(Scene* sc, const std::string& name = "");
 	virtual ~GameObject();
+	GameObject(const GameObject&) = delete;
+	GameObject(GameObject&&) = delete;
+	GameObject& operator=(const GameObject&) = delete;
+	GameObject& operator=(GameObject&&) = delete;
 
 	static bool CompareDrawOrder(const GameObject* lhs, const GameObject* rhs)
 	{
@@ -44,6 +51,7 @@ public:
 	}
 
 	virtual void SetActive(bool active) { this->active = active; }
+	virtual bool GetActive() {return active;}
 
 	virtual void SetOrigin(Origins preset);
 	virtual inline void SetOrigin(const sf::Vector2f& newOrigin)
@@ -58,6 +66,8 @@ public:
 	virtual void SetFlipY(bool flip) { isFlipY = flip; }
 	virtual void SetRotation(float r) { rotation = r; }
 	virtual void Translate(const sf::Vector2f& delta) { position += delta; }
+	inline void SetScene(Scene* sc) { scene = sc; }
+	inline Scene* GetScene() const { return scene; }
 
 	virtual void Init();
 	virtual void Release();
@@ -65,7 +75,9 @@ public:
 	virtual void Update(float dt);
 	virtual void LateUpdate(float dt);
 	virtual void FixedUpdate(float dt);
+	virtual void DebugUpdate(float dt);
 	virtual void Draw(sf::RenderWindow& window);
+	virtual void DebugDraw(sf::RenderWindow& window);
 
 	bool GetActive() const { return active; }
 

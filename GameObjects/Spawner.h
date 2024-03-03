@@ -11,7 +11,7 @@ protected:
 	int spawnCount = 1;
 	int maxCount = -1;
 	int currentCount = 0;
-	float radius = 250.f;
+	float radius = 400.f;
 
 	float timer = 0.f;
 
@@ -22,7 +22,13 @@ protected:
 
 public:
 	Spawner(const std::string& name = "");
+	Spawner(Scene* sc, const std::string& name = "");
 	~Spawner()override = default;
+
+	Spawner(const Spawner&) = delete;
+	Spawner(Spawner&&) = delete;
+	Spawner& operator=(const Spawner&) = delete;
+	Spawner& operator=(Spawner&&) = delete;
 
 	void Init();
 	void Release();

@@ -2,6 +2,7 @@
 #include "SceneMgr.h"
 #include "SceneGame.h"
 #include "SceneTitle.h"
+#include "SceneScore.h"
 
 SceneMgr::~SceneMgr()
 {
@@ -13,6 +14,7 @@ void SceneMgr::Init()
 	Release();
 	scenes.push_back(new SceneTitle(SceneIds::SceneTitle));
 	scenes.push_back(new SceneGame(SceneIds::SceneGame));
+	scenes.push_back(new SceneScore(SceneIds::SceneScore));
 
 	for (auto scene : scenes)
 	{
@@ -44,9 +46,9 @@ void SceneMgr::ChangeScene(SceneIds id)
 
 void SceneMgr::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	if (InputMgr::GetKeyDown(sf::Keyboard::F5))
 	{
-		ChangeScene(startScene);
+		SCENE_MGR.ChangeScene(SceneIds::SceneTitle);
 	}
 	scenes[(int)currentScene]->Update(dt);
 }
@@ -61,7 +63,17 @@ void SceneMgr::FixedUpdate(float dt)
 	scenes[(int)currentScene]->FixedUpdate(dt);
 }
 
+void SceneMgr::DebugUpdate(float dt)
+{
+	scenes[(int)currentScene]->DebugUpdate(dt);
+}
+
 void SceneMgr::Draw(sf::RenderWindow& window)
 {
 	scenes[(int)currentScene]->Draw(window);
+}
+
+void SceneMgr::DebugDraw(sf::RenderWindow& window)
+{
+	scenes[(int)currentScene]->DebugDraw(window);
 }

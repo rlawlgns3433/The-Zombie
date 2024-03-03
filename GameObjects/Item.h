@@ -1,36 +1,48 @@
 #pragma once
 #include "SpriteGo.h"
-
 class Player;
 
-class Item :
-    public SpriteGo
+class Item: public SpriteGo
 {
 public:
-
 	enum class Types
 	{
+		NONE = -1,
 		AMMO,
-		HEAL,
+		HEALTH,
+		EXP,
+
+		COUNT,
 	};
 protected:
+	Types type;
+	int value;
 
-	Types type = Types::HEAL;
 	Player* player;
-	
-	bool isPickUp = false;
 
 public:
-
-	Item(const std::string& name = "Item");
+	Item(const std::string& name = "");
+	Item(Scene* sc, const std::string& name = "");
 	~Item() override = default;
+
+	Item(const Item&) = delete;
+	Item(Item&&) = delete;
+	Item& operator=(const Item&) = delete;
+	Item& operator=(Item&&) = delete;
 
 	void Init() override;
 	void Release() override;
+
 	void Reset() override;
+
 	void Update(float dt) override;
+	void LateUpdate(float dt) override;
+	void FixedUpdate(float dt) override;
+
 	void Draw(sf::RenderWindow& window) override;
 
-	static Item* Create(Types type);
-};
+	static Item* Create(Types t,Scene* sc, int v=0);
+	Types GetType() const { return type; }
+	int GetValue()const { return value; }
 
+};

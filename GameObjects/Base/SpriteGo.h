@@ -8,6 +8,12 @@ protected:
 
 public:
 	SpriteGo(const std::string& name = "");
+	SpriteGo(Scene* sc, const std::string& name = "");
+	~SpriteGo() override;
+	SpriteGo(const SpriteGo&) = delete;
+	SpriteGo(SpriteGo&&) = delete;
+	SpriteGo& operator=(const SpriteGo&) = delete;
+	SpriteGo& operator=(SpriteGo&&) = delete;
 
 	void SetTexture(const std::string& textureId);
 	void SetTexture();

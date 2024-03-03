@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Utils.h"
+#include <string>
+#include <Windows.h>
 
 float Utils::Clamp(float v, float min, float max)
 {
@@ -149,6 +151,16 @@ float Utils::Angle(const sf::Vector2f& vec)
 	return RadianToDegree(atan2f(vec.y, vec.x));
 }
 
+float Utils::Angle(const sf::Vector2f& origin, const sf::Vector2f& pos1, const sf::Vector2f& pos2)
+{
+	return Angle(pos1 - origin, pos2 - origin);
+}
+
+float Utils::Angle(const sf::Vector2f& vec1, const sf::Vector2f& vec2)
+{
+	return RadianToDegree(acosf((vec1.x * vec2.x + vec1.y * vec2.y) / (Magnitude(vec1) * Magnitude(vec2))));
+}
+
 void Utils::Rotate(sf::Vector2f& vec, float degree)
 {
 	vec = GetNormalize(sf::Transform().rotate(degree) * vec);
@@ -157,7 +169,7 @@ void Utils::Rotate(sf::Vector2f& vec, float degree)
 //t는 0.f ~ 1.f
 float Utils::Lerp(float min, float max, float t)
 {
-	
+
 	float v = min + (max - min) * Clamp(t, 0.f, 1.f);
 
 	return v;
@@ -168,6 +180,117 @@ sf::Vector2f Utils::Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float
 	sf::Vector2f v = min + (max - min) * Clamp(t, 0.f, 1.f);
 
 	return v;
+}
+
+std::list<sf::Vector2f> Utils::DressInRow(const sf::Vector2f& pos, const sf::Vector2f& direction, int count, float interval)
+{
+	std::list<sf::Vector2f> list;
+	if (count == 0) { return list; }
+
+	sf::Vector2f left = Utils::GetNormalize(direction);
+	sf::Vector2f right = Utils::GetNormalize(direction);
+	left = { -left.y,left.x };
+	right = { right.y,-right.x };
+
+	sf::Vector2f vecL = pos;
+	sf::Vector2f vecR = pos;
+
+	if (count % 2 == 1)
+	{
+		list.push_back(pos);
+		for (int i = 0; i < count / 2; i++)
+		{
+			vecL += left * interval;
+			vecR += right * interval;
+			list.push_front(vecL);
+			list.push_back(vecR);
+		}
+	}
+	else
+	{
+		vecL += left * (0.5f * interval);
+		vecR += right * (0.5f * interval);
+		list.push_front(vecL);
+		list.push_back(vecR);
+		for (int i = 0; i < count / 2 - 1; i++)
+		{
+			vecL += left * interval;
+			vecR += right * interval;
+			list.push_front(vecL);
+			list.push_back(vecR);
+		}
+	}
+	return list;
+
+}
+
+std::list<sf::Vector2f> Utils::FanSpread(const sf::Vector2f& direction, int count, float angle)
+{
+	std::list<sf::Vector2f> list;
+	sf::Vector2f normalDirec = Utils::GetNormalize(direction);
+	if (count == 0) { return list; }
+	if (0.f == fmodf(angle, 90))
+	{
+		sf::Vector2f left = normalDirec;
+		sf::Vector2f right = normalDirec;
+
+		if (count % 2 == 1)
+		{
+			list.push_back(normalDirec);
+			for (int i = 0; i < count / 2; i++)
+			{
+				left = { -left.y,left.x };
+				right = { right.y,-right.x };;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+		else
+		{
+			left = sf::Transform().rotate(45) * left;
+			right = sf::Transform().rotate(-45) * right;
+			list.push_front(left);
+			list.push_back(right);
+			for (int i = 0; i < count / 2 - 1; i++)
+			{
+				left = { -left.y,left.x };
+				right = { right.y,-right.x };;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+	}
+	else {
+		sf::Vector2f left = normalDirec;
+		sf::Vector2f right = normalDirec;
+
+		if (count % 2 == 1)
+		{
+			list.push_back(normalDirec);
+			for (int i = 0; i < count / 2; i++)
+			{
+				left = sf::Transform().rotate(angle) * left;
+				right = sf::Transform().rotate(-angle) * right;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+		else
+		{
+			left = sf::Transform().rotate(angle * 0.5) * left;
+			right = sf::Transform().rotate(-angle * 0.5) * right;
+			list.push_front(left);
+			list.push_back(right);
+			for (int i = 0; i < count / 2 - 1; i++)
+			{
+				left = sf::Transform().rotate(angle) * left;
+				right = sf::Transform().rotate(-angle) * right;
+				list.push_front(left);
+				list.push_back(right);
+			}
+		}
+	}
+	return list;
 }
 
 void Utils::ElasticCollision(float& coord, float border, float cor)
@@ -184,7 +307,9 @@ bool Utils::IsCollideWithLineSegment(const sf::Vector2f& p1, const sf::Vector2f&
 {
 	//두 점과의 거리 검사
 	if (Magnitude(lineP1 - p1) <= radius || Magnitude(lineP2 - p1) <= radius)
+	{
 		return true;
+	}
 
 	//좌표계 원점 변환, 기준점 설정
 	sf::Vector2f point1 = lineP1 - p1;
@@ -236,7 +361,13 @@ bool Utils::IsCollideWithLineSegment(const sf::Vector2f& p1, const sf::Vector2f&
 	}
 	return false;
 }
+std::wstring Utils::CP949ToWString(const std::string& str)
+{
+	if (str.empty()) return L"";
+	// CP949 코드 페이지를 사용하여 변환
+	int sizeNeeded = MultiByteToWideChar(949, 0, str.c_str(), (int)str.size(), NULL, 0);
+	std::wstring wstrTo(sizeNeeded, 0);
+	MultiByteToWideChar(949, 0, str.c_str(), (int)str.size(), &wstrTo[0], sizeNeeded);
+	return wstrTo;
+}
 
-
-
-//선형보관

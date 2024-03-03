@@ -57,9 +57,11 @@ void Scene::Release()
 		delete obj;
 	}
 	uiObjects.clear();
+	deleteDeque.clear();
+	sortList.clear();
 }
 
-void Scene::Enter()
+void Scene::Reset()
 {
 	for (auto obj : gameObjects)
 	{
@@ -69,6 +71,11 @@ void Scene::Enter()
 	{
 		obj->Reset();
 	}
+}
+
+void Scene::Enter()
+{
+
 }
 
 void Scene::Exit()
@@ -113,7 +120,7 @@ void Scene::LateUpdate(float dt)
 		}
 	}
 
-
+	//정렬이 매 프레임 되고 있음.
 	for (auto obj : sortList)
 	{
 		auto it = std::find(gameObjects.begin(), gameObjects.end(), obj);
@@ -154,6 +161,24 @@ void Scene::FixedUpdate(float dt)
 	}
 }
 
+void Scene::DebugUpdate(float dt)
+{
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugUpdate(dt);
+		}
+	}
+	for (auto obj : uiObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugUpdate(dt);
+		}
+	}
+}
+
 void Scene::Draw(sf::RenderWindow& window)
 {
 	const sf::View& saveView = window.getView();
@@ -172,6 +197,29 @@ void Scene::Draw(sf::RenderWindow& window)
 		if (obj->GetActive())
 		{
 			obj->Draw(window);
+		}
+	}
+	window.setView(saveView);
+}
+
+void Scene::DebugDraw(sf::RenderWindow& window)
+{
+	const sf::View& saveView = window.getView();
+
+	window.setView(worldView);
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugDraw(window);
+		}
+	}
+	window.setView(uiView);
+	for (auto obj : uiObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->DebugDraw(window);
 		}
 	}
 	window.setView(saveView);

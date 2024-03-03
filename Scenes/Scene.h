@@ -36,6 +36,7 @@ public:
 
 	virtual void Init();
 	virtual void Release();
+	virtual void Reset();
 
 	virtual void Enter();
 	virtual void Exit();
@@ -43,7 +44,9 @@ public:
 	virtual void Update(float dt);
 	virtual void LateUpdate(float dt);
 	virtual void FixedUpdate(float dt);
+	virtual void DebugUpdate(float dt);
 	virtual void Draw(sf::RenderWindow& window);
+	virtual void DebugDraw(sf::RenderWindow& window);
 
 	virtual GameObject* FindGo(const std::string& name, Layers layer = Layers::EveryThing);
 	int FindGoAll(const std::string& name, std::list<GameObject*>& list, Layers layer = Layers::EveryThing);

@@ -1,44 +1,47 @@
 #include "pch.h"
 #include "ItemSpawner.h"
 #include "SceneGame.h"
+#include "ItemTable.h"
 
 ItemSpawner::ItemSpawner(const std::string& name)
 	:Spawner(name)
 {
-	interval = 5.f; //주기
+	//아이템 스포너 수치는 고정.
+	//추후 아이템이 추가될 때 변경.
+	interval = 5.f;
 	spawnCount = 2;
 	radius = 500.f;
 	timer = 0.f;
-	//생성시에 값을 받을 수 있도록 or 랜덤
+}
+
+ItemSpawner::ItemSpawner(Scene* sc, const std::string& name)
+	:Spawner(sc, name)
+{
+	interval = 5.f;
+	spawnCount = 2;
+	radius = 500.f;
+	timer = 0.f;
 }
 
 void ItemSpawner::Reset()
 {
 	itemTypes.clear();
-	itemTypes.push_back(Item2::Types::HEALTH);
-	itemTypes.push_back(Item2::Types::AMMO);
-	itemTypes.push_back(Item2::Types::AMMO);
-	itemTypes.push_back(Item2::Types::AMMO);
-	itemTypes.push_back(Item2::Types::AMMO);
+	itemTypes.push_back(Item::Types::HEALTH);
+	itemTypes.push_back(Item::Types::AMMO);
+	itemTypes.push_back(Item::Types::AMMO);
+	itemTypes.push_back(Item::Types::AMMO);
+	itemTypes.push_back(Item::Types::AMMO);
 
 	Spawner::Reset();
 }
 
 GameObject* ItemSpawner::Create()
 {
-	Item2::Types itemType = itemTypes[Utils::RandomRange(0, itemTypes.size())];
-	int val = 0;
-	switch (itemType)
-	{
+	Item::Types itemType = itemTypes[Utils::RandomRange(0, itemTypes.size())];
+	const DATA_ITEM& data = DT_ITEM->Get(itemType);
 
-	case Item2::Types::AMMO:
-		val = Utils::RandomRange(20, 40);
-		break;
-	case Item2::Types::HEALTH:
-		val = Utils::RandomRange(10, 30);
-		break;
-	default:
-		break;
-	}
-	return Item2::Create(itemType, val);
+	int val = Utils::RandomRange(data.minVal, data.maxVal);
+	Item* go = Item::Create(itemType, scene, val);
+
+	return go;
 }

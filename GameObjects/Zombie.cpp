@@ -2,7 +2,10 @@
 #include "Zombie.h"
 #include "SceneGame.h"
 #include "Bullet.h"
-#include <EffectBlood.h>
+#include "EffectBlood.h"
+#include "EffectDamage.h"
+#include "ZombieTable.h"
+#include "Item.h"
 
 Zombie::Zombie(const std::string& name)
 	: SpriteGo(name)
@@ -11,47 +14,41 @@ Zombie::Zombie(const std::string& name)
 	sortLayer = 10;
 }
 
-Zombie* Zombie::Create(Types zombieType)
+Zombie::Zombie(Scene* sc, const std::string& name)
+	:SpriteGo(sc, name)
 {
-	Zombie* zombie = new Zombie("Zombie");
+	tag = 0;
+	sortLayer = 10;
+}
+
+Zombie* Zombie::Create(Types zombieType,Scene* sc)
+{
+	Zombie* zombie = new Zombie(sc,"Zombie");
 	zombie->type = zombieType;
+	zombie->scene = sc;
 
-
-	switch (zombieType)
-	{
-	case Zombie::Types::Bloater:
-		zombie->textureId = "graphics/bloater.png";
-		zombie->maxHp = zombie->hp = 141;
-		zombie->maxSpeed = zombie->speed = 30;
-		zombie->atkDamage = 70;
-		zombie->atkInterval = zombie->atkTimer = 1.f;
-		break;
-	case Zombie::Types::Chaser:
-		zombie->textureId = "graphics/chaser.png";
-		zombie->maxHp = zombie->hp = 69;
-		zombie->speed = zombie->maxSpeed = 75;
-		zombie->atkDamage = 10;
-		zombie->atkInterval = zombie->atkTimer = 0.5f;
-		break;
-	case Zombie::Types::Crawler:
-		zombie->textureId = "graphics/crawler.png";
-		zombie->maxHp = zombie->hp = 103;
-		zombie->speed = 0;
-		zombie->maxSpeed = 200;
-		zombie->atkDamage = 99;
-		zombie->atkInterval = zombie->atkTimer = 2.f;
-		break;
-	default:
-		break;
-	}
+	const DataZombie& data = DT_ZOMBIE->Get(zombieType);
+	zombie->textureId = data.textureId;
+	zombie->hp = zombie->maxHp = data.maxHp;
+	zombie->speed = zombie->maxSpeed = data.maxSpeed;
+	zombie->atkDamage = data.atkDamage;
+	zombie->atkTimer = zombie->atkInterval = data.atkInterval;
 
 	zombie->Init();
 	zombie->Reset();
-	zombie->player=dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
-	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->zombieObjects.push_back(zombie);
+	zombie->player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
 
+	dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->zombieObjects.push_back(zombie);
+	zombie->bound.setRadius(zombie->GetLocalBounds().width / 3);
+	Utils::SetOrigin(zombie->bound, Origins::MC);
+	zombie->scene->AddGo(zombie);
 
 	return zombie;
+}
+
+Zombie::~Zombie()
+{
+	Release();
 }
 
 void Zombie::Init()
@@ -60,6 +57,11 @@ void Zombie::Init()
 
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
+
+
+	bound.setOutlineColor(sf::Color::Magenta);
+	bound.setOutlineThickness(1);
+	bound.setFillColor(sf::Color(255, 255, 255, 0));
 
 }
 
@@ -91,7 +93,7 @@ void Zombie::Update(float dt)
 	}
 
 	//플레이어에게 이동
-	if (distanceToPlayer > sprite.getGlobalBounds().width * 3.8f / 10.f)
+	if (distanceToPlayer > GetBound().getRadius() + player->GetBound().getRadius())
 	{
 		//SetPosition(GetPosition() + Utils::GetNormalize(player->GetPosition() - GetPosition()) * speed * dt);
 		Translate(direction * speed * dt);
@@ -115,9 +117,9 @@ void Zombie::FixedUpdate(float dt)
 
 	distanceToPlayer = Utils::Distance(player->GetPosition(), position);
 	SpriteGo::FixedUpdate(dt);
-	if (atkTimer >= atkInterval && distanceToPlayer <= sprite.getGlobalBounds().width * 3.8f / 10.f)
+	if (atkTimer >= atkInterval && distanceToPlayer <= GetBound().getRadius()+player->GetBound().getRadius())
 	{
-		player->onDamage(atkDamage);
+		player->OnDamage(atkDamage);
 		atkTimer = 0.f;
 	}
 }
@@ -125,6 +127,17 @@ void Zombie::FixedUpdate(float dt)
 void Zombie::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+
+}
+
+void Zombie::DebugUpdate(float dt)
+{
+	bound.setPosition(position);
+}
+
+void Zombie::DebugDraw(sf::RenderWindow& window)
+{
+	window.draw(bound);
 }
 
 //충돌
@@ -137,7 +150,7 @@ void Zombie::Collision(float dt)
 			continue;
 		sf::Vector2f dz = Utils::GetNormalize(ptr->GetPosition() - position); //다른 좀비로의 방향
 		float distance = Utils::Distance(ptr->GetPosition(), position); //다른 좀비와의 거리
-		float minDistance = sprite.getGlobalBounds().width / 3.f + ptr->GetGlobalBounds().width / 3.f; //최소 거리
+		float minDistance = GetBound().getRadius() + ptr->GetBound().getRadius(); //최소 거리
 		if (distance < minDistance)
 		{
 			SetPosition(position - dz * speed * 2.f * dt);
@@ -162,17 +175,37 @@ void Zombie::Collision(float dt)
 	SetRotation(rotation);
 }
 
+void Zombie::OnDie()
+{
+	isDead = true;
+	SCENE_MGR.GetCurrentScene()->DeleteGo(this);
+	SOUND_MGR.PlaySfx("sound/splat.wav");
+	switch (Utils::RandomRange(0, 2))
+	{
+	case 0:
+		Item::Create(Item::Types::EXP, scene)->SetPosition(position);
+		break;
+	case 1:
+		Item::Create(Item::Types::AMMO, scene)->SetPosition(position);
+		break;
+	default:
+		break;
+	};
+}
+
 bool Zombie::Damaged(int damage)
 {
 	int preHp = hp;
 	hp -= damage;
-	SCENE_MGR.GetCurrentScene()->AddGo(new EffectBlood(this->position))->Init();
+	if (scene != nullptr)
+	{
+	EffectDamage::Create(scene,position,damage);
+	scene->AddGo(new EffectBlood(this->position))->Init();
+	}
 	if (hp <= 0 && !isDead)
 	{
 		hp = 0;
-		isDead = true;
-		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
-		SOUND_MGR.PlaySfx("sound/splat.wav");
+		OnDie();
 	}
 	return isDead;
 }

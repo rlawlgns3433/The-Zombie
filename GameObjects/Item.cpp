@@ -1,21 +1,25 @@
 #include "pch.h"
 #include "Item.h"
 #include "Player.h"
-#include "SceneGame.h"
+#include "Scene.h"
+#include "ItemTable.h"
+
 
 Item::Item(const std::string& name)
-	:SpriteGo(name)
+	:SpriteGo(name), type(Types::NONE), value(0), player(nullptr)
 {
-	sortLayer = 4;
-	player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
+	sortLayer = 2;
+}
+
+Item::Item(Scene* sc, const std::string& name)
+	:SpriteGo(sc,name), type(Types::NONE), value(0), player(nullptr)
+{
+	sortLayer = 2;
 }
 
 void Item::Init()
 {
 	SpriteGo::Init();
-	SetTexture(textureId);
-	SetOrigin(Origins::MC);
-	player = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetPlayer();
 }
 
 void Item::Release()
@@ -26,27 +30,31 @@ void Item::Release()
 void Item::Reset()
 {
 	SpriteGo::Reset();
+	SetOrigin(Origins::MC);
+	player = dynamic_cast<Player*>(scene->FindGo("Player"));
 }
 
 void Item::Update(float dt)
 {
 	SpriteGo::Update(dt);
+}
 
-	if (!isPickUp && Utils::Distance(player->GetPosition(), position) <= sprite.getGlobalBounds().width / 2.f)
+void Item::LateUpdate(float dt)
+{
+	SpriteGo::LateUpdate(dt);
+}
+
+void Item::FixedUpdate(float dt)
+{
+	SpriteGo::FixedUpdate(dt);
+
+	if (player == nullptr)
+		return;
+	if (GetGlobalBounds().intersects(player->GetGlobalBounds()))
 	{
-		isPickUp = true;
+		SetActive(false);
 		SCENE_MGR.GetCurrentScene()->DeleteGo(this);
-
-		switch (type)
-		{
-		case Item::Types::AMMO:
-			break;
-		case Item::Types::HEAL:
-			player->hp = std::min(player->hp + 20, player->maxHp);
-			break;
-		default:
-			break;
-		}
+		player->onItem(this);
 	}
 }
 
@@ -55,23 +63,26 @@ void Item::Draw(sf::RenderWindow& window)
 	SpriteGo::Draw(window);
 }
 
-
-Item* Item::Create(Types itemType)
+Item* Item::Create(Types t, Scene* sc, int v)
 {
-	Item* item = new Item();
-	item->type = itemType;
+	Item* newItem = new Item(sc);
+	newItem->type = t;
 
-	switch (itemType)
+	const DATA_ITEM& data = DT_ITEM->Get(newItem->type);
+
+	if (v == 0)
 	{
-	case Types::AMMO:
-		item->textureId = "graphics/ammo_pickup.png";
-		break;
-	case Types::HEAL:
-		item->textureId = "graphics/health_pickup.png";
-		break;
-	default:
-		break;
+	newItem->value = Utils::RandomRange(data.minVal, data.maxVal);
+	}
+	else
+	{
+		newItem->value = v;
 	}
 
-	return item;
+
+	newItem->textureId = data.textureId;
+	newItem->Init();
+	newItem->Reset();
+	newItem->scene->AddGo(newItem);
+	return newItem;
 }

@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\GameObjects\Effect;.\Framework\Manager;.;.\SFML-2.6.1\include;.\Framework;.\GameObjects\Base;.\GameObjects\UI;.\GameObjects;.\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\DataTable;.\GameObjects\Effect;.\Framework\Manager;.;.\SFML-2.6.1\include;.\Framework;.\GameObjects\Base;.\GameObjects\UI;.\GameObjects;.\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -137,8 +137,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjects\BossBindingSkill.cpp" />
+    <ClCompile Include="GameObjects\BossRangeSkill.cpp" />
+    <ClCompile Include="DataTable\CharacterSelectTable.cpp" />
+    <ClCompile Include="DataTable\PlayerTable.cpp" />
+    <ClCompile Include="GameObjects\Effect\EffectLightLine.cpp" />
+    <ClCompile Include="GameObjects\Effect\EffectCenterText.cpp" />
+    <ClCompile Include="GameObjects\Effect\EffectDamage.cpp" />
+    <ClCompile Include="GameObjects\Flame.cpp" />
+    <ClCompile Include="GameObjects\FlameThrower.cpp" />
     <ClCompile Include="Framework\Manager\DataTableMgr.cpp" />
-    <ClCompile Include="GameObjects\UI\DebugString.cpp" />
+    <ClCompile Include="GameObjects\UI\UIDebug.cpp" />
     <ClCompile Include="GameObjects\Effect\EffectBlood.cpp" />
     <ClCompile Include="GameObjects\UI\Crosshair.cpp" />
     <ClCompile Include="GameObjects\Bullet.cpp" />
@@ -152,10 +161,12 @@
     </ClCompile>
     <ClCompile Include="GameObjects\Base\GameObject.cpp" />
     <ClCompile Include="GameObjects\ZombieSpawner.cpp" />
-    <ClCompile Include="GameObjects\UI\HealthBar.cpp" />
     <ClCompile Include="GameObjects\Item.cpp" />
-    <ClCompile Include="GameObjects\Item2.cpp" />
     <ClCompile Include="GameObjects\ItemSpawner.cpp" />
+    <ClCompile Include="GameObjects\Gun.cpp" />
+    <ClCompile Include="DataTable\LevelUpTable.cpp" />
+    <ClCompile Include="DataTable\ItemTable.cpp" />
+    <ClCompile Include="GameObjects\Lighting.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -163,6 +174,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GameObjects\Player.cpp" />
+    <ClCompile Include="GameObjects\Projectile.cpp" />
+    <ClCompile Include="Scenes\SceneScore.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Framework\Manager\SceneMgr.cpp" />
@@ -174,13 +187,33 @@
     <ClCompile Include="GameObjects\Spawner.cpp" />
     <ClCompile Include="GameObjects\UI\UIHUD.cpp" />
     <ClCompile Include="Framework\Manager\SoundMgr.cpp" />
-    <ClCompile Include="Framework\StringTable.cpp" />
+    <ClCompile Include="DataTable\StringTable.cpp" />
+    <ClCompile Include="DataTable\ZombieTable.cpp" />
+    <ClCompile Include="GameObjects\UI\UILevelUp.cpp" />
+    <ClCompile Include="GameObjects\Weapon.cpp" />
+    <ClCompile Include="GameObjects\Sword.cpp" />
+    <ClCompile Include="GameObjects\UI\UICharacterSelect.cpp" />
+    <ClCompile Include="DataTable\WaveTable.cpp" />
+    <ClCompile Include="GameObjects\SwordAttack.cpp" />
+    <ClCompile Include="GameObjects\Base\UIGo.cpp" />
+    <ClCompile Include="GameObjects\ZombieBoss.cpp" />
+    <ClCompile Include="GameObjects\Wand.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Framework\DataTable.h" />
+    <ClInclude Include="GameObjects\BossBindingSkill.h" />
+    <ClInclude Include="GameObjects\Base\ShapeGo.h" />
+    <ClInclude Include="GameObjects\BossRangeSkill.h" />
+    <ClInclude Include="DataTable\CharacterSelectTable.h" />
+    <ClInclude Include="DataTable\PlayerTable.h" />
+    <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="GameObjects\Effect\EffectLightLine.h" />
+    <ClInclude Include="GameObjects\Effect\EffectCenterText.h" />
+    <ClInclude Include="GameObjects\Effect\EffectDamage.h" />
+    <ClInclude Include="GameObjects\Flame.h" />
+    <ClInclude Include="GameObjects\FlameThrower.h" />
     <ClInclude Include="Framework\Manager\DataTableMgr.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
-    <ClInclude Include="GameObjects\UI\DebugString.h" />
+    <ClInclude Include="GameObjects\UI\UIDebug.h" />
     <ClInclude Include="GameObjects\Effect\EffectBlood.h" />
     <ClInclude Include="GameObjects\UI\Crosshair.h" />
     <ClInclude Include="GameObjects\Bullet.h" />
@@ -192,12 +225,16 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\Base\GameObject.h" />
-    <ClInclude Include="GameObjects\UI\HealthBar.h" />
     <ClInclude Include="GameObjects\Item.h" />
-    <ClInclude Include="GameObjects\Item2.h" />
     <ClInclude Include="GameObjects\ItemSpawner.h" />
+    <ClInclude Include="GameObjects\Gun.h" />
+    <ClInclude Include="DataTable\LevelUpTable.h" />
+    <ClInclude Include="DataTable\ItemTable.h" />
+    <ClInclude Include="GameObjects\Lighting.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
+    <ClInclude Include="GameObjects\Projectile.h" />
+    <ClInclude Include="Scenes\SceneScore.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\Manager\SceneMgr.h" />
@@ -210,7 +247,17 @@
     <ClInclude Include="GameObjects\Spawner.h" />
     <ClInclude Include="GameObjects\UI\UIHUD.h" />
     <ClInclude Include="Framework\Manager\SoundMgr.h" />
-    <ClInclude Include="Framework\StringTable.h" />
+    <ClInclude Include="DataTable\StringTable.h" />
+    <ClInclude Include="DataTable\ZombieTable.h" />
+    <ClInclude Include="GameObjects\UI\UILevelUp.h" />
+    <ClInclude Include="GameObjects\Weapon.h" />
+    <ClInclude Include="GameObjects\Sword.h" />
+    <ClInclude Include="GameObjects\UI\UICharacterSelect.h" />
+    <ClInclude Include="DataTable\WaveTable.h" />
+    <ClInclude Include="GameObjects\SwordAttack.h" />
+    <ClInclude Include="GameObjects\Base\UIGo.h" />
+    <ClInclude Include="GameObjects\ZombieBoss.h" />
+    <ClInclude Include="GameObjects\Wand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

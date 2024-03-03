@@ -8,6 +8,10 @@ private:
 
 	SoundMgr();
 	virtual ~SoundMgr();
+	SoundMgr(const SoundMgr&) = delete;
+	SoundMgr(SoundMgr&&) = delete;
+	SoundMgr& operator=(const SoundMgr&) = delete;
+	SoundMgr& operator=(SoundMgr&&) = delete;
 
 	//플레이 리스트 기능을 추가하면 좋을 것 같다.
 	sf::Sound bgm[2];
@@ -15,7 +19,7 @@ private:
 	int backBGMIndex = 1;
 
 	bool isFading = false;
-	float fadeDuration = 5.f;
+	float fadeDuration = 1.f;
 	float fadeTimer = 0.f;
 	float frontMixingSpeed = 0.f;
 	float backMixingSpeed = 0.f;
@@ -25,7 +29,7 @@ private:
 
 
 	float sfxVolume = 100.f;
-	float bgmVolume = 100.f;
+	float bgmVolume = 20.f;
 	float uiVolume = 100.f;
 	bool mute = false;
 
@@ -36,7 +40,7 @@ public:
 	void Update(float dt);
 	
 	void PlayBGM(const std::string& id, bool loop = true, bool crossFade = true);
-	void StopBGM(const std::string& id);
+	void StopBGM();
 	void MixingBGM(float dt);
 	
 	void PlaySfx(const std::string& id, bool loop = false);

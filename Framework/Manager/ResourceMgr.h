@@ -15,6 +15,11 @@ private:
 		UnloadAll();
 	}
 
+	ResourceMgr(const ResourceMgr&) = delete;
+	ResourceMgr(ResourceMgr&&) = delete;
+	ResourceMgr& operator=(const ResourceMgr&) = delete;
+	ResourceMgr& operator=(ResourceMgr&&) = delete;
+
 public:
 	static T Empty;
 
@@ -66,12 +71,6 @@ public:
 		}
 		return *(resources.find(filePath)->second);
 	}
-
-	ResourceMgr(const ResourceMgr&) = delete;
-	ResourceMgr(ResourceMgr&&) = delete;
-
-	ResourceMgr& operator=(const ResourceMgr&) = delete;
-	ResourceMgr& operator=(ResourceMgr&&) = delete;
 };
 
 template<typename T>

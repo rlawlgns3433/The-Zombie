@@ -3,9 +3,17 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "TileMap.h"
-#include "Item2.h"
+#include "Item.h"
 #include "UIHUD.h"
 #include "Crosshair.h"
+#include "Gun.h"
+#include "PlayerTable.h"
+#include "LevelUpTable.h"
+#include "FlameThrower.h"
+#include "Weapon.h"
+#include "Sword.h"
+#include "Wand.h"
+
 
 Player::Player(const std::string& name) : SpriteGo(name)
 {
@@ -15,47 +23,89 @@ Player::Player(const std::string& name) : SpriteGo(name)
 
 void Player::Init()
 {
+	const DATA_PLAYER& data = DT_PLAYER->Get(type);
+
+	textureId = data.textureId;
+	hp = maxHp = data.maxHp;
+	speed = data.speed;
+
 	SpriteGo::Init();
 	SetTexture(textureId);
 	SetOrigin(Origins::MC);
 
-	isFiring = false;
+	bound.setFillColor(sf::Color::Cyan);
+	bound.setRadius(GetGlobalBounds().width/3);
+	Utils::SetOrigin(bound, Origins::MC);
+
+
+	scene = SCENE_MGR.GetScene(SceneIds::SceneGame);
+
+	switch (type)
+	{
+	case TYPES::MAN:
+		weapon = new Gun(this); // Type ë§¨
+		weapon->Init();
+		weapon->Reset();
+		break;
+	case TYPES::FIREBAT:
+		weapon = new FlameThrower(this); // Type íŒŒì´ì–´ë²³
+		weapon->Init();
+		weapon->Reset();
+		break;
+	case TYPES::READDEATH:
+		weapon = new Sword(this); // Type ê²€ì‚¬
+		weapon->Init();
+		weapon->Reset();
+		break;
+	case TYPES::MAGE:
+		weapon = new Wand(this); // Type ë§ˆë²•ì‚¬
+		weapon->Init();
+		weapon->Reset();
+		break;
+	}
 }
 
 void Player::Release()
 {
-	SpriteGo::Init();
+	SpriteGo::Release();
+	weapon->Release();
+	delete weapon;
 }
 
 void Player::Reset()
 {
 	SpriteGo::Reset();
+	weapon->Reset();
 	active = true;
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Background"));
 	hud = dynamic_cast<UIHUD*>(SCENE_MGR.GetCurrentScene()->FindGo("UIHUD"));
 
-	ammo = maxAmmo;
-	totalAmmo = ammo;
-	hud->SetAmmo(ammo, totalAmmo);
 	hud->SetHp(hp, maxHp);
+	hud->SetExp(currentExp, maxExp, level);
 }
 
 void Player::Update(float dt)
 {
 	SpriteGo::Update(dt);
-	shotTimer += dt;
+
+	weapon->Update(dt);
+
 	damagedTimer += dt;
-	//Ä³¸¯ÅÍ È¸Àü
+
+	//Ä³ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½	
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 
 	//sf::Vector2f mouseWorldPos = InputMgr::GetMousePos() + SCENE_MGR.GetCurrentScene()->GetViewCenter() - sf::Vector2f(FRAMEWORK.GetWindow().getSize()) * 0.5f;
-	float lookAngle = Utils::Angle(mouseWorldPos - GetPosition());
-	Utils::Rotate(look, lookAngle);
-	SetRotation(lookAngle);
+	look = Utils::GetNormalize(mouseWorldPos - GetPosition());
 
-	//Ä³¸¯ÅÍ ÀÌµ¿
+	if (type != TYPES::READDEATH)
+	{
+		SetRotation(Utils::Angle(look));
+	}
+
+	//Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 	if (Utils::Magnitude(direction) > 1.f)
@@ -64,10 +114,10 @@ void Player::Update(float dt)
 	}
 	sf::Vector2f tempPos(GetPosition() + direction * speed * dt);
 
-	//Ãæµ¹ °Ë»ç
+	//ï¿½æµ¹ ï¿½Ë»ï¿½
 	boundary = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetBoundary();
 	// 
-	//Ãæµ¹ °Ë»ç: º®
+	//ï¿½æµ¹ ï¿½Ë»ï¿½: ï¿½ï¿½
 	if (tempPos.x < boundary.first.x)
 		Utils::ElasticCollision(tempPos.x, boundary.first.x, 0.f);
 	if (tempPos.x > boundary.second.x)
@@ -79,124 +129,122 @@ void Player::Update(float dt)
 
 	SetPosition(tempPos);
 
-	//Shot
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-		if (shotTimer >= shotInterval)
-		{
-			shotTimer = 0.f;
-			Shot();
-		}
-	}
-	if (InputMgr::GetMouseButton(sf::Mouse::Right))
-	{
-		if (shotTimer >= shotInterval)
-		{
-			shotTimer = 0.f;
-			Shot();
-		}
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::R))
-	{
-		ReLoad();
-	}
 
-	//Á×À½
+	//Die
 	if (hp == 0)
 	{
-		onDie();
-		SOUND_MGR.PlaySfx("sound/splat.wav");
+		OnDie();
 	}
+	//LevelUp
+	if (currentExp >= maxExp)
+	{
+		currentExp -= maxExp;
+		maxExp *= 1.2; // roundDown
+		level++;
+		LevelUp();
+		hud->SetExp(currentExp, maxExp, level);
+	}
+
+}
+
+void Player::DebugUpdate(float dt)
+{
+	bound.setPosition(position);
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+	weapon->Draw(window);
 }
 
-void Player::onDamage(int damage)
+void Player::DebugDraw(sf::RenderWindow& window)
+{
+	window.draw(bound);
+}
+
+void Player::OnDamage(int damage)
 {
 	if (damagedTimer >= damagedInterval)
 	{
 		damagedTimer = 0.f;
-		hp = std::max(hp - damage, 0);
+		if (!invincibility) { hp = std::max(hp - damage, 0); }
 		hud->SetHp(hp, maxHp);
 		SOUND_MGR.PlaySfx("sound/hit.wav");
 	}
 }
 
-
-void Player::Shot()
+void Player::RangeOnDamage(int damage)
 {
-	if (ammo > 0)
-	{
-		ammo--;
-		hud->SetAmmo(ammo, totalAmmo);
-
-		Bullet* b = Bullet::Create(this);
-		b->Init();
-		b->Reset();
-		SCENE_MGR.GetCurrentScene()->AddGo(b);
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->bullets.push_back(b);
-
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionShot();
-		SOUND_MGR.PlaySfx("sound/shoot.wav");
-	}
-	else
-	{
-		ReLoad();
-	}
-	//Bullet2* bullet = new Bullet2();
-	//bullet->Init();
-	//bullet->Fire(direction, 150.f);
-	//SCENE_MGR.GetCurrentScene()->AddGo(bullet)->SetPosition(position);
+	if (!invincibility) { hp = std::max(hp - damage, 0); }
+	hud->SetHp(hp, maxHp);
+	SOUND_MGR.PlaySfx("sound/hit.wav");
 }
 
-void Player::ReLoad()
+void Player::AddExp(int value)
 {
-	shotTimer = -0.5f;
-	int needAmmo = maxAmmo - ammo;
-	if (totalAmmo >= needAmmo)
-	{
-		ammo += needAmmo;
-		totalAmmo -= needAmmo;
-		hud->SetAmmo(ammo, totalAmmo);
-		SOUND_MGR.PlaySfx("sound/reload.wav");
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
-	}
-	else if (totalAmmo == 0)
-	{
-		SOUND_MGR.PlaySfx("sound/reload_failed.wav");
-	}
-	else
-	{
-		ammo += totalAmmo;
-		totalAmmo = 0;
-		hud->SetAmmo(ammo, totalAmmo);
-		SOUND_MGR.PlaySfx("sound/reload.wav");
-		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->crosshair->MotionReload();
-	}
-
+	currentExp += value * xExp;
+	hud->SetExp(currentExp, maxExp, level);
 }
 
-void Player::onDie()
+void Player::AddStat(DataLevelUp data)
+{
+	//HP
+	maxHp = std::max(1, maxHp + data.maxHp);
+	AddHp(data.maxHp);
+	hud->SetHp(hp, maxHp);
+
+	speed = std::max(0.f, speed + data.speed);
+
+	xExp += data.xExp;
+
+	weapon->AddDamage(data.damage);
+	weapon->AddShotInterval(data.shotInterval);
+	weapon->AddReloadSpeed(data.reloadInterval);
+	weapon->AddMaxAmmo(data.maxAmmo);
+	weapon->AddLevel(data.weaponUp);
+	weapon->AddProjectile(data.projectile);
+}
+
+void Player::AddHp(int value)
+{
+	hp = std::min(hp + value, maxHp);
+	hud->SetHp(hp, maxHp);
+}
+
+void Player::LevelUp()
+{
+	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::LEVELUP);
+}
+
+void Player::SetPlayerType(Player::TYPES type)
+{
+	this->type = type;
+
+	Init();
+}
+
+void Player::OnDie()
 {
 	active = false;
+	SOUND_MGR.PlaySfx("sound/splat.wav");
 	SOUND_MGR.PlayBGM("sound/SellBuyMusic2.wav");
+	dynamic_cast<SceneGame*>(scene)->SetStatus(SceneGame::Status::DIE);
 }
 
-void Player::onItem(Item2* item)
+void Player::onItem(Item* item)
 {
 	SOUND_MGR.PlaySfx("sound/pickup.wav");
 	switch (item->GetType())
 	{
-	case Item2::Types::AMMO:
-		totalAmmo += item->GetValue();
-		hud->SetAmmo(ammo, totalAmmo);
+	case Item::Types::AMMO:
+		weapon->AddTotalAmmo(item->GetValue());
 		break;
-	case Item2::Types::HEALTH:
-		hp = std::min(hp+item->GetValue(),maxHp);
-		hud->SetHp(hp,maxHp);
+	case Item::Types::HEALTH:
+		AddHp(item->GetValue());
+		break;
+	case Item::Types::EXP:
+		AddExp(item->GetValue());
 		break;
 	}
 }

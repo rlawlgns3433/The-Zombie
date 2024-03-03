@@ -7,6 +7,7 @@
 class RenderWindowRBR : public sf::RenderWindow
 {
 protected:
+
 	bool isResizing = false;
 
 	sf::Vector2u sizeRatio;

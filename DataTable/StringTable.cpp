@@ -2,6 +2,9 @@
 #include "StringTable.h"
 #include "rapidcsv.h"
 
+std::string StringTable::unDef = "undefined id";
+
+
 StringTable::StringTable(Types t)
 	:DataTable(t)
 {
@@ -49,6 +52,6 @@ const std::string& StringTable::Get(const std::string& id)
 {
 	auto find = table.find(id);
 	if (find == table.end())
-		return "Undefined ID";
+		return unDef;
 	return find->second;
 }
