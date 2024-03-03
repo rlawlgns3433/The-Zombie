@@ -14,6 +14,11 @@ protected:
 public:
 	~EffectCenterText() override = default;
 
+	EffectCenterText(const EffectCenterText&) = delete;
+	EffectCenterText(EffectCenterText&&) = delete;
+	EffectCenterText& operator=(const EffectCenterText&) = delete;
+	EffectCenterText& operator=(EffectCenterText&&) = delete;
+
 	float duration = 1.f;
 	float duration2 = 2.f;
 

@@ -16,6 +16,12 @@ private:
 
 public:
 	~EffectDamage() override = default;
+
+	EffectDamage(const EffectDamage&) = delete;
+	EffectDamage(EffectDamage&&) = delete;
+	EffectDamage& operator=(const EffectDamage&) = delete;
+	EffectDamage& operator=(EffectDamage&&) = delete;
+
 	static EffectDamage* Create(Scene* sc, sf::Vector2f pos, const std::wstring& text);
 	static EffectDamage* Create(Scene* sc, sf::Vector2f pos, int damage);
 };

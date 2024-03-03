@@ -39,6 +39,11 @@ private:
 	void CheatWin();
 protected:
 
+	SceneGame(const SceneGame&) = delete;
+	SceneGame(SceneGame&&) = delete;
+	SceneGame& operator=(const SceneGame&) = delete;
+	SceneGame& operator=(SceneGame&&) = delete;
+
 	Player* player;
 	UIHUD* hud;
 	TileMap* tileMap;

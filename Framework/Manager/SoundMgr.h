@@ -8,6 +8,10 @@ private:
 
 	SoundMgr();
 	virtual ~SoundMgr();
+	SoundMgr(const SoundMgr&) = delete;
+	SoundMgr(SoundMgr&&) = delete;
+	SoundMgr& operator=(const SoundMgr&) = delete;
+	SoundMgr& operator=(SoundMgr&&) = delete;
 
 	//플레이 리스트 기능을 추가하면 좋을 것 같다.
 	sf::Sound bgm[2];

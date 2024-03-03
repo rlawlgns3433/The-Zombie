@@ -25,6 +25,10 @@ public:
 	SceneScore(SceneIds id);
 	~SceneScore() override = default;
 
+	SceneScore(const SceneScore&) = delete;
+	SceneScore(SceneScore&&) = delete;
+	SceneScore& operator=(const SceneScore&) = delete;
+	SceneScore& operator=(SceneScore&&) = delete;
 
 	void Init() override;
 	void Release() override;

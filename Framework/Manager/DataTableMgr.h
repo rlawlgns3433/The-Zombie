@@ -8,6 +8,10 @@ class DataTableMgr : public Singleton<DataTableMgr>
 private:
 	DataTableMgr();
 	~DataTableMgr();
+	DataTableMgr(const DataTableMgr&) = delete;
+	DataTableMgr(DataTableMgr&&) = delete;
+	DataTableMgr& operator=(const DataTableMgr&) = delete;
+	DataTableMgr& operator=(DataTableMgr&&) = delete;
 
 	std::unordered_map<DataTable::Types, DataTable*> tables;
 

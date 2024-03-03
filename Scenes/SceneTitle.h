@@ -7,6 +7,11 @@ class UICharacterSelect;
 class SceneTitle : public Scene
 {
 protected:
+	SceneTitle(const SceneTitle&) = delete;
+	SceneTitle(SceneTitle&&) = delete;
+	SceneTitle& operator=(const SceneTitle&) = delete;
+	SceneTitle& operator=(SceneTitle&&) = delete;
+
 	std::unordered_map<std::string, TextGo*> texts;
 
 	UICharacterSelect* uiCharacterSelect = nullptr;

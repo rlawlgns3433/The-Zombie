@@ -28,6 +28,12 @@ public:
 	};
 	typedef std::deque<std::pair<sf::Keyboard::Key, KEY_STATE>> SFGM_COMBO;
 private:
+
+	InputMgr(const InputMgr&) = delete;
+	InputMgr(InputMgr&&) = delete;
+	InputMgr& operator=(const InputMgr&) = delete;
+	InputMgr& operator=(InputMgr&&) = delete;
+
 	static std::map<Axis, AxisInfo> axisInfoMap;
 
 	static std::list<sf::Keyboard::Key> downList;

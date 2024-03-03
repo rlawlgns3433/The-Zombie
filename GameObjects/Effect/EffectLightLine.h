@@ -10,6 +10,11 @@ public:
 
 	~EffectLightLine() override = default;
 
+	EffectLightLine(const EffectLightLine&) = delete;
+	EffectLightLine(EffectLightLine&&) = delete;
+	EffectLightLine& operator=(const EffectLightLine&) = delete;
+	EffectLightLine& operator=(EffectLightLine&&) = delete;
+
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
