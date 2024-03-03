@@ -134,6 +134,16 @@ void UIGo::UiDelete()
 			data.second = nullptr;
 		}
 	}
+
+	for (auto data : sortSprites)
+	{
+		data = nullptr;
+	}
+
+	for (auto data : sortTexts)
+	{
+		data = nullptr;
+	}
 }
 
 
