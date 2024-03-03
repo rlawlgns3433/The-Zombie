@@ -39,7 +39,6 @@ public:
 
 	virtual void Hit();
 	virtual void EndOfCheckZombie() {};
-	virtual bool CheckCollision(Zombie* zombie) = 0;
-	virtual bool CheckCollision(ZombieBoss* zombieBoss) = 0;
+	virtual bool CheckCollision(SpriteGo* zombie) = 0;
 
 };

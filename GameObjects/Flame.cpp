@@ -120,9 +120,9 @@ void Flame::SetBound()
     }
 }
 
-bool Flame::CheckCollision(Zombie* zombie)
+bool Flame::CheckCollision(SpriteGo* zombie)
 {
-    float distance = Utils::Distance(position, zombie->GetPosition())-zombie->GetBound().getRadius();
+    float distance = Utils::Distance(position, zombie->GetPosition());
 
     if (distance > attackRadius)
     {
@@ -130,23 +130,6 @@ bool Flame::CheckCollision(Zombie* zombie)
     }
 
     float angle = Utils::Angle(direction, zombie->GetPosition() - position);
-    if (angle > attackAngle)
-    {
-        return false;
-    }
-    return true;
-}
-
-bool Flame::CheckCollision(ZombieBoss* zombieBoss)
-{
-    float distance = Utils::Distance(position, zombieBoss->GetPosition()) - zombieBoss->GetBound().getRadius();
-
-    if (distance > attackRadius)
-    {
-        return false;
-    }
-
-    float angle = Utils::Angle(direction, zombieBoss->GetPosition() - position);
     if (angle > attackAngle)
     {
         return false;

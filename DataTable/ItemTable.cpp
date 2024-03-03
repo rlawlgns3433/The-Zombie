@@ -56,5 +56,4 @@ const DATA_ITEM& ItemTable::Get(Item::Types id)
 	}
 
 	return find->second;
-    // TODO: 여기에 return 문을 삽입합니다.
 }

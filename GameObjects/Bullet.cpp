@@ -148,13 +148,13 @@ void Bullet::Create(Scene* sc)
 
 }
 
-bool Bullet::CheckCollision(Zombie* zombie)
+bool Bullet::CheckCollision(SpriteGo* zombie)
 {
 	return Utils::IsCollideWithLineSegment(zombie->GetPosition(), GetPosition(), prePos, zombie->GetGlobalBounds().width / 3.f);
 }
-
-bool Bullet::CheckCollision(ZombieBoss* zombieBoss)
-{
-	return Utils::IsCollideWithLineSegment(zombieBoss->GetPosition(), GetPosition(), prePos, zombieBoss->GetGlobalBounds().width / 3.f);
-}
+//
+//bool Bullet::CheckCollision(ZombieBoss* zombieBoss)
+//{
+//	return Utils::IsCollideWithLineSegment(zombieBoss->GetPosition(), GetPosition(), prePos, zombieBoss->GetGlobalBounds().width / 3.f);
+//}
 

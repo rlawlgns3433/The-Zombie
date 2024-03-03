@@ -8,8 +8,8 @@ public:
     sf::VertexArray lines;
     sf::Sprite circle;
 
-    std::list<Zombie*> zombies;
-    std::vector<Zombie*> sortedZombies;
+    std::list<SpriteGo*> zombies;
+    std::vector<SpriteGo*> sortedZombies;
 
     sf::Vector2f firstPos;
 
@@ -33,8 +33,7 @@ public:
     void Draw(sf::RenderWindow& window) override;
 
 
-    bool CheckCollision(Zombie* zombie) override;
-    bool CheckCollision(ZombieBoss* zombieBoss) override;
+    bool CheckCollision(SpriteGo* zombie) override;
 
     static void Create(Scene* sc);
 

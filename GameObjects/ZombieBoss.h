@@ -46,7 +46,7 @@ protected:
 	Player* player;
 	float distanceToPlayer;
 	sf::Vector2f direction;
-	sf::CircleShape bound; //TODO 히트박스 정보 옮기기
+	sf::CircleShape bound;
 
 	int rangeSkillCount = 0;
 	int rangeSkillCountMax = 3;
