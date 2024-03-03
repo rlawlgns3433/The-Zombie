@@ -25,6 +25,7 @@ SceneGame::SceneGame(SceneIds id)
 	CheatHp();
 	CheatKill();
 	CheatWin();
+	CheatBoss();
 }
 
 void SceneGame::Init()
@@ -103,7 +104,7 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 
 	tileMap->SetPosition(centerPos);
-	ChangeWave(5);
+	ChangeWave(1);
 
 	player->SetPosition(GetBoundaryCenter());
 	worldView.setCenter(player->GetPosition());
@@ -130,49 +131,45 @@ void SceneGame::Update(float dt)
 	case SceneGame::Status::PLAY:
 		Scene::Update(dt);
 		playTimer += isWin ? 0.f : dt;
-		//�߰�
-		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-		{
-			for (auto s : spawners)
-			{
-				if (s->name == "ZombieSpawner")
-					s->Spawn(1);
-			}
-		}
-		
-		//if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
+
+		//좀비 생성, 테스트용
+		//if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		//{
-		//	zombieBoss = ZombieBoss::Create(this);
+		//	for (auto s : spawners)
+		//	{
+		//		if (s->name == "ZombieSpawner")
+		//			s->Spawn(1);
+		//	}
 		//}
-		//���� ����
-		if (InputMgr::GetKeyDown(sf::Keyboard::Delete))
-		{
-			while (zombieObjects.size() > 0)
-			{
-				Zombie* temp = zombieObjects.front();
-				RemoveGo(temp);
-				zombieObjects.pop_front();
-				delete temp;
-			}
-		}
-		//�ϳ��� �����ϰ� ����
-		if (InputMgr::GetKey(sf::Keyboard::BackSpace))
-		{
-			size_t siz = zombieObjects.size();
-			if (siz != 0)
-			{
-				int t = rand() % siz;
-				auto it = zombieObjects.begin();
-				for (int i = 0; i < t; i++)
-				{
-					it++;
-				}
-				RemoveGo(*it);
-				Zombie* z = *it;
-				zombieObjects.remove(*it);
-				delete z;
-			}
-		}
+		//좀비 전체 삭제, 테스트용
+		//if (InputMgr::GetKeyDown(sf::Keyboard::Delete))
+		//{
+		//	while (zombieObjects.size() > 0)
+		//	{
+		//		Zombie* temp = zombieObjects.front();
+		//		RemoveGo(temp);
+		//		zombieObjects.pop_front();
+		//		delete temp;
+		//	}
+		//}
+		//랜덤 좀비 삭제, 테스트용
+		//if (InputMgr::GetKey(sf::Keyboard::BackSpace))
+		//{
+		//	size_t siz = zombieObjects.size();
+		//	if (siz != 0)
+		//	{
+		//		int t = rand() % siz;
+		//		auto it = zombieObjects.begin();
+		//		for (int i = 0; i < t; i++)
+		//		{
+		//			it++;
+		//		}
+		//		RemoveGo(*it);
+		//		Zombie* z = *it;
+		//		zombieObjects.remove(*it);
+		//		delete z;
+		//	}
+		//}
 
 		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 		{
@@ -273,7 +270,7 @@ void SceneGame::LateUpdate(float dt)
 		else if (tag == 1)
 			bullets.remove(dynamic_cast<Projectile*>(temp));
 		deleteDeque.pop_front();
-		delete temp;	// CHECK 문제 소지 있음 >> 위치 변경으로 테스트 중
+		delete temp;
 	}
 
 	switch (status)
@@ -331,7 +328,7 @@ void SceneGame::FixedUpdate(float dt)
 		Scene::FixedUpdate(dt);
 		zombieObjects.sort();
 		BulletCollision(dt);
-		
+
 		if (!isWin && zombieCount <= 0 && wave != 5)
 			ChangeWave(++wave);
 		else if (wave == 5 && zombieBossDead)
@@ -419,6 +416,10 @@ void SceneGame::DebugUpdate(float dt)
 		if (InputMgr::IsExllentCombo(cheatWin))
 		{
 			ChangeWave(DT_WAVE->GetLastWave());
+		}
+		if (InputMgr::IsExllentCombo(cheatBoss))
+		{
+			ChangeWave(DT_WAVE->GetLastWave() - 1);
 		}
 		InputMgr::StopComboRecord();
 		InputMgr::ClearCombo();
@@ -616,7 +617,6 @@ void SceneGame::BulletCollision(float dt)
 			}
 		}
 
-		// TODO 좀비 보스 데미지 처리 부분 수정 해야함
 		if (zombieBoss != nullptr)
 		{
 			if (!zombieBoss->isDead && !bullet->isHit && bullet->CheckCollision(zombieBoss))
@@ -628,7 +628,7 @@ void SceneGame::BulletCollision(float dt)
 		bullet->EndOfCheckZombie();
 	}
 
-	
+
 }
 
 sf::Vector2f SceneGame::GetBoundaryCenter()
@@ -638,7 +638,7 @@ sf::Vector2f SceneGame::GetBoundaryCenter()
 
 
 
-//치트 콤보 - NO 데이터테이블화..?
+//치트 콤보
 void SceneGame::CheatExp()
 {
 	cheatExp.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
@@ -673,4 +673,12 @@ void SceneGame::CheatWin()
 	cheatWin.push_back({ sf::Keyboard::W,InputMgr::KEY_STATE::DOWN });
 	cheatWin.push_back({ sf::Keyboard::I,InputMgr::KEY_STATE::DOWN });
 	cheatWin.push_back({ sf::Keyboard::N,InputMgr::KEY_STATE::DOWN });
+}
+
+void SceneGame::CheatBoss()
+{
+	cheatBoss.push_back({ sf::Keyboard::B,InputMgr::KEY_STATE::DOWN });
+	cheatBoss.push_back({ sf::Keyboard::O,InputMgr::KEY_STATE::DOWN });
+	cheatBoss.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
+	cheatBoss.push_back({ sf::Keyboard::S,InputMgr::KEY_STATE::DOWN });
 }
