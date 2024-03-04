@@ -135,10 +135,6 @@ void SceneScore::GetHigh()
 	//기록을 가져온다.
 	while (std::getline(buf, line))
 	{
-		if (buf.gcount() == 0)
-		{
-			break;
-		}
 		count++;
 		if (count % 2 == 1) { score = std::stoi(line); }
 		else if (count % 2 == 0)
